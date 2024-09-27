@@ -1,4 +1,4 @@
-package com.project.kotlincomposeapp.ui
+package com.project.kotlincomposeapp.ui.viewsModels
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData

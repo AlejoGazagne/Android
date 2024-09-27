@@ -1,4 +1,4 @@
-package com.project.kotlincomposeapp.ui
+package com.project.kotlincomposeapp.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,9 +27,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.kotlincomposeapp.R
+import com.project.kotlincomposeapp.ui.viewsModels.LoginViewModel
 import kotlinx.coroutines.launch
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewLoginScreen() {
+    LoginScreen(LoginViewModel())
+}
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
@@ -48,7 +56,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel ) {
+fun Login(modifier: Modifier, viewModel: LoginViewModel) {
     val email: String by viewModel.email.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
     val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
@@ -61,9 +69,9 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel ) {
         }
     } else {
         Column( modifier = modifier) {
-            Spacer(modifier = Modifier.weight(0.7F))
+            Spacer(modifier = Modifier.weight(1.3F))
             LoginImage(Modifier.align(Alignment.CenterHorizontally))
-            Spacer(modifier = Modifier.weight(0.2F))
+            Spacer(modifier = Modifier.weight(0.4F))
             FieldEmail(email) { viewModel.onLoginChanged(it, password) }
             FieldPassword(password) { viewModel.onLoginChanged(email, it) }
             TextRegister(modifier = Modifier.align(Alignment.Start))
