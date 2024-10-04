@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.project.kotlincomposeapp.ui.screens.HomeScreen
 import com.project.kotlincomposeapp.ui.screens.LoginScreen
 import com.project.kotlincomposeapp.ui.screens.ProfileScreen
 import com.project.kotlincomposeapp.ui.screens.SplashScreen

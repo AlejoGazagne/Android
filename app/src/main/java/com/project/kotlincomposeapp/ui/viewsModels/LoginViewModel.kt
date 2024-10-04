@@ -1,4 +1,4 @@
-package com.project.kotlincomposeapp.ui
+package com.project.kotlincomposeapp.ui.viewsModels
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData
@@ -26,10 +26,14 @@ class LoginViewModel: ViewModel() {
     }
 
     private fun isValidUsername(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
     private fun isValidPassword(password: String): Boolean = password.length > 6
-    suspend fun onLoginSelected(){
+
+    fun onLoginSelected(){
         _isLoading.value = true
-        delay(3000)
+    }
+
+    suspend fun resetLoading() {
         _isLoading.value = false
     }
 }

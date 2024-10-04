@@ -18,6 +18,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -27,28 +28,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
+import com.project.kotlincomposeapp.ui.navigation.Screen
+import com.project.kotlincomposeapp.ui.viewsModels.LoginViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
     Box(modifier = Modifier
         .background(Color.White)
-        .padding(horizontal = 15.dp)) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Login(modifier = Modifier.fillMaxWidth(), viewModel)
-        }
+        .padding(horizontal = 15.dp))
+    {
+        Login(modifier = Modifier.fillMaxWidth(), viewModel, navController)
     }
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel ) {
+fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavController) {
     val email: String by viewModel.email.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
     val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
@@ -58,27 +58,22 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel ) {
     if(isLoading){
         Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-<<<<<<< Updated upstream:app/src/main/java/com/project/kotlincomposeapp/ui/LoginScreen.kt
-=======
             LaunchedEffect(Unit) {
                 delay(3000)
                 navController.navigate(Screen.Home.route)
                 viewModel.resetLoading()
             }
->>>>>>> Stashed changes:app/src/main/java/com/project/kotlincomposeapp/ui/screens/LoginScreen.kt
         }
     } else {
-        Column( modifier = modifier) {
-            Spacer(modifier = Modifier.weight(0.7F))
+        Column(modifier = modifier) {
+            Spacer(modifier = Modifier.weight(1.3F))
             LoginImage(Modifier.align(Alignment.CenterHorizontally))
-            Spacer(modifier = Modifier.weight(0.2F))
+            Spacer(modifier = Modifier.weight(0.4F))
             FieldEmail(email) { viewModel.onLoginChanged(it, password) }
             FieldPassword(password) { viewModel.onLoginChanged(email, it) }
             TextRegister(modifier = Modifier.align(Alignment.Start))
             ButtonLogin(loginEnable) {
-                coroutineScope.launch {
-                    viewModel.onLoginSelected()
-                }
+                viewModel.onLoginSelected()
             }
             Spacer(modifier = Modifier.weight(2.6F))
         }

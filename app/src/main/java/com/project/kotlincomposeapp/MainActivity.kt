@@ -6,8 +6,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.project.kotlincomposeapp.ui.LoginScreen
-import com.project.kotlincomposeapp.ui.LoginViewModel
+import com.project.kotlincomposeapp.ui.navigation.SetupNavigation
+import com.project.kotlincomposeapp.ui.screens.LoginScreen
+import com.project.kotlincomposeapp.ui.viewsModels.LoginViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
             Surface(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                LoginScreen(LoginViewModel())
+                SetupNavigation()
             }
 
         }
