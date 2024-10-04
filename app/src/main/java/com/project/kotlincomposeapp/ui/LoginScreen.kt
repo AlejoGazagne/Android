@@ -58,6 +58,14 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel ) {
     if(isLoading){
         Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+<<<<<<< Updated upstream:app/src/main/java/com/project/kotlincomposeapp/ui/LoginScreen.kt
+=======
+            LaunchedEffect(Unit) {
+                delay(3000)
+                navController.navigate(Screen.Home.route)
+                viewModel.resetLoading()
+            }
+>>>>>>> Stashed changes:app/src/main/java/com/project/kotlincomposeapp/ui/screens/LoginScreen.kt
         }
     } else {
         Column( modifier = modifier) {
