@@ -21,14 +21,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,11 +33,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
-import com.project.kotlincomposeapp.ui.components.BottomNavBar
+import com.project.kotlincomposeapp.ui.components.MainScaffold
 
 /*@Preview(showBackground = true)
 @Composable
@@ -51,11 +46,7 @@ fun PreviewProfileScreen() {
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    Scaffold(
-        bottomBar = {
-            BottomNavBar(navController)
-        }
-    ) { innerPadding ->
+    MainScaffold(navController = navController) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
@@ -66,7 +57,6 @@ fun ProfileScreen(navController: NavController) {
             Profile(modifier = Modifier, navController)
         }
     }
-
 }
 
 @Composable
