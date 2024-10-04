@@ -1,4 +1,4 @@
-package com.project.kotlincomposeapp.ui.screens
+package com.project.kotlincomposeapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,15 +37,8 @@ import com.project.kotlincomposeapp.ui.viewsModels.LoginViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/*@Preview(showBackground = true)
 @Composable
-fun PreviewLoginScreen() {
-    LoginScreen()
-}*/
-
-@Composable
-fun LoginScreen(navController: NavController) {
-    val viewModel = LoginViewModel()
+fun LoginScreen(viewModel: LoginViewModel) {
     Box(modifier = Modifier
         .background(Color.White)
         .padding(horizontal = 15.dp))
@@ -60,13 +53,14 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
     val password: String by viewModel.password.observeAsState(initial = "")
     val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
+    val coroutineScope = rememberCoroutineScope()
 
     if(isLoading){
         Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             LaunchedEffect(Unit) {
                 delay(3000)
-                navController.navigate(Screen.Profile.route)
+                navController.navigate(Screen.Home.route)
                 viewModel.resetLoading()
             }
         }

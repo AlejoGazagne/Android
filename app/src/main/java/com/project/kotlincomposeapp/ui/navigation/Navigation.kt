@@ -21,5 +21,8 @@ fun SetupNavigation (){
         composable(route = Screen.Profile.route){
             ProfileScreen(navController = navController)
         }
+        composable(route = Screen.Home.route) {
+            HomeScreen(navController = navController)
+        }
     }
 }
