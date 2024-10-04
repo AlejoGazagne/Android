@@ -39,16 +39,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.kotlincomposeapp.data.model.Event
+import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.viewsModels.HomeViewModel
 
 
 @Composable
 fun HomeScreen(navController: NavController) {
     val homeViewModel: HomeViewModel = viewModel()
-    Box(modifier = Modifier
-        .background(MaterialTheme.colorScheme.background)
-        .padding(16.dp)) {
-        Home(modifier = Modifier.fillMaxWidth(), homeViewModel)
+    MainScaffold(navController = navController) { innerPadding ->
+        Box(modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(innerPadding)
+            .padding(16.dp)) {
+            Home(modifier = Modifier.fillMaxWidth(), homeViewModel)
+        }
     }
 }
 
@@ -85,7 +89,11 @@ fun SearchBar(searchQuery: TextFieldValue, onSearchQueryChanged: (TextFieldValue
             .fillMaxWidth()
             .padding(8.dp)
             .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.small)
-            .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), MaterialTheme.shapes.small)
+            .border(
+                1.dp,
+                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                MaterialTheme.shapes.small
+            )
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

@@ -1,5 +1,6 @@
 package com.project.kotlincomposeapp.ui.components
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,13 +11,25 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import com.project.kotlincomposeapp.ui.navigation.Screen
 
 /*@Preview(showBackground = true)
 @Composable
 fun PreviewBottomNavBar() {
     BottomNavBar(navController = rememberNavController())
 }*/
+
+@Composable
+fun MainScaffold(navController: NavController, content: @Composable (PaddingValues) -> Unit) {
+    Scaffold(
+        bottomBar = {
+            BottomNavBar(navController)
+        },
+        content = content
+    )
+}
 
 @Composable
 fun BottomNavBar(navController: NavController) {
@@ -49,6 +62,9 @@ fun BottomNavBar(navController: NavController) {
                         launchSingleTop = true
                         // Restaurar la pila del backstack en la navegación
                         restoreState = true
+                        popUpTo(Screen.Home.route) {
+                            inclusive = false
+                        }
                     }
                 }
             )
