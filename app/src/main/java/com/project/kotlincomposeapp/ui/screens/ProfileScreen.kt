@@ -28,6 +28,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
+import com.project.kotlincomposeapp.ui.components.BottomNavBar
 
 /*@Preview(showBackground = true)
 @Composable
@@ -49,14 +51,22 @@ fun PreviewProfileScreen() {
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(15.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Profile(modifier = Modifier, navController)
+    Scaffold(
+        bottomBar = {
+            BottomNavBar(navController)
+        }
+    ) { innerPadding ->
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .padding(15.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Profile(modifier = Modifier, navController)
+        }
     }
+
 }
 
 @Composable

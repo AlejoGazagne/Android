@@ -106,7 +106,7 @@ fun FieldPassword(password: String, onTextFieldChanged: (String) -> Unit) {
         visualTransformation = PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.None,
-            autoCorrect = false
+            autoCorrectEnabled = false
         ),
         singleLine = true
     )
