@@ -12,9 +12,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -22,11 +27,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.kotlincomposeapp.data.model.Event
+import com.project.kotlincomposeapp.data.repository.EventRepository
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.components.Spacer
+import com.project.kotlincomposeapp.ui.viewsModels.EventDetailViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun EventDetailScreen(eventId: Number, navController: NavHostController) {
@@ -43,7 +53,12 @@ fun EventDetailScreen(eventId: Number, navController: NavHostController) {
 
 @Composable
 fun EventDetail(eventId: Number) {
-    val event: Event = Event.getEventById(eventId)
+    val detailViewModel: EventDetailViewModel = viewModel()
+    val event: Event = EventRepository.getEventById(eventId)
+
+    // Crear el estado del Snackbar y el CoroutineScope
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -81,28 +96,57 @@ fun EventDetail(eventId: Number) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Botón para adquirir tickets
-        Button(
-            onClick = { /* Lógica para adquirir tickets */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(contentColor = contentColorFor(MaterialTheme.colorScheme.primary))
-        ) {
-            Text(text = "Adquirir Tickets", style = MaterialTheme.typography.bodyLarge.copy(color = Color.White))
+        // Verificamos si el evento es favorito o no
+        if (event.isFavorite) {
+            // Botón para eliminar de favoritos
+            OutlinedButton(
+                onClick = {
+                    detailViewModel.toggleFavorite(eventId)
+
+                    // Mostrar Snackbar
+                    scope.launch {
+                        snackbarHostState.showSnackbar("Evento eliminado de favoritos")
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+            ) {
+                Text(text = "Eliminar de Favoritos", style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary))
+            }
+        } else {
+            // Botón para agregar a favoritos
+            OutlinedButton(
+                onClick = {
+                    detailViewModel.toggleFavorite(eventId)
+
+                    // Mostrar Snackbar
+                    scope.launch {
+                        snackbarHostState.showSnackbar("Evento agregado a favoritos")
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+            ) {
+                Text(text = "Agregar a Favoritos", style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary))
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        // Botón para agregar a favoritos
-        OutlinedButton(
-            onClick = { /* Lógica para agregar a favoritos */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
-        ) {
-            Text(text = "Agregar a Favoritos", style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary))
-        }
+        // SnackbarHost para mostrar el Snackbar
+        SnackbarHost(
+            hostState = snackbarHostState,
+            snackbar = { snackbarData ->
+                Snackbar(
+                    snackbarData = snackbarData,
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            }
+        )
     }
 }
+

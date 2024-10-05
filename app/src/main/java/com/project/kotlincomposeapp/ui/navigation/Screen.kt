@@ -8,4 +8,5 @@ sealed class Screen(val route: String) {
     object EditProfile : Screen("edit_profile")
     object EventDetail : Screen("eventDetail/{eventId}")
     object Search : Screen("search?title={title}")
+    object Favorites : Screen("favorites")
 }

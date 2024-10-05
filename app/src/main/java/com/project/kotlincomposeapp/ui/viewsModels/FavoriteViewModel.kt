@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import com.project.kotlincomposeapp.data.model.Event
 import com.project.kotlincomposeapp.data.repository.EventRepository
 
-class HomeViewModel : ViewModel() {
+class FavoriteViewModel: ViewModel() {
     private val repository = EventRepository
-    private val _events = MutableLiveData(repository.getEvents())
-    val events: MutableLiveData<List<Event>> = _events
+    private val _favorites = MutableLiveData(repository.getFavorites())
+    val favorites: LiveData<List<Event>> = _favorites
 
     fun toggleFavorite(eventId: Number) {
         // Modifica la lista de eventos
-        val updatedEvents = _events.value?.map { event ->
+        val updatedEvents = _favorites.value?.map { event ->
             if (event.id == eventId) {
                 event.copy(isFavorite = !event.isFavorite)  // Alterna el estado de favorito
             } else {
@@ -22,10 +22,9 @@ class HomeViewModel : ViewModel() {
         }
 
         // Actualiza la lista de eventos
-        _events.value = updatedEvents
+        _favorites.value = updatedEvents
 
         // Actualiza el repositorio
         repository.setFavorite(eventId)
     }
 }
-
