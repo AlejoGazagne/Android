@@ -78,7 +78,7 @@ fun Splash(modifier: Modifier) {
     ) {
         Image(
             painter = painterResource(
-                id = R.drawable.logo1
+                id = R.drawable.logo
             ),
             contentDescription = "Company",
             modifier = Modifier
