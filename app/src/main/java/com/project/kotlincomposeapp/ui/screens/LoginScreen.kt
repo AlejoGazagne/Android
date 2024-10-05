@@ -1,5 +1,7 @@
 package com.project.kotlincomposeapp.ui
 
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -24,7 +27,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,22 +40,27 @@ import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.navigation.Screen
 import com.project.kotlincomposeapp.ui.viewsModels.LoginViewModel
+import com.project.kotlincomposeapp.ui.viewsModels.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val viewModel = LoginViewModel()
-    Box(modifier = Modifier
-        .background(Color.White)
-        .padding(horizontal = 15.dp))
-    {
-        Login(modifier = Modifier.fillMaxWidth(), viewModel, navController)
+    DismissKeyboardOnClick {
+        Box(
+            modifier = Modifier
+                .background(Color.White)
+                .padding(horizontal = 15.dp)
+        )
+        {
+            Login(modifier = Modifier.fillMaxWidth(), viewModel, navController, sharedViewModel)
+        }
     }
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavController) {
+fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavController, sharedViewModel: SharedViewModel) {
     val email: String by viewModel.email.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
     val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
@@ -60,6 +71,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             LaunchedEffect(Unit) {
                 delay(1500)
+                sharedViewModel.setData(email, password)
                 navController.navigate(Screen.Home.route){
                     popUpTo(Screen.Login.route){
                         inclusive = true
@@ -84,12 +96,34 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
     }
 }
 
+fun hideKeyboard(context: Context) {
+    val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(null, 0)
+}
+
+@Composable
+fun DismissKeyboardOnClick(content: @Composable () -> Unit) {
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable {
+                keyboardController?.hide()
+                hideKeyboard(context)
+            }
+    ) {
+        content()
+    }
+}
+
 @Composable
 fun LoginImage(modifier: Modifier) {
-    Image(painter = painterResource(id = R.drawable.iua_logo),
+    Image(painter = painterResource(id = R.drawable.logo1),
         contentDescription = "Logo",
         modifier = modifier
-            .size(200.dp)
+            .size(250.dp)
     )
 }
 
