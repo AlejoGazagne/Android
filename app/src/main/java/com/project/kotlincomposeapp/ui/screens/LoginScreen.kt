@@ -120,7 +120,7 @@ fun DismissKeyboardOnClick(content: @Composable () -> Unit) {
 
 @Composable
 fun LoginImage(modifier: Modifier) {
-    Image(painter = painterResource(id = R.drawable.logo1),
+    Image(painter = painterResource(id = R.drawable.logo),
         contentDescription = "Logo",
         modifier = modifier
             .size(250.dp)
