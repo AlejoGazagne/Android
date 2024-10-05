@@ -1,6 +1,7 @@
 package com.project.kotlincomposeapp.data.model
 
 data class Event(
+    val id: Number,
     val name: String,
     val date: String,
     val location: String,
@@ -8,10 +9,13 @@ data class Event(
     val capacity: Int,
     val organizer: String
 ) {
+
+
     companion object {
         fun getEvents(): List<Event> {
             return listOf(
                 Event(
+                    1,
                     "Tech Conference 2024",
                     "2024-11-12",
                     "Buenos Aires, Argentina",
@@ -20,6 +24,7 @@ data class Event(
                     "Tech Corp"
                 ),
                 Event(
+                    2,
                     "Artificial Intelligence Summit",
                     "2024-10-20",
                     "San Francisco, USA",
@@ -28,6 +33,7 @@ data class Event(
                     "AI Innovators"
                 ),
                 Event(
+                    3,
                     "Córdoba Developer Meetup",
                     "2024-12-05",
                     "Córdoba, Argentina",
@@ -36,6 +42,7 @@ data class Event(
                     "Dev Community Córdoba"
                 ),
                 Event(
+                    4,
                     "Cybersecurity Expo",
                     "2024-11-30",
                     "London, UK",
@@ -44,6 +51,7 @@ data class Event(
                     "Security World"
                 ),
                 Event(
+                    5,
                     "Mobile App Hackathon",
                     "2024-10-15",
                     "Berlin, Germany",
@@ -52,6 +60,7 @@ data class Event(
                     "Hack Club Europe"
                 ),
                 Event(
+                    6,
                     "IoT World Congress",
                     "2024-11-10",
                     "Barcelona, Spain",
@@ -60,6 +69,7 @@ data class Event(
                     "IoT Innovators"
                 ),
                 Event(
+                    7,
                     "Data Science Bootcamp",
                     "2024-12-01",
                     "New York, USA",
@@ -68,6 +78,7 @@ data class Event(
                     "Data Wizards"
                 ),
                 Event(
+                    8,
                     "Blockchain Revolution",
                     "2024-11-18",
                     "Dubai, UAE",
@@ -76,6 +87,7 @@ data class Event(
                     "Crypto Leaders"
                 ),
                 Event(
+                    9,
                     "Web3.0 Summit",
                     "2024-10-25",
                     "Tokyo, Japan",
@@ -84,6 +96,7 @@ data class Event(
                     "Web Innovators"
                 ),
                 Event(
+                    10,
                     "Open Source Day",
                     "2024-11-03",
                     "Sao Paulo, Brazil",
@@ -92,6 +105,7 @@ data class Event(
                     "Open Source Foundation"
                 ),
                 Event(
+                    11,
                     "Python Dev Week",
                     "2024-12-10",
                     "Mexico City, Mexico",
@@ -100,6 +114,7 @@ data class Event(
                     "Pythonistas Unidos"
                 ),
                 Event(
+                    12,
                     "UX/UI Design Conference",
                     "2024-11-22",
                     "Paris, France",
@@ -108,6 +123,7 @@ data class Event(
                     "Designers Collective"
                 ),
                 Event(
+                    13,
                     "Game Developers Forum",
                     "2024-10-27",
                     "Los Angeles, USA",
@@ -116,6 +132,7 @@ data class Event(
                     "GameDev Network"
                 ),
                 Event(
+                    14,
                     "Green Tech Expo",
                     "2024-12-15",
                     "Stockholm, Sweden",
@@ -124,6 +141,7 @@ data class Event(
                     "Sustainable Tech Group"
                 ),
                 Event(
+                    15,
                     "JavaScript Nation",
                     "2024-11-28",
                     "Toronto, Canada",
@@ -132,6 +150,7 @@ data class Event(
                     "JS Enthusiasts"
                 ),
                 Event(
+                    16,
                     "Machine Learning Camp",
                     "2024-12-08",
                     "Melbourne, Australia",
@@ -140,6 +159,7 @@ data class Event(
                     "ML Innovators"
                 ),
                 Event(
+                    17,
                     "Big Data Symposium",
                     "2024-11-05",
                     "Singapore",
@@ -148,6 +168,7 @@ data class Event(
                     "Data Science Global"
                 ),
                 Event(
+                    18,
                     "Virtual Reality Expo",
                     "2024-12-03",
                     "Los Angeles, USA",
@@ -156,6 +177,7 @@ data class Event(
                     "VR World"
                 ),
                 Event(
+                    19,
                     "Robotics Summit",
                     "2024-11-20",
                     "Seoul, South Korea",
@@ -164,6 +186,7 @@ data class Event(
                     "Automation Experts"
                 ),
                 Event(
+                    20,
                     "Quantum Computing Workshop",
                     "2024-12-02",
                     "Zurich, Switzerland",
@@ -172,6 +195,14 @@ data class Event(
                     "Quantum Pioneers"
                 )
             )
+        }
+        
+        fun getFilteredEvents(searchQuery: String): List<Event> {
+            return getEvents().filter { it.name.contains(searchQuery, ignoreCase = true) }
+        }
+
+        fun getEventById(eventId: Number): Event {
+            return getEvents().find { it.id == eventId } ?: Event(0, "", "", "", "", 0, "")
         }
     }
 }
