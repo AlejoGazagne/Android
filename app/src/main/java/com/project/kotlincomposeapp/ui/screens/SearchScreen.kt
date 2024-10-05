@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.ui.components.EventItem
 import com.project.kotlincomposeapp.ui.components.MainScaffold
@@ -42,15 +43,16 @@ fun SearchScreen(navController: NavController, title: String) {
 
 @Composable
 fun Search(modifier: Modifier, navController: NavController, title: String) {
+    val searchViewModel: SearchViewModel = viewModel()
     var searchQuery by remember { mutableStateOf(TextFieldValue(title)) }
-    val filteredEvents = SearchViewModel().getFilteredEvents(searchQuery.text)
+    val filteredEvents = searchViewModel.getFilteredEvents(searchQuery.text)
 
     LazyColumn(modifier = modifier) {
         item {
             SearchBar(searchQuery) { query ->
                 searchQuery = query
-                if (searchQuery.text == ""){
-                    navController.navigate(Screen.Home.route){
+                if (searchQuery.text == "") {
+                    navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Home.route) { inclusive = true }
                     }
                 }
@@ -59,16 +61,27 @@ fun Search(modifier: Modifier, navController: NavController, title: String) {
         item {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Resultado de tu busqueda",
+                text = "Resultado de tu búsqueda",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
         items(filteredEvents) { event ->
-            EventItem(event) { selectedEvent ->
-                navController.navigate(Screen.EventDetail.route.replace("{eventId}", selectedEvent.toString()))
-            }
+            EventItem(
+                event = event,
+                onFavoriteClick = { eventId ->
+                    searchViewModel.toggleFavorite(eventId)
+                },
+                onClick = { selectedEvent ->
+                    navController.navigate(
+                        Screen.EventDetail.route.replace(
+                            "{eventId}",
+                            selectedEvent.toString()
+                        )
+                    )
+                }
+            )
         }
     }
 }

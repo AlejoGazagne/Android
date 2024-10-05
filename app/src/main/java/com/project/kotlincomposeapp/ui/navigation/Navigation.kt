@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.ui.LoginScreen
 import com.project.kotlincomposeapp.ui.screens.EditProfileScreen
 import com.project.kotlincomposeapp.ui.screens.EventDetailScreen
+import com.project.kotlincomposeapp.ui.screens.FavoriteScreen
 import com.project.kotlincomposeapp.ui.screens.HomeScreen
 import com.project.kotlincomposeapp.ui.screens.ProfileScreen
 import com.project.kotlincomposeapp.ui.screens.SearchScreen
@@ -60,6 +61,9 @@ fun SetupNavigation (){
             val title = backStackEntry.arguments?.getString("title")
             SearchScreen(navController = navController, title = title!!)
 
+        }
+        composable(route = Screen.Favorites.route) {
+            FavoriteScreen(navController = navController)
         }
     }
 }

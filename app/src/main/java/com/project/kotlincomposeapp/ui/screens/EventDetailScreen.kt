@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.kotlincomposeapp.data.model.Event
+import com.project.kotlincomposeapp.data.repository.EventRepository
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.components.Spacer
 
@@ -43,7 +44,7 @@ fun EventDetailScreen(eventId: Number, navController: NavHostController) {
 
 @Composable
 fun EventDetail(eventId: Number) {
-    val event: Event = Event.getEventById(eventId)
+    val event: Event = EventRepository.getEventById(eventId)
 
     Column(
         modifier = Modifier
