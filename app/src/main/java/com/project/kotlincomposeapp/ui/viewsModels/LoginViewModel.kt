@@ -4,7 +4,6 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.delay
 
 class LoginViewModel: ViewModel() {
     private val _email = MutableLiveData<String>()
@@ -33,7 +32,7 @@ class LoginViewModel: ViewModel() {
         _isLoading.value = true
     }
 
-    suspend fun resetLoading() {
+    fun resetLoading() {
         _isLoading.value = false
     }
 }

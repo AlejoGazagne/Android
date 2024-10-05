@@ -27,6 +27,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.components.MainScaffold
+import com.project.kotlincomposeapp.ui.navigation.Screen
+import com.project.kotlincomposeapp.ui.viewsModels.LoginViewModel
+import com.project.kotlincomposeapp.ui.viewsModels.SharedViewModel
 
 /*@Preview(showBackground = true)
 @Composable
@@ -45,7 +50,8 @@ fun PreviewProfileScreen() {
 }*/
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, sharedViewModel: SharedViewModel) {
+
     MainScaffold(navController = navController) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
@@ -54,29 +60,31 @@ fun ProfileScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Profile(modifier = Modifier, navController)
+            Profile(modifier = Modifier, navController, sharedViewModel)
         }
     }
 }
 
 @Composable
-fun Profile(modifier: Modifier, navController: NavController) {
+fun Profile(modifier: Modifier, navController: NavController, sharedViewModel: SharedViewModel) {
+    val email: String by sharedViewModel.email.observeAsState(initial = "")
+
     ProfileImage(modifier = modifier)
     Username(modifier = modifier)
     Spacer(modifier = Modifier.height(30.dp))
-    Mail(modifier = modifier)
+    Mail(modifier = modifier, email)
     Spacer(modifier = Modifier.height(30.dp))
     Box(
         modifier = Modifier
             .padding(20.dp)
             .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
     ){
-        Menu(modifier = modifier)
+        Menu(modifier = modifier, navController, sharedViewModel)
     }
 }
 
 @Composable
-fun Menu(modifier: Modifier){
+fun Menu(modifier: Modifier, navController: NavController, sharedViewModel: SharedViewModel){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -85,7 +93,9 @@ fun Menu(modifier: Modifier){
         MenuItem(
             icon = Icons.Default.Edit,
             text = "Edit Profile",
-            onClick = { /* Acción del menú */ }
+            onClick = {
+                navController.navigate(Screen.EditProfile.route)
+            }
         )
         HorizontalDivider(thickness = 1.dp, color = Color.Gray)
         MenuItem(
@@ -99,7 +109,12 @@ fun Menu(modifier: Modifier){
             text = "Logout",
             textColor = Color.Red,
             iconColor = Color.Red,
-            onClick = { /* Acción del logout */ },
+            onClick = {
+                sharedViewModel.clearData()
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(0) { inclusive = true }
+                }
+            },
             showArrow = false
         )
     }
@@ -152,30 +167,15 @@ fun MenuItem(
 
 @Composable
 fun ProfileImage(modifier: Modifier) {
-    Box(
+
+    Image(painter = painterResource(id = R.drawable.iua_logo),
+        contentDescription = "Profile Image",
         modifier = modifier
-            .size(120.dp),
-            //.border(2.dp, Color.Gray, CircleShape),
-        contentAlignment = Alignment.BottomEnd,
-    ){
-        Image(painter = painterResource(id = R.drawable.iua_logo),
-            contentDescription = "Profile Image",
-            modifier = modifier
-                .size(120.dp)
-                .clip(shape = CircleShape)
-            //.border(2.dp, Color.Gray, CircleShape),
-        )
-        Icon(
-            imageVector = Icons.Default.Edit,
-            contentDescription = "Edit Icon",
-            modifier = Modifier
-                .size(35.dp)
-                .background(Color.Blue, CircleShape)
-                .padding(4.dp)
-                .clip(CircleShape),
-            tint = Color.White
-        )
-    }
+            .size(120.dp)
+            .clip(shape = CircleShape)
+        //.border(2.dp, Color.Gray, CircleShape),
+    )
+
 }
 
 @Composable
@@ -190,7 +190,7 @@ fun Username(modifier: Modifier) {
 }
 
 @Composable
-fun Mail(modifier: Modifier){
+fun Mail(modifier: Modifier, email: String){
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
@@ -198,7 +198,7 @@ fun Mail(modifier: Modifier){
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
-            text = "alejo@gmail.com",
+            text = email,
             color = Color.Black
         )
     }
