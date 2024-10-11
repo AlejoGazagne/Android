@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
@@ -41,11 +42,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -86,6 +92,10 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
     val password: String by viewModel.password.observeAsState(initial = "")
     val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
+
+    // Para controlar el foco entre los campos
+    val focusRequesterPassword = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     if(isLoading){
         Box(modifier = Modifier.fillMaxSize()) {
@@ -130,9 +140,11 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
                     .align(Alignment.Start)
             )
 
-            FieldEmail(email) { viewModel.onLoginChanged(it, password) }
+            FieldEmail(email, { viewModel.onLoginChanged(it, password) }, focusRequesterPassword)
 
-            FieldPassword(password) { viewModel.onLoginChanged(email, it) }
+            FieldPassword(password, { viewModel.onLoginChanged(email, it) }, focusRequesterPassword, focusManager, loginEnable) {
+                viewModel.onLoginSelected()
+            }
 
             TextRegister(modifier = Modifier.align(Alignment.Start))
 
@@ -177,7 +189,7 @@ fun LoginImage(modifier: Modifier) {
 }
 
 @Composable
-fun FieldEmail(email: String, onTextFieldChanged: (String) -> Unit) {
+fun FieldEmail(email: String, onTextFieldChanged: (String) -> Unit, focusRequesterPassword: FocusRequester) {
     TextField(
         value = email,
         onValueChange = { onTextFieldChanged(it) },
@@ -190,19 +202,34 @@ fun FieldEmail(email: String, onTextFieldChanged: (String) -> Unit) {
         },
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF5F7FA), shape = RoundedCornerShape(20.dp))
             .padding(vertical = 8.dp),
         shape = RoundedCornerShape(20.dp),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(
+            onNext = {
+                focusRequesterPassword.requestFocus() // Mueve el foco al campo de contraseña
+            }
         )
     )
 }
 
 @Composable
-fun FieldPassword(password: String, onTextFieldChanged: (String) -> Unit) {
+fun FieldPassword(
+    password: String,
+    onTextFieldChanged: (String) -> Unit,
+    focusRequester: FocusRequester, // Parámtero añadido
+    focusManager: FocusManager,
+    loginEnable: Boolean,
+    onLogin: () -> Unit
+) {
     var passwordVisible by remember { mutableStateOf(false) }
+
     TextField(
         value = password,
         onValueChange = { onTextFieldChanged(it) },
@@ -224,12 +251,24 @@ fun FieldPassword(password: String, onTextFieldChanged: (String) -> Unit) {
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF5F7FA), shape = RoundedCornerShape(20.dp))
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .focusRequester(focusRequester), // Uso del focusRequester aquí
         shape = RoundedCornerShape(20.dp),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                if (loginEnable) {
+                    onLogin() // Simula el click del botón de login
+                } else {
+                    focusManager.clearFocus() // Cierra el teclado si no se puede hacer login
+                }
+            }
         )
     )
 }
