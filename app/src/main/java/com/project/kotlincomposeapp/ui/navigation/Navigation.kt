@@ -14,6 +14,7 @@ import com.project.kotlincomposeapp.ui.screens.EditProfileScreen
 import com.project.kotlincomposeapp.ui.screens.EventDetailScreen
 import com.project.kotlincomposeapp.ui.screens.FavoriteScreen
 import com.project.kotlincomposeapp.ui.screens.HomeScreen
+import com.project.kotlincomposeapp.ui.screens.NotificationScreen
 import com.project.kotlincomposeapp.ui.screens.ProfileScreen
 import com.project.kotlincomposeapp.ui.screens.RegisterScreen
 import com.project.kotlincomposeapp.ui.screens.SearchScreen
@@ -69,6 +70,9 @@ fun SetupNavigation (){
         }
         composable(route = Screen.Register.route) {
             RegisterScreen(navController = navController)
+        }
+        composable(route = Screen.Notifications.route) {
+            NotificationScreen(navController = navController)
         }
     }
 }
