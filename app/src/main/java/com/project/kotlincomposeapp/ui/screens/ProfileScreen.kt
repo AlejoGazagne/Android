@@ -31,6 +31,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,16 +50,15 @@ import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.navigation.Screen
-import com.project.kotlincomposeapp.ui.viewsModels.SharedViewModel
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfileScreen() {
-    ProfileScreen(navController = rememberNavController(), sharedViewModel = SharedViewModel())
+    ProfileScreen(navController = rememberNavController())
 }
 
 @Composable
-fun ProfileScreen(navController: NavController, sharedViewModel: SharedViewModel) {
+fun ProfileScreen(navController: NavController) {
     MainScaffold(navController = navController) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
@@ -65,32 +67,29 @@ fun ProfileScreen(navController: NavController, sharedViewModel: SharedViewModel
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Profile(modifier = Modifier, navController, sharedViewModel)
+            Profile(modifier = Modifier, navController)
         }
     }
 }
 
 @Composable
-fun Profile(modifier: Modifier, navController: NavController, sharedViewModel: SharedViewModel) {
-    val email: String by sharedViewModel.email.observeAsState(initial = "username@gmail.com")
-    val username: String by sharedViewModel.username.observeAsState(initial = "Username")
-
+fun Profile(modifier: Modifier, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        ProfileImage(modifier =Modifier)
+        ProfileImage(modifier = Modifier)
         Spacer(modifier = Modifier.height(80.dp))
         // Nombre del usuario y correo
-        UsernameAndEmail(modifier = modifier, sharedViewModel)
+        UsernameAndEmail(modifier = modifier)
         Spacer(modifier = Modifier.height(20.dp))
         // Menú de opciones
-        Menu(modifier = modifier, navController, sharedViewModel)
+        Menu(modifier = modifier, navController)
     }
 }
 
 @Composable
-fun Menu(modifier: Modifier, navController: NavController, sharedViewModel: SharedViewModel){
+fun Menu(modifier: Modifier, navController: NavController){
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(8.dp),
@@ -119,7 +118,6 @@ fun Menu(modifier: Modifier, navController: NavController, sharedViewModel: Shar
                 textColor = Color.Red,
                 iconColor = Color.Red,
                 onClick = {
-                    sharedViewModel.clearData()
                     navController.navigate(Screen.Login.route) {
                         popUpTo(0) { inclusive = true }
                     }
@@ -209,9 +207,9 @@ fun ProfileImage(modifier: Modifier) {
 }
 
 @Composable
-fun UsernameAndEmail(modifier: Modifier, sharedViewModel: SharedViewModel) {
-    val email: String by sharedViewModel.email.observeAsState(initial = "user@gmal.com")
-    val username: String by sharedViewModel.username.observeAsState(initial = "Username")
+fun UsernameAndEmail(modifier: Modifier) {
+    val email: String by remember { mutableStateOf("user@gmail.com") }
+    val username: String by remember { mutableStateOf("Username") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

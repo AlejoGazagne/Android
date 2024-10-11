@@ -28,9 +28,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.project.kotlincomposeapp.data.model.Event
+
+@Preview(showBackground = true)
+@Composable
+fun EventItemPreview() {
+    EventItem(
+        event = Event(
+            id = 1,
+            name = "Event Name",
+            date = "2022-12-31",
+            capacity = 100,
+            location = "Event Location",
+            organizer = "Event Organizer",
+            image = "https://picsum.photos/200/300",
+            isFavorite = false
+        ),
+        onFavoriteClick = {},
+        onClick = {}
+    )
+}
 
 @Composable
 fun EventItem(
@@ -115,9 +135,9 @@ fun EventItem(
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
                     .background(
-                        brush = Brush.verticalGradient(
+                        brush = Brush.radialGradient(
                             listOf(
-                                Color.Black.copy(alpha = 0.6f),
+                                Color.Black.copy(alpha = 0.3f),
                                 Color.Black.copy(alpha = 0f)
                             )
                         ),

@@ -6,34 +6,33 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.project.kotlincomposeapp.ui.LoginScreen
+import com.project.kotlincomposeapp.ui.screens.LoginScreen
 import com.project.kotlincomposeapp.ui.screens.EditProfileScreen
 import com.project.kotlincomposeapp.ui.screens.EventDetailScreen
 import com.project.kotlincomposeapp.ui.screens.FavoriteScreen
 import com.project.kotlincomposeapp.ui.screens.HomeScreen
 import com.project.kotlincomposeapp.ui.screens.ProfileScreen
+import com.project.kotlincomposeapp.ui.screens.RegisterScreen
 import com.project.kotlincomposeapp.ui.screens.SearchScreen
+import com.project.kotlincomposeapp.ui.screens.SettingsScreen
 import com.project.kotlincomposeapp.ui.screens.SplashScreen
-import com.project.kotlincomposeapp.ui.viewsModels.SharedViewModel
 
 @Composable
 fun SetupNavigation (){
     val navController = rememberNavController()
-    val sharedViewModel: SharedViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.Splash.route){
         composable(route = Screen.Splash.route){
             SplashScreen(navController = navController)
         }
         composable(route = Screen.Login.route){
-            LoginScreen(navController = navController, sharedViewModel)
+            LoginScreen(navController = navController)
         }
         composable(route = Screen.Profile.route) {
-            ProfileScreen(navController = navController, sharedViewModel)
+            ProfileScreen(navController = navController)
         }
         composable(route = Screen.Home.route) {
             HomeScreen(navController = navController)
@@ -51,7 +50,7 @@ fun SetupNavigation (){
                 ) + fadeOut(animationSpec = tween(500))
             },
         ){
-            EditProfileScreen(navController = navController, sharedViewModel)
+            EditProfileScreen(navController = navController)
         }
         composable(route = Screen.EventDetail.route) { backStackEntry ->
             val eventId = backStackEntry.arguments?.getString("eventId")
@@ -64,6 +63,12 @@ fun SetupNavigation (){
         }
         composable(route = Screen.Favorites.route) {
             FavoriteScreen(navController = navController)
+        }
+        composable(route = Screen.Settings.route) {
+            SettingsScreen(navController = navController)
+        }
+        composable(route = Screen.Register.route) {
+            RegisterScreen(navController = navController)
         }
     }
 }

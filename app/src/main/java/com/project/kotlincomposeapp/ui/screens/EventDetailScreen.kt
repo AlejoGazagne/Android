@@ -33,6 +33,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.kotlincomposeapp.data.model.Event
 import com.project.kotlincomposeapp.data.repository.EventRepository
+import com.project.kotlincomposeapp.ui.components.BackBar
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.components.Spacer
 import com.project.kotlincomposeapp.ui.viewsModels.EventDetailViewModel
@@ -40,11 +41,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun EventDetailScreen(eventId: Number, navController: NavHostController) {
-    MainScaffold(navController = navController) { innerPadding ->
+    BackBar(navController){ paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(paddingValues)
         ) {
             EventDetail(eventId = eventId)
         }

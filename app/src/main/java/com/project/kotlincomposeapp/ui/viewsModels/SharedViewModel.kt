@@ -1,4 +1,4 @@
-package com.project.kotlincomposeapp.ui.viewsModels
+/*package com.project.kotlincomposeapp.ui.viewsModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,4 +28,4 @@ class SharedViewModel: ViewModel() {
         _username.value = ""
         _age.value = ""
     }
-}
+}*/

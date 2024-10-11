@@ -3,12 +3,13 @@ package com.project.kotlincomposeapp.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,9 +23,12 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,15 +36,14 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,20 +54,19 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
-import com.project.kotlincomposeapp.ui.viewsModels.SharedViewModel
+import com.project.kotlincomposeapp.ui.components.BackBar
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewEditProfileScreen() {
-    EditProfileScreen(navController = rememberNavController(), sharedViewModel = SharedViewModel())
+    EditProfileScreen(navController = rememberNavController())
 }
 
 @Composable
-fun EditProfileScreen(navController: NavController, sharedViewModel: SharedViewModel) {
+fun EditProfileScreen(navController: NavController) {
     BackBar(navController){ paddingValues ->
             Column (
                 modifier = Modifier
@@ -72,88 +74,129 @@ fun EditProfileScreen(navController: NavController, sharedViewModel: SharedViewM
                     .padding(paddingValues)
                     .padding(16.dp),
             ){
-                EditProfile(modifier = Modifier, navController, sharedViewModel)
+                EditProfile(modifier = Modifier, navController)
             }
         }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BackBar(navController: NavController, content: @Composable (PaddingValues) -> Unit){
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "") },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    },
-                        modifier = Modifier
-                            //.padding(16.dp)
-                            .width(50.dp)
-                            //.border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
-                        )
-                    }
-                }
-            )
-        },
-        content = content
+fun EditProfile(modifier: Modifier, navController: NavController){
+    var emailState by remember { mutableStateOf("user@gmail.com") }
+    var usernameState by remember { mutableStateOf("username") }
+    var passwordState by remember { mutableStateOf("pass123") }
 
-    )
-}
 
-@Composable
-fun EditProfile(modifier: Modifier, navController: NavController, sharedViewModel: SharedViewModel){
-    var emailState by remember { mutableStateOf(sharedViewModel.email.value ?: "user@gmail.com") }
-    var usernameState by remember { mutableStateOf(sharedViewModel.username.value ?: "username") }
-    var passwordState by remember { mutableStateOf(sharedViewModel.password.value ?: "") }
-
+    Text(text = "Edit Profile", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 20.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        EditProfileImage(modifier = modifier)
+    }
     Column(
         modifier = Modifier
-            .fillMaxSize()
     ) {
-        Text(text = "Edit Profile", fontSize = 24.sp, fontWeight = FontWeight.Bold)
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 20.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            EditProfileImage(modifier = modifier)
+        EditParameter(modifier = modifier, emailState, "Email", Icons.Default.Email) { newEmail ->
+            emailState = newEmail
         }
-        Column(
-            modifier = Modifier
-        ) {
-            EditEmail(modifier = modifier, emailState) { newEmail ->
-                emailState = newEmail
-            }
-            EditUsername(modifier = modifier, usernameState) { newUsername ->
-                usernameState = newUsername
-            }
-            EditPassword(modifier = modifier, passwordState) { newPassword ->
-                passwordState = newPassword
-            }
+        EditParameter(modifier = modifier, usernameState, "Username", Icons.Default.Person) { newUsername ->
+            usernameState = newUsername
+        }
+        EditParameter(modifier = modifier, passwordState, "Password", Icons.Default.VisibilityOff) { newPassword ->
+            passwordState = newPassword
         }
 
+        Box (
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(
+                    onClick = { /* Acción del primer botón */ },
+                    modifier = Modifier
+                        .width(150.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red,
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text(text = "Cancelar")
+                }
+                Button(
+                    onClick = { /* Acción del primer botón */ },
+                    modifier = Modifier
+                        .width(150.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(red = 36, green = 52, blue = 56),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Guardar")
+                }
+            }
+        }
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun EditParameter(
+    modifier: Modifier,
+    input: String,
+    label: String,
+    icon: ImageVector,
+    onInputChange: (String) -> Unit
+) {
+    TextField(
+        value = input,
+        onValueChange = onInputChange,
+        label = { Text(label) },
+        singleLine = true,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+            .padding(vertical = 10.dp)
+            .clip(RoundedCornerShape(15.dp)),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Done
+        ),
+        trailingIcon  = {
+            Icon(
+                imageVector = icon,
+                contentDescription = "Email Icon"
+            )
+        },
+        textStyle = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
+        ),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.surface, // Color de fondo cuando está enfocado
+            unfocusedContainerColor = MaterialTheme.colorScheme.background, // Color de fondo cuando no está enfocado
+        ),
+    )
+}
+
+/*@Composable
 fun EditEmail(modifier: Modifier, email: String, onEmailChange: (String) -> Unit) {
     TextField(
         value = email,
         onValueChange = onEmailChange,
         label = { Text("Email", modifier = Modifier.padding(0.dp)) },
         singleLine = true,
-        modifier = modifier
+        modifier = Modifier
+            .padding(7.dp)
             .fillMaxWidth()
-            .padding(16.dp),
+            .clip(RoundedCornerShape(15.dp)),
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Done
@@ -168,8 +211,11 @@ fun EditEmail(modifier: Modifier, email: String, onEmailChange: (String) -> Unit
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         ),
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+            focusedContainerColor = MaterialTheme.colorScheme.surface, // Color de fondo cuando está enfocado
+            unfocusedContainerColor = MaterialTheme.colorScheme.background, // Color de fondo cuando no está enfocado
         ),
     )
 }
@@ -244,7 +290,7 @@ fun EditPassword(modifier: Modifier, email: String, onEmailChange: (String) -> U
         ),
 
         )
-}
+}*/
 
 @Composable
 fun EditProfileImage(modifier: Modifier) {
