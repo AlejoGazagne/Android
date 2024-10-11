@@ -1,6 +1,11 @@
 package com.project.kotlincomposeapp.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,6 +17,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.project.kotlincomposeapp.ui.navigation.BottomNavItem
 import com.project.kotlincomposeapp.ui.navigation.Screen
 
@@ -25,14 +33,14 @@ fun PreviewBottomNavBar() {
 fun MainScaffold(navController: NavController, content: @Composable (PaddingValues) -> Unit) {
     Scaffold(
         bottomBar = {
-            BottomNavBar(navController)
+            BottomNavBar(navController, unreadNotifications = true)
         },
         content = content
     )
 }
 
 @Composable
-fun BottomNavBar(navController: NavController) {
+fun BottomNavBar(navController: NavController, unreadNotifications: Boolean) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Favorites,
@@ -49,10 +57,30 @@ fun BottomNavBar(navController: NavController) {
         items.forEach { item ->
             NavigationBarItem(
                 icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = stringResource(id = item.title)
-                    )
+                    // Si es el ícono de notificaciones, agregar el punto rojo si hay notificaciones no leídas
+                    if (item is BottomNavItem.Notifications) {
+                        Box {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = item.title
+                            )
+                            if (unreadNotifications) {
+                                // Dibuja el punto rojo en la esquina superior derecha del ícono
+                                Box(
+                                    modifier = Modifier
+                                        .size(10.dp)
+                                        .background(Color.Red, shape = CircleShape)
+                                        .align(Alignment.TopEnd)
+                                        .offset(x = 6.dp, y = (-6).dp) // Ajusta el posicionamiento del punto rojo
+                                )
+                            }
+                        }
+                    } else {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = item.title
+                        )
+                    }
                 },
                 label = { Text(stringResource(id = item.title)) },
                 selected = currentRoute == item.route,
