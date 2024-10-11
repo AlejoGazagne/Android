@@ -25,12 +25,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.data.model.Event
 import com.project.kotlincomposeapp.data.repository.EventRepository
 import com.project.kotlincomposeapp.ui.components.BackBar
@@ -90,10 +92,10 @@ fun EventDetail(eventId: Number) {
         Spacer(modifier = Modifier.height(8.dp))
 
         // Detalles del evento
-        Text(text = "Fecha: ${event.date}", style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Capacidad: ${event.capacity}", style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Ubicación: ${event.location}", style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Organizador: ${event.organizer}", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "${stringResource(id = R.string.date)}: ${event.date}", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "${stringResource(id = R.string.capacity)}: ${event.capacity}", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "${stringResource(id = R.string.ubication)}: ${event.location}", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "${stringResource(id = R.string.organizer)}: ${event.organizer}", style = MaterialTheme.typography.bodyLarge)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -114,7 +116,7 @@ fun EventDetail(eventId: Number) {
                     .height(50.dp),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
             ) {
-                Text(text = "Eliminar de Favoritos", style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary))
+                Text(text = stringResource(id = R.string.delete_favorite), style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary))
             }
         } else {
             // Botón para agregar a favoritos
@@ -132,7 +134,7 @@ fun EventDetail(eventId: Number) {
                     .height(50.dp),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
             ) {
-                Text(text = "Agregar a Favoritos", style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary))
+                Text(text = stringResource(id = R.string.add_favorite), style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary))
             }
         }
 

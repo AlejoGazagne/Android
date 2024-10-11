@@ -11,6 +11,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
 import com.project.kotlincomposeapp.ui.navigation.BottomNavItem
 import com.project.kotlincomposeapp.ui.navigation.Screen
 
@@ -34,9 +35,9 @@ fun MainScaffold(navController: NavController, content: @Composable (PaddingValu
 fun BottomNavBar(navController: NavController) {
     val items = listOf(
         BottomNavItem.Home,
-        BottomNavItem.Wallet,
+        BottomNavItem.Favorites,
         BottomNavItem.Notifications,
-        BottomNavItem.Account
+        BottomNavItem.Profile
     )
 
     NavigationBar(
@@ -50,10 +51,10 @@ fun BottomNavBar(navController: NavController) {
                 icon = {
                     Icon(
                         imageVector = item.icon,
-                        contentDescription = item.title
+                        contentDescription = stringResource(id = item.title)
                     )
                 },
-                label = { Text(text = item.title) },
+                label = { Text(stringResource(id = item.title)) },
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
