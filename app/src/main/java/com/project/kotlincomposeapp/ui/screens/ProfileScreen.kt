@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -100,7 +101,7 @@ fun Menu(modifier: Modifier, navController: NavController){
         Column {
             MenuItem(
                 icon = Icons.Default.Edit,
-                text = "Edit Profile",
+                text = stringResource(id = R.string.edit_profile),
                 onClick = {
                     navController.navigate(Screen.EditProfile.route)
                 }
@@ -108,13 +109,15 @@ fun Menu(modifier: Modifier, navController: NavController){
             HorizontalDivider(thickness = 0.5.dp, color = Color.Gray)
             MenuItem(
                 icon = Icons.Default.Settings,
-                text = "Settings",
-                onClick = { /* Acción del menú */ }
+                text = stringResource(id = R.string.settings),
+                onClick = {
+                    navController.navigate(Screen.Settings.route)
+                }
             )
             HorizontalDivider(thickness = 0.5.dp, color = Color.Gray)
             MenuItem(
                 icon = Icons.AutoMirrored.Filled.ExitToApp,
-                text = "Logout",
+                text = stringResource(id = R.string.logout),
                 textColor = Color.Red,
                 iconColor = Color.Red,
                 onClick = {
@@ -184,7 +187,7 @@ fun ProfileImage(modifier: Modifier) {
             )
     ) {
         Text(
-            text = "Profile",
+            text = stringResource(id = R.string.profile),
             color = Color.White,
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,

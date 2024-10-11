@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -87,7 +88,7 @@ fun Splash(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "Welcome to IUA",
+            text = stringResource(id = R.string.welcome),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )

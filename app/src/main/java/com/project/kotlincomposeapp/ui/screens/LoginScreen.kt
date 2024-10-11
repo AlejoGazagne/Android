@@ -50,6 +50,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -122,7 +123,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
             Spacer(modifier = Modifier.weight(0.4F))
             // Título "Login"
             Text(
-                text = "Login",
+                text = stringResource(id = R.string.login),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -132,7 +133,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
 
             // Subtítulo "Please Sign in to continue."
             Text(
-                text = "Please Sign in to continue.",
+                text = stringResource(id = R.string.sing_in),
                 fontSize = 16.sp,
                 color = Color.Gray,
                 modifier = Modifier
@@ -193,7 +194,7 @@ fun FieldEmail(email: String, onTextFieldChanged: (String) -> Unit, focusRequest
     TextField(
         value = email,
         onValueChange = { onTextFieldChanged(it) },
-        label = { Text("Email") },
+        label = { Text(stringResource(id = R.string.email)) },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Person,
@@ -233,7 +234,7 @@ fun FieldPassword(
     TextField(
         value = password,
         onValueChange = { onTextFieldChanged(it) },
-        label = { Text("Password") },
+        label = { Text(stringResource(id = R.string.password)) },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Lock,
@@ -279,9 +280,10 @@ fun TextRegister(modifier: Modifier) {
         modifier = modifier
             .padding(top = 10.dp, bottom = 25.dp)
     ) {
-        Text("Don't have an account?")
+        Text(stringResource(id = R.string.dont_have_account))
         Spacer(modifier = Modifier.width(7.dp))
-        Text("Register",
+        Text(
+            stringResource(id = R.string.register),
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .clickable {
@@ -303,6 +305,6 @@ fun ButtonLogin(loginEnable: Boolean, onLoginSelected: () -> Unit){
             .size(50.dp),
         enabled = loginEnable
     ) {
-        Text(text = "Login")
+        Text(text = stringResource(id = R.string.login))
     }
 }
