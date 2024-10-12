@@ -8,7 +8,7 @@ import com.project.kotlincomposeapp.data.repository.NotificationRepository
 
 class NotificationViewModel : ViewModel() {
 
-    private val notificationRepository = NotificationRepository()
+    private val repository = NotificationRepository
 
     // LiveData para mantener las notificaciones
     private val _notifications: MutableLiveData<List<Notification>> = MutableLiveData()
@@ -25,42 +25,42 @@ class NotificationViewModel : ViewModel() {
     }
 
     // Cargar las notificaciones desde el repositorio
-    private fun loadNotifications() {
-        _notifications.value = notificationRepository.getAllNotifications()
+    fun loadNotifications() {
+        _notifications.value = repository.getAllNotifications()
     }
 
-    // Marcar una notificación como leída
     fun markAsRead(notification: Notification) {
-        notificationRepository.markAsRead(notification)
+        repository.markAsRead(notification)
         updateUnreadCount()
-        loadNotifications() // Recargar la lista de notificaciones para actualizar el estado
+        _notifications.value = _notifications.value?.map {
+            if (it.id == notification.id) it.copy(isRead = true) else it
+        }
     }
 
-    // Marcar todas las notificaciones como leídas
     fun markAllAsRead() {
-        notificationRepository.markAllAsRead()
+        repository.markAllAsRead()
         updateUnreadCount()
-        loadNotifications()
+        _notifications.value = repository.getAllNotifications() // Asegúrate de que esto retorna una nueva lista
     }
 
     // Eliminar una notificación
     fun deleteNotification(notification: Notification) {
-        notificationRepository.deleteNotification(notification)
-        loadNotifications() // Recargar la lista después de eliminar
+        repository.deleteNotification(notification)
+        _notifications.value = repository.getAllNotifications()
         updateUnreadCount()
     }
 
     // Agregar una nueva notificación
     fun addNotification(notification: Notification) {
-        notificationRepository.addNotification(notification)
-        loadNotifications() // Recargar para mostrar la nueva notificación
+        repository.addNotification(notification)
+        _notifications.value = repository.getAllNotifications()
         updateUnreadCount()
     }
 
     // Actualizar el conteo de notificaciones no leídas
     private fun updateUnreadCount() {
-        _unreadCount.value = if (notificationRepository.hasUnreadNotifications()) {
-            notificationRepository.getAllNotifications().count { !it.isRead && !it.isDeleted }
+        _unreadCount.value = if (repository.hasUnreadNotifications()) {
+            repository.getAllNotifications().count { !it.isRead && !it.isDeleted }
         } else {
             0
         }
