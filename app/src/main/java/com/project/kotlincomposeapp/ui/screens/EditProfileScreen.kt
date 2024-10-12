@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -68,15 +70,15 @@ fun PreviewEditProfileScreen() {
 @Composable
 fun EditProfileScreen(navController: NavController) {
     BackBar(navController){ paddingValues ->
-            Column (
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp),
-            ){
-                EditProfile(modifier = Modifier, navController)
-            }
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp)
+        ){
+            EditProfile(modifier = Modifier, navController)
         }
+    }
 }
 
 @Composable
@@ -85,8 +87,7 @@ fun EditProfile(modifier: Modifier, navController: NavController){
     var usernameState by remember { mutableStateOf("username") }
     var passwordState by remember { mutableStateOf("pass123") }
 
-
-    Text(text = "Edit Profile", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+    Text(text = stringResource(id = R.string.edit_profile), fontSize = 24.sp, fontWeight = FontWeight.Bold)
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,13 +99,13 @@ fun EditProfile(modifier: Modifier, navController: NavController){
     Column(
         modifier = Modifier
     ) {
-        EditParameter(modifier = modifier, emailState, "Email", Icons.Default.Email) { newEmail ->
+        EditParameter(modifier = modifier, emailState, stringResource(id = R.string.email), Icons.Default.Email) { newEmail ->
             emailState = newEmail
         }
-        EditParameter(modifier = modifier, usernameState, "Username", Icons.Default.Person) { newUsername ->
+        EditParameter(modifier = modifier, usernameState, stringResource(id = R.string.username), Icons.Default.Person) { newUsername ->
             usernameState = newUsername
         }
-        EditParameter(modifier = modifier, passwordState, "Password", Icons.Default.VisibilityOff) { newPassword ->
+        EditParameter(modifier = modifier, passwordState, stringResource(id = R.string.password), Icons.Default.VisibilityOff) { newPassword ->
             passwordState = newPassword
         }
 
@@ -114,33 +115,40 @@ fun EditProfile(modifier: Modifier, navController: NavController){
         ){
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
                     onClick = { /* Acción del primer botón */ },
                     modifier = Modifier
-                        .width(150.dp),
+                        .width(130.dp)
+                        .height(47.dp)
+                        .border(1.dp, Color.Black, RoundedCornerShape(8.dp)),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Red,
+                        containerColor = Color.Transparent,
                         contentColor = Color.Black
                     )
                 ) {
-                    Text(text = "Cancelar")
+                    Text(text = stringResource(id = R.string.cancel))
                 }
                 Button(
                     onClick = { /* Acción del primer botón */ },
                     modifier = Modifier
-                        .width(150.dp),
+                        .width(130.dp)
+                        .height(47.dp)
+                        .border(
+                            1.dp,
+                            Color(red = 36, green = 52, blue = 56),
+                            RoundedCornerShape(8.dp)
+                        ),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(red = 36, green = 52, blue = 56),
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = "Guardar")
+                    Text(text = stringResource(id = R.string.save))
                 }
             }
         }
@@ -155,6 +163,9 @@ fun EditParameter(
     icon: ImageVector,
     onInputChange: (String) -> Unit
 ) {
+    var passwordVisible by remember { mutableStateOf(false) }
+    val passwordLabel = stringResource(id = R.string.password)
+
     TextField(
         value = input,
         onValueChange = onInputChange,
@@ -166,14 +177,27 @@ fun EditParameter(
             .padding(vertical = 10.dp)
             .clip(RoundedCornerShape(15.dp)),
         keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Email,
+            keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done
         ),
+        visualTransformation = if (label == passwordLabel && !passwordVisible) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon  = {
-            Icon(
-                imageVector = icon,
-                contentDescription = "Email Icon"
-            )
+            if (label == passwordLabel) {
+                val image = if (passwordVisible) {
+                    Icons.Default.Visibility
+                } else {
+                    Icons.Default.VisibilityOff
+                }
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, contentDescription = "Toggle Password Visibility")
+                }
+            } else {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "Icon"
+                )
+            }
         },
         textStyle = TextStyle(
             fontSize = 16.sp,

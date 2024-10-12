@@ -28,9 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.data.model.Event
 
 @Preview(showBackground = true)
@@ -112,7 +114,7 @@ fun EventItem(
                         color = Color.White
                     )
                     Text(
-                        text = "Capacity: ${event.capacity}",
+                        text = "${stringResource(id = R.string.capacity)}: ${event.capacity}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White
                     )
@@ -122,7 +124,7 @@ fun EventItem(
                         color = Color.White
                     )
                     Text(
-                        text = "Organizer: ${event.organizer}",
+                        text = "${stringResource(id = R.string.organizer)}: ${event.organizer}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White
                     )

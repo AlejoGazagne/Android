@@ -13,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.components.EventItem
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.components.Spacer
@@ -42,7 +44,7 @@ fun Favorite(modifier: Modifier, favoriteViewModel: FavoriteViewModel, navContro
         item {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Tus Favoritos",
+                text = stringResource(id = R.string.favorite),
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(vertical = 8.dp)
             )

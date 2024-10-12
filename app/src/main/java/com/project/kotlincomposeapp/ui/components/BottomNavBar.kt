@@ -16,6 +16,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -43,9 +44,9 @@ fun MainScaffold(navController: NavController, content: @Composable (PaddingValu
 fun BottomNavBar(navController: NavController, unreadNotifications: Boolean) {
     val items = listOf(
         BottomNavItem.Home,
-        BottomNavItem.Wallet,
+        BottomNavItem.Favorites,
         BottomNavItem.Notifications,
-        BottomNavItem.Account
+        BottomNavItem.Profile
     )
 
     NavigationBar(
@@ -82,7 +83,7 @@ fun BottomNavBar(navController: NavController, unreadNotifications: Boolean) {
                         )
                     }
                 },
-                label = { Text(text = item.title) },
+                label = { Text(stringResource(id = item.title)) },
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
