@@ -2,32 +2,36 @@ package com.project.kotlincomposeapp.data.repository
 
 import com.project.kotlincomposeapp.data.model.Notification
 
-class NotificationRepository {
+object NotificationRepository {
 
     // Lista privada de notificaciones
     private val notifications = mutableListOf<Notification>(
-        Notification().apply {
-            title = "Bienvenido"
-            message = "Gracias por unirte a nuestra aplicación."
-            date = "2024-10-04"
-            isRead = false
+        Notification(
+            id = 1,
+            title = "Bienvenido",
+            message = "Gracias por unirte a nuestra aplicación.",
+            date = "2024-10-04",
+            isRead = false,
             isDeleted = false
-        },
-        Notification().apply {
-            title = "Nueva actualización"
-            message = "Hay una nueva versión de la app disponible."
-            date = "2024-09-28"
-            isRead = false
+        ),
+        Notification(
+            id = 2,
+            title = "Nueva actualización",
+            message = "Hay una nueva versión de la app disponible.",
+            date = "2024-09-28",
+            isRead = false,
             isDeleted = false
-        },
-        Notification().apply {
-            title = "Evento próximo"
-            message = "No olvides tu evento de mañana a las 15:00"
-            date = "2024-10-05"
-            isRead = true
+        ),
+        Notification(
+            id = 3,
+            title = "Evento próximo",
+            message = "No olvides tu evento de mañana a las 15:00",
+            date = "2024-10-05",
+            isRead = true,
             isDeleted = false
-        }
+        )
     )
+
 
     // Obtener todas las notificaciones (que no están eliminadas)
     fun getAllNotifications(): List<Notification> {
