@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.project.kotlincomposeapp.ui.navigation.BottomNavItem
 import com.project.kotlincomposeapp.ui.navigation.Screen
-import com.project.kotlincomposeapp.ui.viewsModels.NotificationViewModel as NotificationViewModel1
+import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
 
 /*@Preview(showBackground = true)
 @Composable
@@ -36,7 +36,7 @@ fun PreviewBottomNavBar() {
 fun MainScaffold(navController: NavController, content: @Composable (PaddingValues) -> Unit) {
     Scaffold(
         bottomBar = {
-            BottomNavBar(navController, NotificationViewModel1().unreadCount.value!! > 0)
+            BottomNavBar(navController, NotificationsViewModel().unreadCount.value!! > 0)
         },
         content = content
     )
