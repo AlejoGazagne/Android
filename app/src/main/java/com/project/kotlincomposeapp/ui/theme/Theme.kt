@@ -1,51 +1,46 @@
-package com.example.pruebacompose.ui.theme
+package com.project.kotlincomposeapp.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
+import com.example.pruebacompose.ui.theme.Typography
 
-private val DarkColorScheme = darkColorScheme(
-    primary = BlueDark,
-    secondary = GreyDark,
-    tertiary = LightBlueDark,
-    background = Black,
-    surface = Black,
+private val LightColors = lightColorScheme(
+    primary = SecondGreen,
+    secondary = Dark,
+    tertiary = DarkGreen,
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Gray,
+    onBackground = Color.DarkGray,
+    onSurface = Color.DarkGray,
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = BlueLight,
-    secondary = GreyLight,
-    tertiary = LightBlueLight,
-    background = White,
-    surface = White,
+private val DarkColors = darkColorScheme(
+    primary = BoneWhite,
+    secondary = Dark,
+    tertiary = Color.White,
+    background = Dark,
+    surface = Dark,
+    onPrimary = Dark,
+    onSecondary = BoneWhite,
+    onBackground = BoneWhite,
+    onSurface = BoneWhite
 )
 
 @Composable
-fun PruebaComposeTheme(
+fun MyAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colors = if (darkTheme) DarkColors else LightColors
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = colors,
         typography = Typography,
         content = content
     )

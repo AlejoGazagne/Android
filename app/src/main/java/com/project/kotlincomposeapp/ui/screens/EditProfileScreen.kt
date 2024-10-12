@@ -123,11 +123,11 @@ fun EditProfile(modifier: Modifier, navController: NavController){
                     modifier = Modifier
                         .width(130.dp)
                         .height(47.dp)
-                        .border(1.dp, Color.Black, RoundedCornerShape(8.dp)),
+                        .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(8.dp)),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
-                        contentColor = Color.Black
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text(text = stringResource(id = R.string.cancel))
@@ -139,16 +139,16 @@ fun EditProfile(modifier: Modifier, navController: NavController){
                         .height(47.dp)
                         .border(
                             1.dp,
-                            Color(red = 36, green = 52, blue = 56),
+                            MaterialTheme.colorScheme.primary,
                             RoundedCornerShape(8.dp)
                         ),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(red = 36, green = 52, blue = 56),
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text(text = stringResource(id = R.string.save))
+                    Text(text = stringResource(id = R.string.save), color = MaterialTheme.colorScheme.background)
                 }
             }
         }
@@ -337,12 +337,12 @@ fun EditProfileImage(modifier: Modifier) {
             imageVector = Icons.Default.Edit,
             contentDescription = "Edit Icon",
             modifier = Modifier
-                .border(5.dp, Color.White, CircleShape)
+                .border(5.dp, MaterialTheme.colorScheme.background, CircleShape)
                 .size(40.dp)
-                .background(Color.Blue, CircleShape)
+                .background(MaterialTheme.colorScheme.primary, CircleShape)
                 .padding(8.dp)
                 .clip(CircleShape),
-            tint = Color.White
+            tint = MaterialTheme.colorScheme.background
         )
     }
 }
