@@ -39,5 +39,7 @@
     <string name="welcome_message">Bienvenido a Eventos</string>
     <string name="have_account">¿Ya tienes una cuenta?</string>
     <string name="login_message">Inicia sesión</string>
-    <string name="phone_number">Número de teléfono</string>"
+    <string name="phone_number">Número de teléfono</string>
+    <string name="my_notifications">Tus Notificaciones</string>
+    <string name="all_notifications_read">Marcar todas como leídas</string>
 </resources>

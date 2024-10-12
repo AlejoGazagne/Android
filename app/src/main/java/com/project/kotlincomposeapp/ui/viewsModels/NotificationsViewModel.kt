@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.project.kotlincomposeapp.data.model.Notification
 import com.project.kotlincomposeapp.data.repository.NotificationRepository
+import android.util.Log
 
-class NotificationViewModel : ViewModel() {
+class NotificationsViewModel : ViewModel() {
 
     private val repository = NotificationRepository
 
@@ -35,6 +36,7 @@ class NotificationViewModel : ViewModel() {
         _notifications.value = _notifications.value?.map {
             if (it.id == notification.id) it.copy(isRead = true) else it
         }
+        Log.d("NotificationViewModel", notifications.value.toString())
     }
 
     fun markAllAsRead() {

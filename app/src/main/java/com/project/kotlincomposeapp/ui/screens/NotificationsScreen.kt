@@ -26,18 +26,20 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.data.model.Notification
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.components.Spacer
-import com.project.kotlincomposeapp.ui.viewsModels.NotificationViewModel
+import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
 
 @Composable
 fun NotificationScreen(navController: NavController) {
-    val notificationsViewModel: NotificationViewModel = viewModel()
+    val notificationsViewModel: NotificationsViewModel = viewModel()
     MainScaffold(navController = navController) { innerPadding ->
         Box(modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -49,7 +51,7 @@ fun NotificationScreen(navController: NavController) {
 }
 
 @Composable
-fun Notifications(modifier: Modifier, notificationViewModel: NotificationViewModel, navController: NavController) {
+fun Notifications(modifier: Modifier, notificationViewModel: NotificationsViewModel, navController: NavController) {
     val notifications by notificationViewModel.notifications.observeAsState(listOf())
 
     LazyColumn(modifier = modifier) {
@@ -61,7 +63,7 @@ fun Notifications(modifier: Modifier, notificationViewModel: NotificationViewMod
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Tus Notificaciones",
+                    text = stringResource(id = R.string.my_notifications),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -77,7 +79,7 @@ fun Notifications(modifier: Modifier, notificationViewModel: NotificationViewMod
                         .width(180.dp) // Ajustar el ancho
                 ) {
                     Text(
-                        text = "Marcar todas como leídas",
+                        text = stringResource(id = R.string.all_notifications_read),
                         style = MaterialTheme.typography.bodySmall // Reducir tamaño de la fuente
                     )
                 }
@@ -85,7 +87,7 @@ fun Notifications(modifier: Modifier, notificationViewModel: NotificationViewMod
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        items(notifications) { notification ->
+        items(notifications, key = { notification -> notification.id }) { notification ->
             NotificationItem(
                 notification = notification,
                 onClick = {
