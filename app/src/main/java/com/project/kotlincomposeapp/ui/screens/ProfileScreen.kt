@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -98,7 +99,11 @@ fun Menu(modifier: Modifier, navController: NavController){
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Column {
+        Column (
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+        ) {
             MenuItem(
                 icon = Icons.Default.Edit,
                 text = stringResource(id = R.string.edit_profile),
@@ -106,7 +111,7 @@ fun Menu(modifier: Modifier, navController: NavController){
                     navController.navigate(Screen.EditProfile.route)
                 }
             )
-            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray)
+            HorizontalDivider(thickness = 0.5.dp)
             MenuItem(
                 icon = Icons.Default.Settings,
                 text = stringResource(id = R.string.settings),
@@ -114,7 +119,7 @@ fun Menu(modifier: Modifier, navController: NavController){
                     navController.navigate(Screen.Settings.route)
                 }
             )
-            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray)
+            HorizontalDivider(thickness = 0.5.dp)
             MenuItem(
                 icon = Icons.AutoMirrored.Filled.ExitToApp,
                 text = stringResource(id = R.string.logout),
@@ -135,8 +140,8 @@ fun Menu(modifier: Modifier, navController: NavController){
 fun MenuItem(
     icon: ImageVector,
     text: String,
-    textColor: Color = Color.Black,
-    iconColor: Color = Color.DarkGray,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    iconColor: Color = MaterialTheme.colorScheme.onSurface,
     onClick: () -> Unit,
     showArrow: Boolean = true
 ) {
@@ -169,7 +174,6 @@ fun MenuItem(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = Color.Gray,
                 modifier = Modifier.size(16.dp)
             )
         }
@@ -182,16 +186,15 @@ fun ProfileImage(modifier: Modifier) {
         modifier = Modifier
             .height(200.dp)
             .fillMaxWidth()
-            .background(
-                Color(0xFF1F1F1F),
-            )
+            .background(MaterialTheme.colorScheme.tertiary)
     ) {
         Text(
             text = stringResource(id = R.string.profile),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.background,
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(16.dp)
         )
         // Imagen del usuario
         Image(
@@ -223,13 +226,11 @@ fun UsernameAndEmail(modifier: Modifier) {
             text = username,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = email,
             fontSize = 14.sp,
-            color = Color.Gray
         )
     }
 }

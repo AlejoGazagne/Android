@@ -38,6 +38,7 @@ import com.project.kotlincomposeapp.ui.components.BackBar
 import com.project.kotlincomposeapp.ui.components.Spacer
 import android.Manifest
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -90,7 +91,7 @@ fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = stringResource(id = R.string.enable_notifications), fontSize = 18.sp)
+        Text(text = stringResource(id = R.string.enable_notifications), fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
         Switch(
             checked = viewModel.notificationsEnabled,
             onCheckedChange = {
@@ -102,6 +103,7 @@ fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = stringResource(id = R.string.notify_me),
+            fontSize = 18.sp,
             style = MaterialTheme.typography.labelLarge
         )
         Box(
@@ -120,6 +122,7 @@ fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context) {
         ) {
             Text(
                 text = viewModel.selectedTime.value,
+                fontSize = 16.sp,
                 color = if (viewModel.notificationsEnabled) LocalContentColor.current else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f) // Adjust text color when disabled
             )
         }
@@ -145,13 +148,14 @@ fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context) {
 
 @Composable
 fun PreferencesSelectDropdown(viewModel: SettingsViewModel, context: Context) {
-    Text(text = stringResource(id = R.string.preferences), fontSize = 18.sp)
+    Text(text = stringResource(id = R.string.preferences), fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
     Spacer(modifier = Modifier.padding(5.dp))
 
     Column(modifier = Modifier.fillMaxWidth()) {
         // Title for the dropdown
         Text(
             text = stringResource(id = R.string.search_preferences),
+            fontSize = 18.sp,
             style = MaterialTheme.typography.labelLarge
         )
 
@@ -168,6 +172,7 @@ fun PreferencesSelectDropdown(viewModel: SettingsViewModel, context: Context) {
         ) {
             Text(
                 text = if (viewModel.selectedPreferences.isEmpty()) stringResource(id = R.string.select_options) else viewModel.selectedPreferences.joinToString(", "),
+                fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
@@ -235,7 +240,7 @@ fun LocationPermissionSwitch( viewModel: SettingsViewModel, context: Context) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = stringResource(id = R.string.acces_ubication), fontSize = 18.sp)
+        Text(text = stringResource(id = R.string.acces_ubication), fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         Switch(
             checked = viewModel.isLocationEnabled,
             onCheckedChange = { enabled ->

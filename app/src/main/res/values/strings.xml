@@ -35,4 +35,9 @@
     <string name="home">Inicio</string>
     <string name="favorites">Favoritos</string>
     <string name="notifications">Notificaciones</string>
+    <string name="discover_events">Descubre eventos</string>
+    <string name="welcome_message">Bienvenido a Eventos</string>
+    <string name="have_account">¿Ya tienes una cuenta?</string>
+    <string name="login_message">Inicia sesión</string>
+    <string name="phone_number">Número de teléfono</string>"
 </resources>

@@ -78,7 +78,6 @@ fun LoginScreen(navController: NavController) {
     DismissKeyboardOnClick {
         Box(
             modifier = Modifier
-                .background(Color.White)
                 .padding(horizontal = 15.dp)
         )
         {
@@ -135,7 +134,6 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
             Text(
                 text = stringResource(id = R.string.sing_in),
                 fontSize = 16.sp,
-                color = Color.Gray,
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .align(Alignment.Start)
@@ -147,7 +145,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
                 viewModel.onLoginSelected()
             }
 
-            TextRegister(modifier = Modifier.align(Alignment.Start))
+            TextRegister(modifier = Modifier.align(Alignment.Start), navController)
 
             Spacer(modifier = Modifier.weight(0.4F))
             ButtonLogin(loginEnable) {
@@ -195,6 +193,7 @@ fun FieldEmail(email: String, onTextFieldChanged: (String) -> Unit, focusRequest
         value = email,
         onValueChange = { onTextFieldChanged(it) },
         label = { Text(stringResource(id = R.string.email)) },
+        singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Person,
@@ -207,7 +206,10 @@ fun FieldEmail(email: String, onTextFieldChanged: (String) -> Unit, focusRequest
         shape = RoundedCornerShape(20.dp),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedContainerColor = Color.LightGray.copy(alpha = 0.6f),
+            unfocusedContainerColor = Color.LightGray.copy(alpha = 0.4f)
+
         ),
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Next
@@ -235,6 +237,7 @@ fun FieldPassword(
         value = password,
         onValueChange = { onTextFieldChanged(it) },
         label = { Text(stringResource(id = R.string.password)) },
+        singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Lock,
@@ -257,7 +260,9 @@ fun FieldPassword(
         shape = RoundedCornerShape(20.dp),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedContainerColor = Color.LightGray.copy(alpha = 0.6f),
+            unfocusedContainerColor = Color.LightGray.copy(alpha = 0.4f)
         ),
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Done
@@ -275,7 +280,7 @@ fun FieldPassword(
 }
 
 @Composable
-fun TextRegister(modifier: Modifier) {
+fun TextRegister(modifier: Modifier, navController: NavController) {
     Row (
         modifier = modifier
             .padding(top = 10.dp, bottom = 25.dp)
@@ -287,11 +292,12 @@ fun TextRegister(modifier: Modifier) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .clickable {
-                    // TODO: Hacer registro
+                    navController.navigate(Screen.Register.route){
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
                 }
         )
     }
-
 }
 
 @Composable

@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -74,7 +75,7 @@ fun SearchBar(searchQuery: TextFieldValue, onSearchQueryChanged: (TextFieldValue
                     // Placeholder: Si no hay texto en el campo de búsqueda, mostramos el placeholder
                     if (searchQuery.text.isEmpty()) {
                         Text(
-                            text = "Descubre Eventos",
+                            text = stringResource(id = R.string.discover_events),
                             style = TextStyle(
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                             ),

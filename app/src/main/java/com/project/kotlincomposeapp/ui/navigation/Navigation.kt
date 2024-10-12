@@ -68,10 +68,33 @@ fun SetupNavigation (){
         composable(route = Screen.Settings.route) {
             SettingsScreen(navController = navController)
         }
-        composable(route = Screen.Register.route) {
+        composable(route = Screen.Register.route,
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(700)
+                ) + fadeIn(animationSpec = tween(700))
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(700)
+                ) + fadeOut(animationSpec = tween(700))
+            },
+        ){
             RegisterScreen(navController = navController)
         }
-        composable(route = Screen.Notifications.route) {
+
+        composable(route = Screen.Notifications.route,
+            enterTransition = {
+            slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(700)
+            ) + fadeIn(animationSpec = tween(700))
+        },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(700)
+                ) + fadeOut(animationSpec = tween(700))
+            },
+        ) {
             NotificationScreen(navController = navController)
         }
     }
