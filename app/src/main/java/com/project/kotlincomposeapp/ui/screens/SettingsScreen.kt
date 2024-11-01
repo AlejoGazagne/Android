@@ -60,7 +60,7 @@ fun SettingsScreen(navController: NavController) {
         viewModel.loadPreferences(context)
     }
 
-    BackBar(navController){ paddingValues ->
+    BackBar(modifier = Modifier, navController){ paddingValues ->
         Column (
             modifier = Modifier
                 .fillMaxSize()
@@ -95,8 +95,7 @@ fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context) {
         Switch(
             checked = viewModel.notificationsEnabled,
             onCheckedChange = {
-                viewModel.toggleNotifications(it)
-                viewModel.savePreferences(context)
+                viewModel.toggleNotifications(it, context)
             }
         )
     }
@@ -123,7 +122,10 @@ fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context) {
             Text(
                 text = viewModel.selectedTime.value,
                 fontSize = 16.sp,
-                color = if (viewModel.notificationsEnabled) LocalContentColor.current else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f) // Adjust text color when disabled
+                color = if (viewModel.notificationsEnabled)
+                    LocalContentColor.current
+                else
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f) // Adjust text color when disabled
             )
         }
         DropdownMenu(
@@ -135,11 +137,7 @@ fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context) {
             viewModel.optionsNotifications.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(option) },
-                    onClick = {
-                        viewModel.selectedTime.value = option
-                        viewModel.savePreferences(context)
-                        viewModel.expandedNotification = false
-                    }
+                    onClick = { viewModel.selectNotificationTime(option, context) }
                 )
             }
         }
@@ -159,7 +157,6 @@ fun PreferencesSelectDropdown(viewModel: SettingsViewModel, context: Context) {
             style = MaterialTheme.typography.labelLarge
         )
 
-        // Box to display selected options and trigger dropdown
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -177,7 +174,6 @@ fun PreferencesSelectDropdown(viewModel: SettingsViewModel, context: Context) {
             )
         }
 
-        // DropdownMenu to show options
         DropdownMenu(
             expanded = viewModel.expandedPreferences,
             onDismissRequest = { viewModel.expandedPreferences = false },
@@ -194,7 +190,6 @@ fun PreferencesSelectDropdown(viewModel: SettingsViewModel, context: Context) {
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(option)
-                            // Show a checkmark if the option is selected
                             if (isSelected) {
                                 Icon(
                                     imageVector = Icons.Default.Check,
@@ -203,24 +198,23 @@ fun PreferencesSelectDropdown(viewModel: SettingsViewModel, context: Context) {
                             }
                         }
                     },
-                    onClick = {
-                        if (isSelected) {
-                            viewModel.selectedPreferences.remove(option) // Remove if already selected
-                            viewModel.savePreferences(context)
-                        } else {
-                            viewModel.selectedPreferences.add(option) // Add if not selected
-                            viewModel.savePreferences(context)
-                        }
-                    }
+                    onClick = { viewModel.togglePreference(option, context) },
+//                        if (isSelected) {
+//                            viewModel.selectedPreferences.remove(option)
+//                            viewModel.savePreferences(context)
+//                        } else {
+//                            viewModel.selectedPreferences.add(option)
+//                            viewModel.savePreferences(context)
+//                        }
+//                    }
                 )
             }
         }
     }
 }
-
+/*
 @Composable
 fun LocationPermissionSwitch( viewModel: SettingsViewModel, context: Context) {
-    // Launcher to request the permission
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -258,6 +252,36 @@ fun LocationPermissionSwitch( viewModel: SettingsViewModel, context: Context) {
                     Toast.makeText(context, "Acceso a la ubicación deshabilitado", Toast.LENGTH_SHORT).show()
                     viewModel.savePreferences(context)
                 }
+            }
+        )
+    }
+}*/
+@Composable
+fun LocationPermissionSwitch(viewModel: SettingsViewModel, context: Context) {
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        viewModel.handleLocationPermissionResult(isGranted, context)
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(id = R.string.acces_ubication),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        Switch(
+            checked = viewModel.isLocationEnabled,
+            onCheckedChange = { enabled ->
+                viewModel.toggleLocationPermission(
+                    enabled = enabled,
+                    context = context,
+                    launchPermissionRequest = { locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION) }
+                )
             }
         )
     }

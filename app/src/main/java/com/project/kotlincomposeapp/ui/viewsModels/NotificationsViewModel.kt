@@ -20,12 +20,10 @@ class NotificationsViewModel : ViewModel() {
     val unreadCount: LiveData<Int> get() = _unreadCount
 
     init {
-        // Cargar las notificaciones iniciales
         loadNotifications()
         updateUnreadCount()
     }
 
-    // Cargar las notificaciones desde el repositorio
     fun loadNotifications() {
         _notifications.value = repository.getAllNotifications()
     }
@@ -42,7 +40,7 @@ class NotificationsViewModel : ViewModel() {
     fun markAllAsRead() {
         repository.markAllAsRead()
         updateUnreadCount()
-        _notifications.value = repository.getAllNotifications() // Asegúrate de que esto retorna una nueva lista
+        _notifications.value = repository.getAllNotifications()
     }
 
     // Eliminar una notificación

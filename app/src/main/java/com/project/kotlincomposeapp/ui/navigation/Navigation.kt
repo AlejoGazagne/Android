@@ -65,8 +65,21 @@ fun SetupNavigation (){
         composable(route = Screen.Favorites.route) {
             FavoriteScreen(navController = navController)
         }
-        composable(route = Screen.Settings.route) {
+        composable(
+            route = Screen.Settings.route,
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(500)
+                ) + fadeIn(animationSpec = tween(500))
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(500)
+                ) + fadeOut(animationSpec = tween(500))
+            },
+        ) {
             SettingsScreen(navController = navController)
+
         }
         composable(route = Screen.Register.route,
             enterTransition = {
@@ -84,16 +97,16 @@ fun SetupNavigation (){
         }
 
         composable(route = Screen.Notifications.route,
-            enterTransition = {
-            slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth },
-                animationSpec = tween(700)
-            ) + fadeIn(animationSpec = tween(700))
-        },
-            exitTransition = {
-                slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(700)
-                ) + fadeOut(animationSpec = tween(700))
-            },
+            //enterTransition = {
+            //slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth },
+                //animationSpec = tween(700)
+            //) + fadeIn(animationSpec = tween(700))
+        //},
+            //exitTransition = {
+                //slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth },
+                    //animationSpec = tween(700)
+                //) + fadeOut(animationSpec = tween(700))
+            //},
         ) {
             NotificationScreen(navController = navController)
         }

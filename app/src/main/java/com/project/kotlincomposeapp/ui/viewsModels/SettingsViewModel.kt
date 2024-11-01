@@ -3,6 +3,7 @@ package com.project.kotlincomposeapp.ui.viewsModels
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +12,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.kotlincomposeapp.R
 import kotlinx.coroutines.launch
 
 class SettingsViewModel : ViewModel() {
@@ -21,8 +23,15 @@ class SettingsViewModel : ViewModel() {
     var selectedTime = mutableStateOf(optionsNotifications[3])
     var textFieldSizeNotification by mutableStateOf(Size.Zero)
 
-    fun toggleNotifications(enabled: Boolean) {
+    fun toggleNotifications(enabled: Boolean, context: Context) {
         notificationsEnabled = enabled
+        savePreferences(context)
+    }
+
+    fun selectNotificationTime(option: String, context: Context) {
+        selectedTime.value = option
+        savePreferences(context)
+        expandedNotification = false
     }
 
     // preferencias
@@ -31,10 +40,26 @@ class SettingsViewModel : ViewModel() {
     val preferences = listOf("Conciertos", "Festivales de música", "Exposiciones de arte", "Funciones de teatro", "Presentaciones de danza", "Ferias del libro", "Festivales de cine")
     val selectedPreferences =  mutableStateListOf<String>()
 
+    fun togglePreference(option: String, context: Context) {
+        if (selectedPreferences.contains(option)) {
+            selectedPreferences.remove(option)
+        } else {
+            selectedPreferences.add(option)
+        }
+        savePreferences(context)
+    }
+
     // Permissions
     var isLocationEnabled by mutableStateOf(false)
 
-    fun checkLocationPermission(context: Context): Boolean {
+    fun toggleLocationPermission(context: Context) {
+        if (checkLocationPermission(context)) {
+            isLocationEnabled = !isLocationEnabled
+            savePreferences(context)
+        }
+    }
+
+    private fun checkLocationPermission(context: Context): Boolean {
         val fineLocationPermission = ContextCompat.checkSelfPermission(
             context, android.Manifest.permission.ACCESS_FINE_LOCATION
         )
@@ -50,7 +75,7 @@ class SettingsViewModel : ViewModel() {
         selectedPreferences.addAll(sharedPreferences.getStringSet("selectedPreferences", emptySet()) ?: emptySet())
     }
 
-    fun savePreferences(context: Context) {
+    private fun savePreferences(context: Context) {
         val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putBoolean("isLocationEnabled", isLocationEnabled)
@@ -61,15 +86,32 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
-    fun requestLocationPermission(context: Context, onPermissionResult: (Boolean) -> Unit) {
-        viewModelScope.launch {
-            val isGranted = checkLocationPermission(context)
-            if (isGranted) {
-                Toast.makeText(context, "Permiso de ubicación ya concedido", Toast.LENGTH_SHORT).show()
-                isLocationEnabled = true
+    // Función para manejar el resultado de la solicitud de permisos
+    fun handleLocationPermissionResult(isGranted: Boolean, context: Context) {
+        if (isGranted) {
+            Toast.makeText(context, R.string.permits_granted, Toast.LENGTH_SHORT).show()
+            isLocationEnabled = true
+        } else {
+            Toast.makeText(context, R.string.permits_denied, Toast.LENGTH_SHORT).show()
+            isLocationEnabled = false
+        }
+        savePreferences(context)
+    }
+
+    // Función para alternar el estado de permiso de ubicación
+    fun toggleLocationPermission(enabled: Boolean, context: Context, launchPermissionRequest: () -> Unit) {
+        if (enabled) {
+            if (!checkLocationPermission(context)) {
+                launchPermissionRequest()
             } else {
-                onPermissionResult(false)
+                isLocationEnabled = true
+                Toast.makeText(context,  R.string.permits_granted, Toast.LENGTH_SHORT).show()
+                savePreferences(context)
             }
+        } else {
+            isLocationEnabled = false
+            Toast.makeText(context, R.string.permits_denied, Toast.LENGTH_SHORT).show()
+            savePreferences(context)
         }
     }
 }

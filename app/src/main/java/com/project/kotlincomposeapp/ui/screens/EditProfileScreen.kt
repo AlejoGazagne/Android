@@ -69,7 +69,7 @@ fun PreviewEditProfileScreen() {
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
-    BackBar(navController){ paddingValues ->
+    BackBar(modifier = Modifier, navController){ paddingValues ->
         Column (
             modifier = Modifier
                 .fillMaxSize()

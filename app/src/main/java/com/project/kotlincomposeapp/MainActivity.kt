@@ -8,6 +8,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
@@ -16,16 +18,19 @@ import com.project.kotlincomposeapp.ui.theme.MyAppTheme
 
 class MainActivity : ComponentActivity() {
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
         setContent {
-            MyAppTheme {
+            val windowSize = calculateWindowSizeClass(this)
+            MyAppTheme (
+                windowSize = windowSize.widthSizeClass
+            ){
                 val isDarkTheme = isSystemInDarkTheme()
 
-                // Cambia el color de la barra de estado y la barra de navegación
                 val statusBarColor = if (isDarkTheme) {
                     MaterialTheme.colorScheme.background
                 } else {
