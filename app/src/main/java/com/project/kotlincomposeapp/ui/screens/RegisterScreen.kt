@@ -77,7 +77,6 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
     val registerEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
 
-    // Para controlar el foco entre los campos
     val focusRequesterPassword = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
@@ -104,7 +103,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
             Spacer(modifier = Modifier.weight(1.3F))
             LoginImage(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.weight(0.4F))
-            // Título Register
+
             Text(
                 text = stringResource(id = R.string.register),
                 fontSize = 32.sp,
@@ -114,7 +113,6 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
                     .align(Alignment.Start)
             )
 
-            // Subtítulo "Bienvenido a Eventos"
             Text(
                 text = stringResource(id = R.string.welcome_message),
                 fontSize = 16.sp,

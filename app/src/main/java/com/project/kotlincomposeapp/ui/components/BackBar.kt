@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BackBar(navController: NavController, content: @Composable (PaddingValues) -> Unit){
+fun BackBar(modifier: Modifier, navController: NavController, content: @Composable (PaddingValues) -> Unit){
     Scaffold(
         topBar = {
             TopAppBar(

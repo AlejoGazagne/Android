@@ -60,7 +60,6 @@ fun BottomNavBar(navController: NavController, unreadNotifications: Boolean) {
         items.forEach { item ->
             NavigationBarItem(
                 icon = {
-                    // Si es el ícono de notificaciones, agregar el punto rojo si hay notificaciones no leídas
                     if (item is BottomNavItem.Notifications) {
                         Box {
                             Icon(
@@ -68,13 +67,12 @@ fun BottomNavBar(navController: NavController, unreadNotifications: Boolean) {
                                 contentDescription = stringResource(id = item.title)
                             )
                             if (unreadNotifications) {
-                                // Dibuja el punto rojo en la esquina superior derecha del ícono
                                 Box(
                                     modifier = Modifier
                                         .size(10.dp)
                                         .background(Color.Red, shape = CircleShape)
                                         .align(Alignment.TopEnd)
-                                        .offset(x = 6.dp, y = (-6).dp) // Ajusta el posicionamiento del punto rojo
+                                        .offset(x = 6.dp, y = (-6).dp)
                                 )
                             }
                         }
@@ -92,9 +90,7 @@ fun BottomNavBar(navController: NavController, unreadNotifications: Boolean) {
                 ),
                 onClick = {
                     navController.navigate(item.route) {
-                        // Evitar múltiples copias del mismo destino en la pila
                         launchSingleTop = true
-                        // Restaurar la pila del backstack en la navegación
                         restoreState = true
                         popUpTo(Screen.Home.route) {
                             inclusive = false

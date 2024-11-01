@@ -56,7 +56,6 @@ fun Notifications(modifier: Modifier, notificationViewModel: NotificationsViewMo
 
     LazyColumn(modifier = modifier) {
         item {
-            // Utilizamos un Row para alinear el título y el botón
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -68,19 +67,18 @@ fun Notifications(modifier: Modifier, notificationViewModel: NotificationsViewMo
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
 
-                // Botón para marcar todas como leídas
                 Button(
                     onClick = {
                         notificationViewModel.markAllAsRead()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
-                        .height(40.dp) // Ajustar la altura
-                        .width(180.dp) // Ajustar el ancho
+                        .height(40.dp)
+                        .width(180.dp)
                 ) {
                     Text(
                         text = stringResource(id = R.string.all_notifications_read),
-                        style = MaterialTheme.typography.bodySmall // Reducir tamaño de la fuente
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
             }
@@ -94,7 +92,7 @@ fun Notifications(modifier: Modifier, notificationViewModel: NotificationsViewMo
                     notificationViewModel.markAsRead(notification)
                 }
             )
-            Spacer(modifier = Modifier.height(12.dp)) // Añadir un espacio entre notificaciones
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }

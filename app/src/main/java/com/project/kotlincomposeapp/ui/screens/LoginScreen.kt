@@ -120,7 +120,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
             Spacer(modifier = Modifier.weight(1.3F))
             LoginImage(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.weight(0.4F))
-            // Título "Login"
+
             Text(
                 text = stringResource(id = R.string.login),
                 fontSize = 32.sp,
@@ -130,7 +130,6 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
                     .align(Alignment.Start)
             )
 
-            // Subtítulo "Please Sign in to continue."
             Text(
                 text = stringResource(id = R.string.sing_in),
                 fontSize = 16.sp,
@@ -216,7 +215,7 @@ fun FieldEmail(email: String, onTextFieldChanged: (String) -> Unit, focusRequest
         ),
         keyboardActions = KeyboardActions(
             onNext = {
-                focusRequesterPassword.requestFocus() // Mueve el foco al campo de contraseña
+                focusRequesterPassword.requestFocus()
             }
         )
     )
@@ -256,7 +255,7 @@ fun FieldPassword(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .focusRequester(focusRequester), // Uso del focusRequester aquí
+            .focusRequester(focusRequester),
         shape = RoundedCornerShape(20.dp),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
@@ -270,9 +269,9 @@ fun FieldPassword(
         keyboardActions = KeyboardActions(
             onDone = {
                 if (loginEnable) {
-                    onLogin() // Simula el click del botón de login
+                    onLogin()
                 } else {
-                    focusManager.clearFocus() // Cierra el teclado si no se puede hacer login
+                    focusManager.clearFocus()
                 }
             }
         )
