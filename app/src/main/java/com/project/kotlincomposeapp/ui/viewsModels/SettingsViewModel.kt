@@ -2,6 +2,7 @@ package com.project.kotlincomposeapp.ui.viewsModels
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -14,8 +15,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.kotlincomposeapp.R
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class SettingsViewModel : ViewModel() {
+
     // Notificaciones
     var notificationsEnabled by mutableStateOf(true)
     var expandedNotification by mutableStateOf(false)
@@ -73,6 +76,7 @@ class SettingsViewModel : ViewModel() {
         selectedTime.value = sharedPreferences.getString("selectedTime", optionsNotifications[3]) ?: optionsNotifications[3]
         selectedPreferences.clear()
         selectedPreferences.addAll(sharedPreferences.getStringSet("selectedPreferences", emptySet()) ?: emptySet())
+        loadLanguagePreference(context)
     }
 
     private fun savePreferences(context: Context) {
@@ -113,5 +117,39 @@ class SettingsViewModel : ViewModel() {
             Toast.makeText(context, R.string.permits_denied, Toast.LENGTH_SHORT).show()
             savePreferences(context)
         }
+    }
+
+    // LEENGUAJE
+    var languageChanged by mutableStateOf(false)
+    var expandedLanguageMenu by mutableStateOf(false)
+    val languages = listOf(Locale("en"), Locale("es"))
+    var selectedLanguage: Locale by mutableStateOf(Locale.getDefault())
+
+    fun setLanguage(locale: Locale, context: Context) {
+        selectedLanguage = locale
+        updateAppLocale(context, locale)
+        saveLanguagePreference(context, locale)
+        languageChanged = !languageChanged
+    }
+
+    private fun updateAppLocale(context: Context, locale: Locale) {
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+    }
+
+    private fun saveLanguagePreference(context: Context, locale: Locale) {
+        val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString("selectedLanguage", locale.language)
+            apply()
+        }
+    }
+
+    private fun loadLanguagePreference(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val language = sharedPreferences.getString("selectedLanguage", Locale.getDefault().language)
+        val locale = languages.find { it.language == language } ?: Locale.getDefault()
+        setLanguage(locale, context)
     }
 }

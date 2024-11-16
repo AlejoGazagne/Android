@@ -9,17 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.project.kotlincomposeapp.ui.screens.LoginScreen
+import com.project.kotlincomposeapp.ui.screens.auth.LoginScreen
 import com.project.kotlincomposeapp.ui.screens.EditProfileScreen
 import com.project.kotlincomposeapp.ui.screens.EventDetailScreen
 import com.project.kotlincomposeapp.ui.screens.FavoriteScreen
 import com.project.kotlincomposeapp.ui.screens.HomeScreen
 import com.project.kotlincomposeapp.ui.screens.NotificationScreen
 import com.project.kotlincomposeapp.ui.screens.ProfileScreen
-import com.project.kotlincomposeapp.ui.screens.RegisterScreen
+import com.project.kotlincomposeapp.ui.screens.auth.RegisterScreen
 import com.project.kotlincomposeapp.ui.screens.SearchScreen
 import com.project.kotlincomposeapp.ui.screens.SettingsScreen
-import com.project.kotlincomposeapp.ui.screens.SplashScreen
+import com.project.kotlincomposeapp.ui.screens.auth.SplashScreen
 
 @Composable
 fun SetupNavigation (){
