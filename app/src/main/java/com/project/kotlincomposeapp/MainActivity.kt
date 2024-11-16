@@ -1,5 +1,6 @@
 package com.project.kotlincomposeapp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,11 +11,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project.kotlincomposeapp.ui.navigation.SetupNavigation
 import com.project.kotlincomposeapp.ui.theme.MyAppTheme
+import com.project.kotlincomposeapp.ui.viewsModels.SettingsViewModel
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
 
@@ -26,6 +33,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val windowSize = calculateWindowSizeClass(this)
+            LoadAppConfigurations()
             MyAppTheme (
                 windowSize = windowSize.widthSizeClass
             ){
@@ -47,5 +55,26 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    @Composable
+    private fun LoadAppConfigurations(viewModel: SettingsViewModel = viewModel()) {
+        val context = LocalContext.current
+
+        // Llamar a la función de carga de preferencias
+        LaunchedEffect(Unit) {
+            viewModel.loadPreferences(context)
+        }
+
+        val sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        // Cargar el idioma guardado
+        val languageCode = sharedPreferences.getString("language", Locale.getDefault().language)
+            ?: Locale.getDefault().language
+        val locale = Locale(languageCode)
+        val config = context.resources.configuration
+        config.setLocale(locale)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+
+        // agregar más configuraciones para el inicio
     }
 }

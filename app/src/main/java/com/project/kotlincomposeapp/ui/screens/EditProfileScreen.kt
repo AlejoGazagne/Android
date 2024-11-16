@@ -69,7 +69,7 @@ fun PreviewEditProfileScreen() {
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
-    BackBar(modifier = Modifier, navController){ paddingValues ->
+    BackBar(modifier = Modifier, navController, title = stringResource(id = R.string.edit_profile)){ paddingValues ->
         Column (
             modifier = Modifier
                 .fillMaxSize()
@@ -87,7 +87,6 @@ fun EditProfile(modifier: Modifier, navController: NavController){
     var usernameState by remember { mutableStateOf("username") }
     var passwordState by remember { mutableStateOf("pass123") }
 
-    Text(text = stringResource(id = R.string.edit_profile), fontSize = 24.sp, fontWeight = FontWeight.Bold)
     Box(
         modifier = Modifier
             .fillMaxWidth()

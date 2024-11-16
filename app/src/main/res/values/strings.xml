@@ -10,14 +10,20 @@
     <string name="popular_events">Eventos populares</string>
     <string name="favorite">Tus Favoritos</string>
     <string name="settings">Configuraciones</string>
-    <string name="enable_notifications">Configuraciones</string>
+    <string name="enable_notifications">Notificaciones</string>
     <string name="notify_me">Notificarme:</string>
+    <string name="notification_message">Configura cuándo deseas recibir recordatorios.</string>
     <string name="preferences">Preferencias</string>
-    <string name="search_preferences">Preferencias de busqueda:</string>
+    <string name="search_preferences">Selecciona opciones:</string>
     <string name="select_options">Selecciona opciones</string>
+    <string name="preference_message">Customize your search options.</string>
     <string name="permits_granted">Permiso de ubicación concedido</string>
     <string name="permits_denied">Permiso de ubicación denegado</string>
     <string name="acces_ubication">Acceso a la ubicación</string>
+    <string name="ubication_message">Permitir el acceso a tu ubicación para mejorar recomendaciones.</string>
+    <string name="language">Lenguaje</string>
+    <string name="select_language">Selecciona tu lenguaje</string>
+    <string name="permissions">Permisos</string>
     <string name="search_results">Resultado de tu búsqueda</string>
     <string name="edit_profile">Editar Perfil</string>
     <string name="logout">Cerrar sesión</string>
@@ -42,4 +48,5 @@
     <string name="phone_number">Número de teléfono</string>
     <string name="my_notifications">Tus Notificaciones</string>
     <string name="all_notifications_read">Marcar todas como leídas</string>
+    <string name="event">Evento</string>
 </resources>

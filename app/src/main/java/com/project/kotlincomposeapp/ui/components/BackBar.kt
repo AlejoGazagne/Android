@@ -1,6 +1,8 @@
 package com.project.kotlincomposeapp.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -17,19 +19,17 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BackBar(modifier: Modifier, navController: NavController, content: @Composable (PaddingValues) -> Unit){
+fun BackBar(modifier: Modifier, navController: NavController, title: String, content: @Composable (PaddingValues) -> Unit){
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "") },
+                title = { Text(text = title) },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.popBackStack()
                     },
                         modifier = Modifier
-                            //.padding(16.dp)
                             .width(50.dp)
-                        //.border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

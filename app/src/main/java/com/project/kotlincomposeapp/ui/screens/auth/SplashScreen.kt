@@ -1,4 +1,4 @@
-package com.project.kotlincomposeapp.ui.screens
+package com.project.kotlincomposeapp.ui.screens.auth
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
@@ -88,7 +88,7 @@ fun Splash(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = stringResource(id = R.string.welcome),
+            text = stringResource(id = R.string.app_name),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
