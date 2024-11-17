@@ -243,6 +243,7 @@ fun LocationPermissionSwitch(viewModel: SettingsViewModel, context: Context, mod
     ) { isGranted: Boolean ->
         viewModel.handleLocationPermissionResult(isGranted, context)
     }
+
     Column (modifier = modifier.padding(horizontal = 16.dp)) {
         Text(text = stringResource(id = R.string.permissions),
             fontSize = 14.sp,

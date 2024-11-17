@@ -55,13 +55,6 @@ class SettingsViewModel : ViewModel() {
     // Permissions
     var isLocationEnabled by mutableStateOf(false)
 
-    fun toggleLocationPermission(context: Context) {
-        if (checkLocationPermission(context)) {
-            isLocationEnabled = !isLocationEnabled
-            savePreferences(context)
-        }
-    }
-
     private fun checkLocationPermission(context: Context): Boolean {
         val fineLocationPermission = ContextCompat.checkSelfPermission(
             context, android.Manifest.permission.ACCESS_FINE_LOCATION

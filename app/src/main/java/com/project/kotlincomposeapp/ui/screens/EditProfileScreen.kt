@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
@@ -26,15 +24,12 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -56,10 +52,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.components.BackBar
+import com.project.kotlincomposeapp.ui.viewsModels.EditProfileViewModel
 
 @Preview(showBackground = true)
 @Composable
@@ -69,6 +67,7 @@ fun PreviewEditProfileScreen() {
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
+    val viewModel: EditProfileViewModel = viewModel()
     BackBar(modifier = Modifier, navController, title = stringResource(id = R.string.edit_profile)){ paddingValues ->
         Column (
             modifier = Modifier
@@ -76,13 +75,14 @@ fun EditProfileScreen(navController: NavController) {
                 .padding(paddingValues)
                 .padding(16.dp)
         ){
-            EditProfile(modifier = Modifier, navController)
+            EditProfile(modifier = Modifier, navController, viewModel)
         }
     }
 }
 
 @Composable
-fun EditProfile(modifier: Modifier, navController: NavController){
+fun EditProfile(modifier: Modifier, navController: NavController, viewModel: EditProfileViewModel){
+    val context = LocalContext.current
     var emailState by remember { mutableStateOf("user@gmail.com") }
     var usernameState by remember { mutableStateOf("username") }
     var passwordState by remember { mutableStateOf("pass123") }
@@ -118,7 +118,7 @@ fun EditProfile(modifier: Modifier, navController: NavController){
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
-                    onClick = { /* Acción del primer botón */ },
+                    onClick = { viewModel.sendNotification(context) },
                     modifier = Modifier
                         .width(130.dp)
                         .height(47.dp)

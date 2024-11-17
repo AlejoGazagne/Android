@@ -1,10 +1,15 @@
 package com.project.kotlincomposeapp.ui.viewsModels
 
+import android.app.NotificationManager
+import android.content.Context
 import android.support.v4.os.IResultReceiver._Parcel
 import android.util.Patterns
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.project.kotlincomposeapp.App
+import com.project.kotlincomposeapp.R
 
 class EditProfileViewModel: ViewModel() {
     private val _email = MutableLiveData<String>()
@@ -20,5 +25,14 @@ class EditProfileViewModel: ViewModel() {
 
     private fun isValidPassword(password: String): Boolean = password.length > 6
 
-
+    fun sendNotification(context: Context){
+        val notificationManager = context.getSystemService(NotificationManager::class.java)
+        val notification = NotificationCompat.Builder(context, App.CHANNEL_ID)
+            .setContentTitle("Titulo de la notificación")
+            .setContentText("Cuerpo de la notificación")
+            .setSmallIcon(R.drawable.logo)
+            .setAutoCancel(true)
+            .build()
+        notificationManager.notify(1, notification)
+    }
 }

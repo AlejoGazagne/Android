@@ -50,4 +50,5 @@
     <string name="my_notifications">Your Notifications</string>
     <string name="all_notifications_read">Mark all as read</string>
     <string name="event">Event</string>
+    <string name="channel_name">Notifications of events</string>
 </resources>
