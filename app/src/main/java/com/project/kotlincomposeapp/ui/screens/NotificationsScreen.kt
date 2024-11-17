@@ -1,15 +1,12 @@
 package com.project.kotlincomposeapp.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +17,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -41,56 +37,36 @@ import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
 fun NotificationScreen(navController: NavController) {
     val notificationsViewModel: NotificationsViewModel = viewModel()
     MainScaffold(navController = navController) { innerPadding ->
-        Box(modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
-            .padding(innerPadding)
-            .padding(16.dp)) {
-            Notifications(modifier = Modifier.fillMaxWidth(), notificationsViewModel, navController)
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                NotificationsList(
+                    modifier = Modifier.weight(1f),
+                    notificationsViewModel = notificationsViewModel
+                )
+                MarkAllAsReadButton(
+                    onMarkAllAsRead = { notificationsViewModel.markAllAsRead() }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun Notifications(modifier: Modifier, notificationViewModel: NotificationsViewModel, navController: NavController) {
-    val notifications by notificationViewModel.notifications.observeAsState(listOf())
+fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsViewModel) {
 
+    val notifications by notificationsViewModel.notifications.observeAsState(emptyList())
+
+    // El estado de la lista se recompone al cambiar el contador
     LazyColumn(modifier = modifier) {
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = R.string.my_notifications),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-
-                Button(
-                    onClick = {
-                        notificationViewModel.markAllAsRead()
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    modifier = Modifier
-                        .height(40.dp)
-                        .width(180.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.all_notifications_read),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        items(notifications, key = { notification -> notification.id }) { notification ->
+        items(notifications, key = { it.id }) { notification ->
             NotificationItem(
                 notification = notification,
-                onClick = {
-                    notificationViewModel.markAsRead(notification)
-                }
+                onMarkAsRead = { notificationsViewModel.markAsRead(notification) }
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
@@ -98,20 +74,37 @@ fun Notifications(modifier: Modifier, notificationViewModel: NotificationsViewMo
 }
 
 @Composable
-fun NotificationItem(notification: Notification, onClick: () -> Unit) {
+fun MarkAllAsReadButton(onMarkAllAsRead: () -> Unit) {
+    Button(
+        onClick = onMarkAllAsRead,
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .height(48.dp)
+    ) {
+        Text(
+            text = stringResource(id = R.string.all_notifications_read),
+            style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
+
+@Composable
+fun NotificationItem(notification: Notification, onMarkAsRead: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .clickable { onClick() },
-        colors = if (!notification.isRead) {
-            CardDefaults.cardColors(MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
-        } else {
-            CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
-        }
+            .clip(RoundedCornerShape(8.dp)),
+        colors = CardDefaults.cardColors(
+            if (!notification.isRead) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+            else MaterialTheme.colorScheme.primary
+        )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
         ) {
             Text(
                 text = notification.title,
@@ -128,7 +121,16 @@ fun NotificationItem(notification: Notification, onClick: () -> Unit) {
                 text = notification.date,
                 style = MaterialTheme.typography.bodySmall
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(
+                onClick = onMarkAsRead,
+                modifier = Modifier.align(Alignment.End),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+            ) {
+                Text(text = stringResource(id = R.string.mark_as_read))
+            }
         }
     }
 }
+
 

@@ -50,5 +50,6 @@
     <string name="all_notifications_read">Marcar todas como leídas</string>
     <string name="event">Evento</string>
     <string name="channel_name">Notificaciones de eventos</string>
-    <string name="channel_description">This channel is used to notify upcoming events</string>
+    <string name="channel_description">Este canal es utilizado para notificar eventos proximos</string>
+    <string name="mark_as_read">Marcar como leida</string>
 </resources>
