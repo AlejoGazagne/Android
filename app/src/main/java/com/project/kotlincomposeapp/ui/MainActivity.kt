@@ -1,4 +1,4 @@
-package com.project.kotlincomposeapp
+package com.project.kotlincomposeapp.ui
 
 import android.content.Context
 import android.os.Bundle
