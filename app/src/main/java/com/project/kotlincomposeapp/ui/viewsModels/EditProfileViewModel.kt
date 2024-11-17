@@ -2,6 +2,7 @@ package com.project.kotlincomposeapp.ui.viewsModels
 
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.support.v4.os.IResultReceiver._Parcel
 import android.util.Patterns
 import androidx.core.app.NotificationCompat
@@ -27,10 +28,13 @@ class EditProfileViewModel: ViewModel() {
 
     fun sendNotification(context: Context){
         val notificationManager = context.getSystemService(NotificationManager::class.java)
+
         val notification = NotificationCompat.Builder(context, App.CHANNEL_ID)
             .setContentTitle("Titulo de la notificación")
             .setContentText("Cuerpo de la notificación")
-            .setSmallIcon(R.drawable.logo)
+            .setSmallIcon(R.drawable.baseline_circle_notifications_24)
+            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.logo))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .build()
         notificationManager.notify(1, notification)
