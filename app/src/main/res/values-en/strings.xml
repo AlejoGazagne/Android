@@ -51,4 +51,6 @@
     <string name="all_notifications_read">Mark all as read</string>
     <string name="event">Event</string>
     <string name="channel_name">Notifications of events</string>
+    <string name="channel_description">This channel is used to notify upcoming events</string>
+    <string name="mark_as_read">Mark as read</string>
 </resources>
