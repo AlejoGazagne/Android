@@ -14,10 +14,13 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.kotlincomposeapp.R
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Locale
+import javax.inject.Inject
 
-class SettingsViewModel : ViewModel() {
+@HiltViewModel
+class SettingsViewModel @Inject constructor() : ViewModel() {
 
     // Notificaciones
     var notificationsEnabled by mutableStateOf(true)
