@@ -6,14 +6,20 @@ import androidx.lifecycle.ViewModel
 import com.project.kotlincomposeapp.data.model.Notification
 import com.project.kotlincomposeapp.data.repository.NotificationRepository
 import android.util.Log
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class NotificationsViewModel : ViewModel() {
 
     private val repository = NotificationRepository
 
-    // LiveData para mantener las notificaciones
+    /*// LiveData para mantener las notificaciones
     private val _notifications: MutableLiveData<List<Notification>> = MutableLiveData()
-    val notifications: LiveData<List<Notification>> get() = _notifications
+    val notifications: LiveData<List<Notification>> get() = _notifications*/
+
+    // Cambiar MutableLiveData a MutableStateFlow
+    private val _notifications: MutableStateFlow<List<Notification>> = MutableStateFlow(emptyList())
+    val notifications: StateFlow<List<Notification>> get() = _notifications
 
     // LiveData para el conteo de notificaciones no leídas
     private val _unreadCount: MutableLiveData<Int> = MutableLiveData()
@@ -24,16 +30,17 @@ class NotificationsViewModel : ViewModel() {
         updateUnreadCount()
     }
 
-    fun loadNotifications() {
+    private fun loadNotifications() {
         _notifications.value = repository.getAllNotifications()
     }
 
     fun markAsRead(notification: Notification) {
         repository.markAsRead(notification)
         updateUnreadCount()
-        _notifications.value = _notifications.value?.map {
+        val updateList = _notifications.value.map {
             if (it.id == notification.id) it.copy(isRead = true) else it
         }
+        _notifications.value = updateList
         Log.d("NotificationViewModel", notifications.value.toString())
     }
 
@@ -65,4 +72,6 @@ class NotificationsViewModel : ViewModel() {
             0
         }
     }
+
+    fun reloadNotifications(){ _notifications.value = repository.getAllNotifications() }
 }

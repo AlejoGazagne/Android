@@ -42,7 +42,6 @@ fun Favorite(modifier: Modifier, favoriteViewModel: FavoriteViewModel, navContro
     val favorites by favoriteViewModel.favorites.observeAsState(listOf())
     LazyColumn(modifier = modifier) {
         item {
-            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(id = R.string.favorite),
                 style = MaterialTheme.typography.titleLarge,
