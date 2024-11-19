@@ -2,6 +2,7 @@ package com.project.kotlincomposeapp.domain.repository
 
 import com.project.kotlincomposeapp.domain.model.EventModel
 import com.project.kotlincomposeapp.domain.model.NotificationModel
+import com.project.kotlincomposeapp.domain.model.UserModel
 
 interface LocalStorageRepository {
 
@@ -24,4 +25,12 @@ interface LocalStorageRepository {
         suspend fun saveNotification(notification: NotificationModel)
 
         suspend fun deleteNotification(notification: NotificationModel)
+
+        suspend fun getUser(email: String): UserModel
+
+        suspend fun updateUser(user: UserModel)
+
+        suspend fun deleteAllUsers()
+
+        suspend fun insertUser(user: UserModel)
 }

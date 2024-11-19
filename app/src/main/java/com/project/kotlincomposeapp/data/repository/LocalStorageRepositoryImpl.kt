@@ -2,10 +2,13 @@ package com.project.kotlincomposeapp.data.repository
 
 import com.project.kotlincomposeapp.data.local.dao.EventDao
 import com.project.kotlincomposeapp.data.local.dao.NotificationDao
+import com.project.kotlincomposeapp.data.local.dao.UserDao
+import com.project.kotlincomposeapp.data.local.entity.UserEntity
 import com.project.kotlincomposeapp.data.remote.EventApiService
 import com.project.kotlincomposeapp.data.remote.NotificationsApiService
 import com.project.kotlincomposeapp.domain.model.EventModel
 import com.project.kotlincomposeapp.domain.model.NotificationModel
+import com.project.kotlincomposeapp.domain.model.UserModel
 import com.project.kotlincomposeapp.domain.repository.LocalStorageRepository
 import javax.inject.Inject
 
@@ -13,9 +16,9 @@ class LocalStorageRepositoryImpl @Inject constructor(
     private val EventDao: EventDao,
     private val NotificationDao: NotificationDao,
     private val EventApi: EventApiService,
-    private val NotificationApi: NotificationsApiService
-) :
-    LocalStorageRepository {
+    private val NotificationApi: NotificationsApiService,
+    private val userDao: UserDao
+) : LocalStorageRepository {
 
     // Events
 
@@ -199,4 +202,38 @@ class LocalStorageRepositoryImpl @Inject constructor(
         }
     }
 
+    // User
+    override suspend fun getUser(email: String): UserModel {
+        try {
+            val userEntity = userDao.getUser(email)
+            val userModel = UserModel(userEntity!!.name, userEntity.email, userEntity.password)
+            return userModel
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override suspend fun updateUser(user: UserModel) {
+        try {
+            userDao.updateUser(UserEntity(0, user.name, user.email, user.password))
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override suspend fun deleteAllUsers() {
+        try {
+            userDao.deleteAllUsers()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override suspend fun insertUser(user: UserModel) {
+        try {
+            userDao.insertUser(UserEntity(0, user.name, user.email, user.password))
+        } catch (e: Exception) {
+            throw e
+        }
+    }
 }
