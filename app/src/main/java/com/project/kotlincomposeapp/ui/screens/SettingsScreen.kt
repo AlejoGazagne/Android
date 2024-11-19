@@ -39,6 +39,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.viewsModels.SettingsViewModel
@@ -51,7 +52,7 @@ fun SettingsPreview() {
 
 @Composable
 fun SettingsScreen(navController: NavController) {
-    val viewModel: SettingsViewModel = viewModel()
+    val viewModel: SettingsViewModel = hiltViewModel()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {

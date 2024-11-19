@@ -27,17 +27,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
-import com.project.kotlincomposeapp.data.model.Notification
+import com.project.kotlincomposeapp.data.local.entity.NotificationEntity
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.components.Spacer
 import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
 
 @Composable
 fun NotificationScreen(navController: NavController) {
-    val notificationsViewModel: NotificationsViewModel = viewModel()
+    /*val notificationsViewModel: NotificationsViewModel = viewModel()
     val reloadFlag by notificationsViewModel.unreadCount.observeAsState()
 
     LaunchedEffect(reloadFlag) {
@@ -67,13 +67,12 @@ fun NotificationScreen(navController: NavController) {
                 )
             }
         }
-    }
+    }*/
 }
 
 @Composable
 fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsViewModel) {
-
-    val notifications by notificationsViewModel.notifications.collectAsState()
+    /*val notifications by notificationsViewModel.notifications.collectAsState()
 
     // El estado de la lista se recompone al cambiar el contador
     LazyColumn {
@@ -84,7 +83,7 @@ fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsV
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
-    }
+    }*/
 }
 
 @Composable

@@ -21,8 +21,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project.kotlincomposeapp.ui.navigation.SetupNavigation
 import com.project.kotlincomposeapp.ui.theme.MyAppTheme
 import com.project.kotlincomposeapp.ui.viewsModels.SettingsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

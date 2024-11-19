@@ -3,15 +3,16 @@ package com.project.kotlincomposeapp.ui.viewsModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.project.kotlincomposeapp.data.model.Notification
-import com.project.kotlincomposeapp.data.repository.NotificationRepository
+import com.project.kotlincomposeapp.data.local.entity.NotificationEntity
 import android.util.Log
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class NotificationsViewModel : ViewModel() {
-
-    private val repository = NotificationRepository
+@HiltViewModel
+class NotificationsViewModel @Inject constructor() : ViewModel() {
+    /*private val repository = NotificationRepository
 
     /*// LiveData para mantener las notificaciones
     private val _notifications: MutableLiveData<List<Notification>> = MutableLiveData()
@@ -73,5 +74,5 @@ class NotificationsViewModel : ViewModel() {
         }
     }
 
-    fun reloadNotifications(){ _notifications.value = repository.getAllNotifications() }
+    fun reloadNotifications(){ _notifications.value = repository.getAllNotifications() }*/
 }

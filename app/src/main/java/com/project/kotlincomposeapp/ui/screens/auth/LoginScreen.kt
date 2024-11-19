@@ -53,6 +53,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
@@ -68,7 +69,7 @@ fun PreviewLoginScreen() {
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    val viewModel = LoginViewModel()
+    val viewModel: LoginViewModel = hiltViewModel()
     DismissKeyboardOnClick {
         Box(
             modifier = Modifier

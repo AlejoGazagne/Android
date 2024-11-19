@@ -36,7 +36,9 @@ fun PreviewBottomNavBar() {
 fun MainScaffold(navController: NavController, content: @Composable (PaddingValues) -> Unit) {
     Scaffold(
         bottomBar = {
-            BottomNavBar(navController, NotificationsViewModel().unreadCount.value!! > 0)
+            // TODO implementar el count de las unread notifications
+            //BottomNavBar(navController, NotificationsViewModel().unreadCount.value!! > 0)
+            BottomNavBar(navController, true)
         },
         content = content
     )
