@@ -1,0 +1,244 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Gabriel Guillaumet",
+      "email": "gabriel@mail.com",
+      "password": "123456"
+    },
+    {
+      "id": 2,
+      "name": "Alejo Gazagne",
+      "email": "alejo@mail.com",
+      "password": "alejo123"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Tech Conference 2024",
+      "date": "2024-11-12",
+      "location": "Buenos Aires, Argentina",
+      "image": "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd",
+      "capacity": 500,
+      "organizer": "Tech Corp",
+      "isFavorite": false
+    },
+    {
+      "id": 2,
+      "title": "Artificial Intelligence Summit",
+      "date": "2024-10-20",
+      "location": "San Francisco, USA",
+      "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+      "capacity": 3000,
+      "organizer": "AI Innovators",
+      "isFavorite": false
+    },
+    {
+      "id": 3,
+      "title": "Córdoba Developer Meetup",
+      "date": "2024-12-05",
+      "location": "Córdoba, Argentina",
+      "image": "https://images.unsplash.com/photo-1560692901-45c9a2e443db",
+      "capacity": 150,
+      "organizer": "Dev Community Córdoba",
+      "isFavorite": false
+    },
+    {
+      "id": 4,
+      "title": "Cybersecurity Expo",
+      "date": "2024-11-30",
+      "location": "London, UK",
+      "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+      "capacity": 2000,
+      "organizer": "Security World",
+      "isFavorite": false
+    },
+    {
+      "id": 5,
+      "title": "Mobile App Hackathon",
+      "date": "2024-10-15",
+      "location": "Berlin, Germany",
+      "image": "https://images.unsplash.com/photo-1536104968055-4d61aa56f46a",
+      "capacity": 400,
+      "organizer": "Hack Club Europe",
+      "isFavorite": false
+    },
+    {
+      "id": 6,
+      "title": "IoT World Congress",
+      "date": "2024-11-10",
+      "location": "Barcelona, Spain",
+      "image": "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+      "capacity": 6000,
+      "organizer": "IoT Innovators",
+      "isFavorite": false
+    },
+    {
+      "id": 7,
+      "title": "Data Science Bootcamp",
+      "date": "2024-12-01",
+      "location": "New York, USA",
+      "image": "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
+      "capacity": 250,
+      "organizer": "Data Wizards",
+      "isFavorite": false
+    },
+    {
+      "id": 8,
+      "title": "Blockchain Revolution",
+      "date": "2024-11-18",
+      "location": "Dubai, UAE",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      "capacity": 1000,
+      "organizer": "Crypto Leaders",
+      "isFavorite": false
+    },
+    {
+      "id": 9,
+      "title": "Web3.0 Summit",
+      "date": "2024-10-25",
+      "location": "Tokyo, Japan",
+      "image": "https://images.unsplash.com/photo-1581091870622-cf04d1abfda7",
+      "capacity": 1500,
+      "organizer": "Web Innovators",
+      "isFavorite": false
+    },
+    {
+      "id": 10,
+      "title": "Open Source Day",
+      "date": "2024-11-03",
+      "location": "Sao Paulo, Brazil",
+      "image": "https://images.unsplash.com/photo-1504799563364-170b14c0e35b",
+      "capacity": 500,
+      "organizer": "Open Source Foundation",
+      "isFavorite": false
+    },
+    {
+      "id": 11,
+      "title": "Python Dev Week",
+      "date": "2024-12-10",
+      "location": "Mexico City, Mexico",
+      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8",
+      "capacity": 200,
+      "organizer": "Pythonistas Unidos",
+      "isFavorite": false
+    },
+    {
+      "id": 12,
+      "title": "UX/UI Design Conference",
+      "date": "2024-11-22",
+      "location": "Paris, France",
+      "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+      "capacity": 3000,
+      "organizer": "Designers Collective",
+      "isFavorite": false
+    },
+    {
+      "id": 13,
+      "title": "Game Developers Forum",
+      "date": "2024-10-27",
+      "location": "Los Angeles, USA",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      "capacity": 5000,
+      "organizer": "GameDev Network",
+      "isFavorite": false
+    },
+    {
+      "id": 14,
+      "title": "Green Tech Expo",
+      "date": "2024-12-15",
+      "location": "Stockholm, Sweden",
+      "image": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+      "capacity": 1200,
+      "organizer": "Sustainable Tech Group",
+      "isFavorite": false
+    },
+    {
+      "id": 15,
+      "title": "JavaScript Nation",
+      "date": "2024-11-28",
+      "location": "Toronto, Canada",
+      "image": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
+      "capacity": 800,
+      "organizer": "JS Enthusiasts",
+      "isFavorite": false
+    },
+    {
+      "id": 16,
+      "title": "Machine Learning Camp",
+      "date": "2024-12-08",
+      "location": "Melbourne, Australia",
+      "image": "https://images.unsplash.com/photo-1536104968055-4d61aa56f46a",
+      "capacity": 450,
+      "organizer": "ML Innovators",
+      "isFavorite": false
+    },
+    {
+      "id": 17,
+      "title": "Big Data Symposium",
+      "date": "2024-11-05",
+      "location": "Singapore",
+      "image": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+      "capacity": 2200,
+      "organizer": "Data Science Global",
+      "isFavorite": false
+    },
+    {
+      "id": 18,
+      "title": "Virtual Reality Expo",
+      "date": "2024-12-03",
+      "location": "Los Angeles, USA",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      "capacity": 3000,
+      "organizer": "VR World",
+      "isFavorite": false
+    },
+    {
+      "id": 19,
+      "title": "Robotics Summit",
+      "date": "2024-11-20",
+      "location": "Seoul, South Korea",
+      "image": "https://images.unsplash.com/photo-1536104968055-4d61aa56f46a",
+      "capacity": 1800,
+      "organizer": "Automation Experts",
+      "isFavorite": false
+    },
+    {
+      "id": 20,
+      "title": "Quantum Computing Workshop",
+      "date": "2024-12-02",
+      "location": "Zurich, Switzerland",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      "capacity": 100,
+      "organizer": "Quantum Pioneers",
+      "isFavorite": false
+    }
+  ],
+  "notifications" : [
+    {
+      "id": 1,
+      "title": "Bienvenido",
+      "message": "Gracias por unirte a nuestra aplicación.",
+      "date": "2024-10-04",
+      "isRead": false,
+      "isDeleted": false
+    },
+    {
+      "id": 2,
+      "title": "Nueva actualización",
+      "message": "Hay una nueva versión de la app disponible.",
+      "date": "2024-09-28",
+      "isRead": false,
+      "isDeleted": false
+    },
+    {
+      "id": 3,
+      "title": "Evento próximo",
+      "message": "No olvides tu evento de mañana a las 15:00",
+      "date": "2024-10-05",
+      "isRead": true,
+      "isDeleted": false
+    }
+  ]
+}
