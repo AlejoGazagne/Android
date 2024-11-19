@@ -17,6 +17,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -35,64 +37,57 @@ import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
 
 @Composable
 fun NotificationScreen(navController: NavController) {
-    // TODO
-//    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
-//    MainScaffold(navController = navController) { innerPadding ->
-//        Box(
-//            modifier = Modifier
-//                .background(MaterialTheme.colorScheme.background)
-//                .padding(innerPadding)
-//                .padding(16.dp)
-//        ) {
-//            Column(modifier = Modifier.fillMaxSize()) {
-//                NotificationsList(
-//                    modifier = Modifier.weight(1f),
-//                    notificationsViewModel = notificationsViewModel
-//                )
-//                MarkAllAsReadButton(
-//                    onMarkAllAsRead = { notificationsViewModel.markAllAsRead() }
-//                )
-//            }
-//        }
-//    }
+    /*val notificationsViewModel: NotificationsViewModel = viewModel()
+    val reloadFlag by notificationsViewModel.unreadCount.observeAsState()
+
+    LaunchedEffect(reloadFlag) {
+        notificationsViewModel.reloadNotifications()
+    }
+
+    MainScaffold(navController = navController) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = stringResource(id = R.string.notifications),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                NotificationsList(
+                    modifier = Modifier.weight(1f),
+                    notificationsViewModel = notificationsViewModel
+                )
+                MarkAllAsReadButton(
+                    onMarkAllAsRead = { notificationsViewModel.markAllAsRead() }
+                )
+            }
+        }
+    }*/
 }
 
 @Composable
 fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsViewModel) {
+    /*val notifications by notificationsViewModel.notifications.collectAsState()
 
-//    val notifications by notificationsViewModel.notifications.observeAsState(emptyList())
-//
-//    // El estado de la lista se recompone al cambiar el contador
-//    LazyColumn(modifier = modifier) {
-//        items(notifications, key = { it.id }) { notification ->
-//            NotificationItem(
-//                notification = notification,
-//                onMarkAsRead = { notificationsViewModel.markAsRead(notification) }
-//            )
-//            Spacer(modifier = Modifier.height(12.dp))
-//        }
-//    }
+    // El estado de la lista se recompone al cambiar el contador
+    LazyColumn {
+        items(notifications, key = { it.id }) { notification ->
+            NotificationItem(
+                notification = notification,
+                notificationsViewModel
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+    }*/
 }
 
 @Composable
-fun MarkAllAsReadButton(onMarkAllAsRead: () -> Unit) {
-    Button(
-        onClick = onMarkAllAsRead,
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .height(48.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.all_notifications_read),
-            style = MaterialTheme.typography.bodySmall
-        )
-    }
-}
-
-@Composable
-fun NotificationItem(notification: NotificationEntity, onMarkAsRead: () -> Unit) {
+fun NotificationItem(notification: Notification, notificationsViewModel: NotificationsViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -124,7 +119,7 @@ fun NotificationItem(notification: NotificationEntity, onMarkAsRead: () -> Unit)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Button(
-                onClick = onMarkAsRead,
+                onClick = { notificationsViewModel.markAsRead(notification) },
                 modifier = Modifier.align(Alignment.End),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
             ) {
@@ -134,4 +129,19 @@ fun NotificationItem(notification: NotificationEntity, onMarkAsRead: () -> Unit)
     }
 }
 
-
+@Composable
+fun MarkAllAsReadButton(onMarkAllAsRead: () -> Unit) {
+    Button(
+        onClick = onMarkAllAsRead,
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .height(48.dp)
+    ) {
+        Text(
+            text = stringResource(id = R.string.all_notifications_read),
+            style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
