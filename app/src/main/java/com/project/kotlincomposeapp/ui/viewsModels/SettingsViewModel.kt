@@ -18,21 +18,58 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
+import android.Manifest
+import android.os.Build
+import androidx.core.app.NotificationManagerCompat
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor() : ViewModel() {
 
     // Notificaciones
-    var notificationsEnabled by mutableStateOf(true)
+    var notificationsEnabled by mutableStateOf(false)
     var expandedNotification by mutableStateOf(false)
     val optionsNotifications = listOf("Nunca", "1 Día antes", "3 Días antes", "1 Semana antes", "2 Semanas antes", "3 Semanas antes", "1 Mes antes")
     var selectedTime = mutableStateOf(optionsNotifications[3])
     var textFieldSizeNotification by mutableStateOf(Size.Zero)
 
-    fun toggleNotifications(enabled: Boolean, context: Context) {
-        notificationsEnabled = enabled
+    private fun checkNotificationPermission(context: Context): Boolean {
+        val notificationPermission = ContextCompat.checkSelfPermission(
+            context, Manifest.permission.POST_NOTIFICATIONS
+        )
+        return notificationPermission == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun handleNotificationPermissionResult(isGranted: Boolean, context: Context) {
+        if (isGranted) {
+            Toast.makeText(context, R.string.permits_granted, Toast.LENGTH_SHORT).show()
+            notificationsEnabled = true
+        } else {
+            Toast.makeText(context, R.string.permits_denied, Toast.LENGTH_SHORT).show()
+            notificationsEnabled = false
+        }
         savePreferences(context)
     }
+
+    fun toggleNotifications(enabled: Boolean, context: Context, launchPermissionRequest: () -> Unit) {
+        if (enabled) {
+            if (!checkNotificationPermission(context)) {
+                launchPermissionRequest()
+            } else {
+                notificationsEnabled = true
+                Toast.makeText(context, R.string.permits_granted, Toast.LENGTH_SHORT).show()
+                savePreferences(context)
+            }
+        } else {
+            notificationsEnabled = false
+            Toast.makeText(context, R.string.permits_denied, Toast.LENGTH_SHORT).show()
+            savePreferences(context)
+        }
+    }
+
+    /*fun toggleNotifications(enabled: Boolean, context: Context) {
+        notificationsEnabled = enabled
+        savePreferences(context)
+    }*/
 
     fun selectNotificationTime(option: String, context: Context) {
         selectedTime.value = option
@@ -60,19 +97,20 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
 
     private fun checkLocationPermission(context: Context): Boolean {
         val fineLocationPermission = ContextCompat.checkSelfPermission(
-            context, android.Manifest.permission.ACCESS_FINE_LOCATION
+            context, Manifest.permission.ACCESS_FINE_LOCATION
         )
         return fineLocationPermission == PackageManager.PERMISSION_GRANTED
     }
 
     fun loadPreferences(context: Context) {
         val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-        isLocationEnabled = sharedPreferences.getBoolean("isLocationEnabled", false)
-        notificationsEnabled = sharedPreferences.getBoolean("notificationsEnabled", true)
+        isLocationEnabled = sharedPreferences.getBoolean("isLocationEnabled", checkLocationPermission(context))
+        notificationsEnabled = sharedPreferences.getBoolean("notificationsEnabled", checkNotificationPermission(context))
         selectedTime.value = sharedPreferences.getString("selectedTime", optionsNotifications[3]) ?: optionsNotifications[3]
         selectedPreferences.clear()
         selectedPreferences.addAll(sharedPreferences.getStringSet("selectedPreferences", emptySet()) ?: emptySet())
         loadLanguagePreference(context)
+        checkLocationPermission(context)
     }
 
     private fun savePreferences(context: Context) {

@@ -37,43 +37,37 @@ import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
 
 @Composable
 fun NotificationScreen(navController: NavController) {
-    // TODO
-//    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
-//    MainScaffold(navController = navController) { innerPadding ->
-//        Box(
-//            modifier = Modifier
-//                .background(MaterialTheme.colorScheme.background)
-//                .padding(innerPadding)
-//                .padding(16.dp)
-//        ) {
-//            Column(modifier = Modifier.fillMaxSize()) {
-//                NotificationsList(
-//                    modifier = Modifier.weight(1f),
-//                    notificationsViewModel = notificationsViewModel
-//                )
-//                MarkAllAsReadButton(
-//                    onMarkAllAsRead = { notificationsViewModel.markAllAsRead() }
-//                )
-//            }
-//        }
-//    }
-}
+    /*val notificationsViewModel: NotificationsViewModel = viewModel()
+    val reloadFlag by notificationsViewModel.unreadCount.observeAsState()
 
-@Composable
-fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsViewModel) {
+    LaunchedEffect(reloadFlag) {
+        notificationsViewModel.reloadNotifications()
+    }
 
-//    val notifications by notificationsViewModel.notifications.observeAsState(emptyList())
-//
-//    // El estado de la lista se recompone al cambiar el contador
-//    LazyColumn(modifier = modifier) {
-//        items(notifications, key = { it.id }) { notification ->
-//            NotificationItem(
-//                notification = notification,
-//                onMarkAsRead = { notificationsViewModel.markAsRead(notification) }
-//            )
-//            Spacer(modifier = Modifier.height(12.dp))
-//        }
-//    }
+    MainScaffold(navController = navController) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = stringResource(id = R.string.notifications),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                NotificationsList(
+                    modifier = Modifier.weight(1f),
+                    notificationsViewModel = notificationsViewModel
+                )
+                MarkAllAsReadButton(
+                    onMarkAllAsRead = { notificationsViewModel.markAllAsRead() }
+                )
+            }
+        }
+    }*/
 }
 
 //@Composable
@@ -136,4 +130,18 @@ fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsV
 //    }
 //}
 
+@Composable
+fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsViewModel) {
+    /*val notifications by notificationsViewModel.notifications.collectAsState()
 
+    // El estado de la lista se recompone al cambiar el contador
+    LazyColumn {
+        items(notifications, key = { it.id }) { notification ->
+            NotificationItem(
+                notification = notification,
+                notificationsViewModel
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+    }*/
+}

@@ -95,6 +95,12 @@ fun Settings(
 
 @Composable
 fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context, modifier: Modifier) {
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        viewModel.handleNotificationPermissionResult(isGranted, context)
+    }
+
     Column (modifier = modifier.padding(horizontal = 16.dp)) {
         Text(text = stringResource(id = R.string.enable_notifications),
             fontSize = 14.sp,
@@ -158,7 +164,9 @@ fun NotificationTimeSelector(viewModel: SettingsViewModel, context: Context, mod
             Switch(
                 checked = viewModel.notificationsEnabled,
                 onCheckedChange = {
-                    viewModel.toggleNotifications(it, context)
+                    viewModel.toggleNotifications(it, context){
+                        notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
                 }
             )
         }
