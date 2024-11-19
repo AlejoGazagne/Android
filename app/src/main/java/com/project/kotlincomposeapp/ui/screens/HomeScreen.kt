@@ -99,7 +99,7 @@ fun Home(modifier: Modifier, homeViewModel: HomeViewModel, navController: NavCon
         }
         is Resource.Error -> {
             val errorMessage = (eventsState as Resource.Error).message
-            // Muestra un mensaje de error
+
             Text(text = "Error: $errorMessage")
         }
 

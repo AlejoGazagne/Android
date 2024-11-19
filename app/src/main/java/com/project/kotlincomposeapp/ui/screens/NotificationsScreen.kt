@@ -17,6 +17,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -74,64 +76,64 @@ fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsV
 //    }
 }
 
-@Composable
-fun MarkAllAsReadButton(onMarkAllAsRead: () -> Unit) {
-    Button(
-        onClick = onMarkAllAsRead,
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .height(48.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.all_notifications_read),
-            style = MaterialTheme.typography.bodySmall
-        )
-    }
-}
-
-@Composable
-fun NotificationItem(notification: NotificationEntity, onMarkAsRead: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp)),
-        colors = CardDefaults.cardColors(
-            if (!notification.isRead) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-            else MaterialTheme.colorScheme.primary
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = notification.title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = notification.message,
-                style = MaterialTheme.typography.bodySmall
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = notification.date,
-                style = MaterialTheme.typography.bodySmall
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(
-                onClick = onMarkAsRead,
-                modifier = Modifier.align(Alignment.End),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
-            ) {
-                Text(text = stringResource(id = R.string.mark_as_read))
-            }
-        }
-    }
-}
+//@Composable
+//fun MarkAllAsReadButton(onMarkAllAsRead: () -> Unit) {
+//    Button(
+//        onClick = onMarkAllAsRead,
+//        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(16.dp)
+//            .height(48.dp)
+//    ) {
+//        Text(
+//            text = stringResource(id = R.string.all_notifications_read),
+//            style = MaterialTheme.typography.bodySmall
+//        )
+//    }
+//}
+//
+//@Composable
+//fun NotificationItem(notification: NotificationEntity, onMarkAsRead: () -> Unit) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .clip(RoundedCornerShape(8.dp)),
+//        colors = CardDefaults.cardColors(
+//            if (!notification.isRead) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+//            else MaterialTheme.colorScheme.primary
+//        )
+//    ) {
+//        Column(
+//            modifier = Modifier
+//                .padding(16.dp)
+//                .fillMaxWidth()
+//        ) {
+//            Text(
+//                text = notification.title,
+//                style = MaterialTheme.typography.bodyMedium,
+//                fontWeight = FontWeight.Bold
+//            )
+//            Spacer(modifier = Modifier.height(4.dp))
+//            Text(
+//                text = notification.message,
+//                style = MaterialTheme.typography.bodySmall
+//            )
+//            Spacer(modifier = Modifier.height(4.dp))
+//            Text(
+//                text = notification.date,
+//                style = MaterialTheme.typography.bodySmall
+//            )
+//            Spacer(modifier = Modifier.height(8.dp))
+//            Button(
+//                onClick = onMarkAsRead,
+//                modifier = Modifier.align(Alignment.End),
+//                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+//            ) {
+//                Text(text = stringResource(id = R.string.mark_as_read))
+//            }
+//        }
+//    }
+//}
 
 

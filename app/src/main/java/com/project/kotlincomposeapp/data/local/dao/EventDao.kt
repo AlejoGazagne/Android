@@ -1,6 +1,8 @@
 package com.project.kotlincomposeapp.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.project.kotlincomposeapp.data.local.entity.EventEntity
 
@@ -18,6 +20,9 @@ interface EventDao {
 
     @Query("SELECT * FROM events WHERE location LIKE '%' || :location || '%'")
     suspend fun getEventByLocation(location: String): MutableList<EventEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveEvents(events: List<EventEntity>)
 
     @Query("UPDATE events SET isFavorite = :isFavorite WHERE title = :title AND date = :date AND location = :location AND image = :image AND capacity = :capacity AND organizer = :organizer")
     suspend fun saveFavoriteEvent(title: String, date: String, location: String, image: String, capacity: Int, organizer: String, isFavorite: Boolean)
