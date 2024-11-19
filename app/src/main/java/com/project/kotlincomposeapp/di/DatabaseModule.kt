@@ -31,4 +31,9 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideNotificationDao(appDatabase: AppDatabase) = appDatabase.notificationDao()
+
+    @Singleton
+    @Provides
+    fun provideUserDao(appDatabase: AppDatabase) = appDatabase.userDao()
+
 }

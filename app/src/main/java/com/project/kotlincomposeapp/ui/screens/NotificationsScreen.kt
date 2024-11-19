@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,13 +32,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.data.local.entity.NotificationEntity
+import com.project.kotlincomposeapp.domain.model.NotificationModel
+import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.components.Spacer
 import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
 
 @Composable
 fun NotificationScreen(navController: NavController) {
-    /*val notificationsViewModel: NotificationsViewModel = viewModel()
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val reloadFlag by notificationsViewModel.unreadCount.observeAsState()
 
     LaunchedEffect(reloadFlag) {
@@ -63,31 +66,56 @@ fun NotificationScreen(navController: NavController) {
                     notificationsViewModel = notificationsViewModel
                 )
                 MarkAllAsReadButton(
-                    onMarkAllAsRead = { notificationsViewModel.markAllAsRead() }
+                    onMarkAllAsRead = { /*notificationsViewModel.markAllAsRead()*/ }
                 )
             }
         }
-    }*/
+    }
 }
 
 @Composable
 fun NotificationsList(modifier: Modifier, notificationsViewModel: NotificationsViewModel) {
-    /*val notifications by notificationsViewModel.notifications.collectAsState()
+    val notifications by notificationsViewModel.notifications.collectAsState()
+    val notificationState by notificationsViewModel.notificationState.collectAsState()
 
     // El estado de la lista se recompone al cambiar el contador
-    LazyColumn {
-        items(notifications, key = { it.id }) { notification ->
-            NotificationItem(
-                notification = notification,
-                notificationsViewModel
-            )
-            Spacer(modifier = Modifier.height(12.dp))
+    when (notificationState) {
+        is Resource.Success -> {
+            LazyColumn {
+                items(notifications, key = { it }) { notification ->
+                    NotificationItem(
+                        notification = notification,
+                        notificationsViewModel
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+            }
         }
-    }*/
+        is Resource.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Error: ${(notificationState as Resource.Error).message}",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+        is Resource.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+    }
 }
 
 @Composable
-fun NotificationItem(notification: Notification, notificationsViewModel: NotificationsViewModel) {
+fun NotificationItem(notification: NotificationModel, notificationsViewModel: NotificationsViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
