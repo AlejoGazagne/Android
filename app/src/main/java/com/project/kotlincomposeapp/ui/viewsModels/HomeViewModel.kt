@@ -1,31 +1,48 @@
 package com.project.kotlincomposeapp.ui.viewsModels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.project.kotlincomposeapp.data.model.Event
-import com.project.kotlincomposeapp.data.repository.EventRepository
+import androidx.lifecycle.viewModelScope
+import com.project.kotlincomposeapp.data.local.entity.EventEntity
+import com.project.kotlincomposeapp.domain.model.EventModel
+import com.project.kotlincomposeapp.domain.model.Resource
+import com.project.kotlincomposeapp.domain.usecase.GetEventsUseCase
+import com.project.kotlincomposeapp.domain.usecase.ToggleFavoriteEventUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-    private val repository = EventRepository
-    private val _events = MutableLiveData(repository.getEvents())
-    val events: MutableLiveData<List<Event>> = _events
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getEventsUseCase: GetEventsUseCase,
+    private val toggleFavoriteEventUseCase: ToggleFavoriteEventUseCase
+) : ViewModel() {
 
-    fun toggleFavorite(eventId: Number) {
-        // Modifica la lista de eventos
-        val updatedEvents = _events.value?.map { event ->
-            if (event.id == eventId) {
-                event.copy(isFavorite = !event.isFavorite)  // Alterna el estado de favorito
-            } else {
-                event
+    // Estado expuesto para la UI
+    private val _eventsState = MutableStateFlow<Resource<MutableList<EventModel>>>(Resource.Loading())
+    val eventsState: StateFlow<Resource<MutableList<EventModel>>> = _eventsState
+
+    init {
+        fetchEvents()
+    }
+
+    // Función para obtener eventos desde el caso de uso
+    private fun fetchEvents() {
+        viewModelScope.launch {
+            getEventsUseCase().collect { resource ->
+                _eventsState.value = resource
             }
         }
+    }
 
-        // Actualiza la lista de eventos
-        _events.value = updatedEvents
-
-        // Actualiza el repositorio
-        repository.setFavorite(eventId)
+    // Función para actualizar el estado de favorito de un evento
+    fun toggleFavoriteEvent(event: EventModel) {
+        viewModelScope.launch {
+            toggleFavoriteEventUseCase.invoke(event)
+        }
     }
 }
+
 

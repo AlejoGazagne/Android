@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.components.EventItem
@@ -45,45 +45,46 @@ fun SearchScreen(navController: NavController, title: String) {
 
 @Composable
 fun Search(modifier: Modifier, navController: NavController, title: String) {
-    val searchViewModel: SearchViewModel = viewModel()
-    var searchQuery by remember { mutableStateOf(TextFieldValue(title)) }
-    val filteredEvents = searchViewModel.getFilteredEvents(searchQuery.text)
-
-    LazyColumn(modifier = modifier) {
-        item {
-            SearchBar(searchQuery) { query ->
-                searchQuery = query
-                if (searchQuery.text == "") {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Home.route) { inclusive = true }
-                    }
-                }
-            }
-        }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(id = R.string.search_results),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        items(filteredEvents) { event ->
-            EventItem(
-                event = event,
-                onFavoriteClick = { eventId ->
-                    searchViewModel.toggleFavorite(eventId)
-                },
-                onClick = { selectedEvent ->
-                    navController.navigate(
-                        Screen.EventDetail.route.replace(
-                            "{eventId}",
-                            selectedEvent.toString()
-                        )
-                    )
-                }
-            )
-        }
-    }
+    // TODO
+//    val searchViewModel: SearchViewModel = hiltViewModel()
+//    var searchQuery by remember { mutableStateOf(TextFieldValue(title)) }
+//    val filteredEvents = searchViewModel.getFilteredEvents(searchQuery.text)
+//
+//    LazyColumn(modifier = modifier) {
+//        item {
+//            SearchBar(searchQuery) { query ->
+//                searchQuery = query
+//                if (searchQuery.text == "") {
+//                    navController.navigate(Screen.Home.route) {
+//                        popUpTo(Screen.Home.route) { inclusive = true }
+//                    }
+//                }
+//            }
+//        }
+//        item {
+//            Spacer(modifier = Modifier.height(16.dp))
+//            Text(
+//                text = stringResource(id = R.string.search_results),
+//                style = MaterialTheme.typography.titleLarge,
+//                modifier = Modifier.padding(vertical = 8.dp)
+//            )
+//            Spacer(modifier = Modifier.height(16.dp))
+//        }
+//        items(filteredEvents) { event ->
+//            EventItem(
+//                event = event,
+//                onFavoriteClick = { eventId ->
+//                    searchViewModel.toggleFavorite(eventId)
+//                },
+//                onClick = { selectedEvent ->
+//                    navController.navigate(
+//                        Screen.EventDetail.route.replace(
+//                            "{eventId}",
+//                            selectedEvent.toString()
+//                        )
+//                    )
+//                }
+//            )
+//        }
+//    }
 }

@@ -15,7 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.components.EventItem
@@ -26,7 +26,7 @@ import com.project.kotlincomposeapp.ui.viewsModels.FavoriteViewModel
 
 @Composable
 fun FavoriteScreen(navController: NavController) {
-    val favoriteViewModel: FavoriteViewModel = viewModel()
+    val favoriteViewModel: FavoriteViewModel = hiltViewModel()
     MainScaffold(navController = navController) { innerPadding ->
         Box(modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -39,26 +39,28 @@ fun FavoriteScreen(navController: NavController) {
 
 @Composable
 fun Favorite(modifier: Modifier, favoriteViewModel: FavoriteViewModel, navController: NavController) {
-    val favorites by favoriteViewModel.favorites.observeAsState(listOf())
-    LazyColumn(modifier = modifier) {
-        item {
-            Text(
-                text = stringResource(id = R.string.favorite),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        items(favorites) { event ->
-            EventItem(
-                event = event,
-                onFavoriteClick = { eventId ->
-                    favoriteViewModel.toggleFavorite(eventId)
-                },
-                onClick = { selectedEvent ->
-                    navController.navigate(Screen.EventDetail.route.replace("{eventId}", selectedEvent.toString()))
-                }
-            )
-        }
-    }
+    // TODO
+//    val favorites by favoriteViewModel.favorites.observeAsState(listOf())
+//    LazyColumn(modifier = modifier) {
+//        item {
+//            Spacer(modifier = Modifier.height(16.dp))
+//            Text(
+//                text = stringResource(id = R.string.favorite),
+//                style = MaterialTheme.typography.titleLarge,
+//                modifier = Modifier.padding(vertical = 8.dp)
+//            )
+//            Spacer(modifier = Modifier.height(16.dp))
+//        }
+//        items(favorites) { event ->
+//            EventItem(
+//                event = event,
+//                onFavoriteClick = { eventId ->
+//                    favoriteViewModel.toggleFavorite(eventId)
+//                },
+//                onClick = { selectedEvent ->
+//                    navController.navigate(Screen.EventDetail.route.replace("{eventId}", selectedEvent.toString()))
+//                }
+//            )
+//        }
+//    }
 }

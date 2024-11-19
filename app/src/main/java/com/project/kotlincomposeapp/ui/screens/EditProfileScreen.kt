@@ -52,6 +52,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -67,7 +68,7 @@ fun PreviewEditProfileScreen() {
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
-    val viewModel: EditProfileViewModel = viewModel()
+    val viewModel: EditProfileViewModel = hiltViewModel()
     BackBar(modifier = Modifier, navController, title = stringResource(id = R.string.edit_profile)){ paddingValues ->
         Column (
             modifier = Modifier
