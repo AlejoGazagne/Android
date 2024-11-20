@@ -8,15 +8,9 @@
     },
     {
       "id": "2",
-      "name": "Alejo Gazagne",
+      "name": "Gazagne",
       "email": "alejo@mail.com",
-      "password": "alejo1234"
-    },
-    {
-      "id": "-970832750",
-      "name": "fanin",
-      "email": "fanin@mail.com",
-      "password": "fanin123"
+      "password": "alejo123"
     }
   ],
   "events": [
@@ -247,7 +241,7 @@
       "isDeleted": false
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Evento próximo en dos dias",
       "message": "No olvides tu evento del jueves a las 15:00",
       "date": "2024-10-05",
@@ -255,7 +249,7 @@
       "isDeleted": false
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Cambios en los terminos y condiciones",
       "message": "Te invitamos a ver nuestros cambios en los T&C de la app.",
       "date": "2024-10-05",
@@ -263,7 +257,7 @@
       "isDeleted": false
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Consulta nuestras nuevas políticas de privacidad",
       "message": "Hemos actualizado nuestras políticas de privacidad.",
       "date": "2024-11-20",

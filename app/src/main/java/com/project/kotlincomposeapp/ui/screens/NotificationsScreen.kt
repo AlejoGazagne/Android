@@ -57,7 +57,7 @@ fun NotificationScreen(navController: NavController) {
                 Text(
                     text = stringResource(id = R.string.notifications),
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = 12.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 

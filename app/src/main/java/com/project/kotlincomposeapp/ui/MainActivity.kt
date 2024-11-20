@@ -64,12 +64,13 @@ class MainActivity : ComponentActivity() {
         val context = LocalContext.current
 
         // Llamar a la función de carga de preferencias
-
-        viewModel.loadPreferences(context)
+        LaunchedEffect(Unit) {
+            viewModel.loadPreferences(context)
+        }
 
         val sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
         // Cargar el idioma guardado
-        val languageCode = sharedPreferences.getString("language", Locale.getDefault().language)
+        val languageCode = sharedPreferences.getString("selectedLanguage", Locale.getDefault().language)
             ?: Locale.getDefault().language
         val locale = Locale(languageCode)
         val config = context.resources.configuration
