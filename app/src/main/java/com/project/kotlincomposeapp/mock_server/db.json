@@ -1,21 +1,27 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Gabriel Guillaumet",
       "email": "gabriel@mail.com",
-      "password": "123456"
+      "password": "12345678"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Alejo Gazagne",
       "email": "alejo@mail.com",
-      "password": "alejo123"
+      "password": "alejo1234"
+    },
+    {
+      "id": "-970832750",
+      "name": "fanin",
+      "email": "fanin@mail.com",
+      "password": "fanin123"
     }
   ],
   "events": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Tech Conference 2024",
       "date": "2024-11-12",
       "location": "Buenos Aires, Argentina",
@@ -25,7 +31,7 @@
       "isFavorite": false
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Artificial Intelligence Summit",
       "date": "2024-10-20",
       "location": "San Francisco, USA",
@@ -35,7 +41,7 @@
       "isFavorite": false
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Córdoba Developer Meetup",
       "date": "2024-12-05",
       "location": "Córdoba, Argentina",
@@ -45,7 +51,7 @@
       "isFavorite": false
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Cybersecurity Expo",
       "date": "2024-11-30",
       "location": "London, UK",
@@ -55,7 +61,7 @@
       "isFavorite": false
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Mobile App Hackathon",
       "date": "2024-10-15",
       "location": "Berlin, Germany",
@@ -65,7 +71,7 @@
       "isFavorite": false
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "IoT World Congress",
       "date": "2024-11-10",
       "location": "Barcelona, Spain",
@@ -75,7 +81,7 @@
       "isFavorite": false
     },
     {
-      "id": 7,
+      "id": "7",
       "title": "Data Science Bootcamp",
       "date": "2024-12-01",
       "location": "New York, USA",
@@ -85,7 +91,7 @@
       "isFavorite": false
     },
     {
-      "id": 8,
+      "id": "8",
       "title": "Blockchain Revolution",
       "date": "2024-11-18",
       "location": "Dubai, UAE",
@@ -95,7 +101,7 @@
       "isFavorite": false
     },
     {
-      "id": 9,
+      "id": "9",
       "title": "Web3.0 Summit",
       "date": "2024-10-25",
       "location": "Tokyo, Japan",
@@ -105,7 +111,7 @@
       "isFavorite": false
     },
     {
-      "id": 10,
+      "id": "10",
       "title": "Open Source Day",
       "date": "2024-11-03",
       "location": "Sao Paulo, Brazil",
@@ -115,7 +121,7 @@
       "isFavorite": false
     },
     {
-      "id": 11,
+      "id": "11",
       "title": "Python Dev Week",
       "date": "2024-12-10",
       "location": "Mexico City, Mexico",
@@ -125,7 +131,7 @@
       "isFavorite": false
     },
     {
-      "id": 12,
+      "id": "12",
       "title": "UX/UI Design Conference",
       "date": "2024-11-22",
       "location": "Paris, France",
@@ -135,7 +141,7 @@
       "isFavorite": false
     },
     {
-      "id": 13,
+      "id": "13",
       "title": "Game Developers Forum",
       "date": "2024-10-27",
       "location": "Los Angeles, USA",
@@ -145,7 +151,7 @@
       "isFavorite": false
     },
     {
-      "id": 14,
+      "id": "14",
       "title": "Green Tech Expo",
       "date": "2024-12-15",
       "location": "Stockholm, Sweden",
@@ -155,7 +161,7 @@
       "isFavorite": false
     },
     {
-      "id": 15,
+      "id": "15",
       "title": "JavaScript Nation",
       "date": "2024-11-28",
       "location": "Toronto, Canada",
@@ -165,7 +171,7 @@
       "isFavorite": false
     },
     {
-      "id": 16,
+      "id": "16",
       "title": "Machine Learning Camp",
       "date": "2024-12-08",
       "location": "Melbourne, Australia",
@@ -175,7 +181,7 @@
       "isFavorite": false
     },
     {
-      "id": 17,
+      "id": "17",
       "title": "Big Data Symposium",
       "date": "2024-11-05",
       "location": "Singapore",
@@ -185,7 +191,7 @@
       "isFavorite": false
     },
     {
-      "id": 18,
+      "id": "18",
       "title": "Virtual Reality Expo",
       "date": "2024-12-03",
       "location": "Los Angeles, USA",
@@ -195,7 +201,7 @@
       "isFavorite": false
     },
     {
-      "id": 19,
+      "id": "19",
       "title": "Robotics Summit",
       "date": "2024-11-20",
       "location": "Seoul, South Korea",
@@ -205,7 +211,7 @@
       "isFavorite": false
     },
     {
-      "id": 20,
+      "id": "20",
       "title": "Quantum Computing Workshop",
       "date": "2024-12-02",
       "location": "Zurich, Switzerland",
@@ -215,9 +221,9 @@
       "isFavorite": false
     }
   ],
-  "notifications" : [
+  "notifications": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Bienvenido",
       "message": "Gracias por unirte a nuestra aplicación.",
       "date": "2024-10-04",
@@ -225,7 +231,7 @@
       "isDeleted": false
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Nueva actualización",
       "message": "Hay una nueva versión de la app disponible.",
       "date": "2024-09-28",
@@ -233,7 +239,7 @@
       "isDeleted": false
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Evento próximo",
       "message": "No olvides tu evento de mañana a las 15:00",
       "date": "2024-10-05",

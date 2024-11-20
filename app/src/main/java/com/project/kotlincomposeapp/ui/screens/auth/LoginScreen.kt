@@ -1,7 +1,9 @@
 package com.project.kotlincomposeapp.ui.screens.auth
 
 import android.content.Context
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -30,6 +32,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +60,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
+import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.navigation.Screen
 import com.project.kotlincomposeapp.ui.viewsModels.LoginViewModel
 import kotlinx.coroutines.delay
@@ -83,10 +87,12 @@ fun LoginScreen(navController: NavController) {
 
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavController) {
+    val current = LocalContext.current
     val email: String by viewModel.email.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
     val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
+    val loginState by viewModel.loginState.collectAsState()
 
     // Para controlar el foco entre los campos
     val focusRequesterPassword = remember { FocusRequester() }
@@ -95,14 +101,25 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
     if(isLoading){
         Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            LaunchedEffect(Unit) {
-                delay(1500)
-                navController.navigate(Screen.Home.route){
-                    popUpTo(Screen.Login.route){
-                        inclusive = true
+            LaunchedEffect(loginState) {
+                when (loginState) {
+                    is Resource.Success -> {
+                        delay(1200)
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Login.route) {
+                                inclusive = true
+                            }
+                        }
+                        viewModel.resetLoginState()
+                    }
+                    is Resource.Error -> {
+                        Log.e("Error", "deberia aparecer el toast")
+                        Toast.makeText(current, "Usuario o contraseña invalidos", Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Loading -> {
+                        // Opcional: manejar un estado de carga adicional
                     }
                 }
-                viewModel.resetLoading()
             }
         }
     } else {
@@ -135,15 +152,20 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
 
             FieldEmail(email, { viewModel.onLoginChanged(it, password) }, focusRequesterPassword)
 
-            FieldPassword(password, { viewModel.onLoginChanged(email, it) }, focusRequesterPassword, focusManager, loginEnable) {
-                viewModel.onLoginSelected()
+            FieldPassword(
+                password,
+                { viewModel.onLoginChanged(email, it) },
+                focusRequesterPassword,
+                focusManager,
+                loginEnable
+            ) {
             }
 
             TextRegister(modifier = Modifier.align(Alignment.Start), navController)
 
             Spacer(modifier = Modifier.weight(0.4F))
             ButtonLogin(loginEnable) {
-                viewModel.onLoginSelected()
+                viewModel.onLoginSelected(email, password)
             }
             Spacer(modifier = Modifier.weight(2.6F))
         }
@@ -220,7 +242,7 @@ fun FieldEmail(email: String, onTextFieldChanged: (String) -> Unit, focusRequest
 fun FieldPassword(
     password: String,
     onTextFieldChanged: (String) -> Unit,
-    focusRequester: FocusRequester, // Parámtero añadido
+    focusRequester: FocusRequester,
     focusManager: FocusManager,
     loginEnable: Boolean,
     onLogin: () -> Unit

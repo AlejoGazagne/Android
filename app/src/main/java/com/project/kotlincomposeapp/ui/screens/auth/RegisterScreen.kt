@@ -1,5 +1,8 @@
 package com.project.kotlincomposeapp.ui.screens.auth
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +27,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
@@ -32,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +49,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
+import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.navigation.Screen
 import com.project.kotlincomposeapp.ui.viewsModels.RegisterViewModel
 import kotlinx.coroutines.delay
@@ -70,12 +76,13 @@ fun RegisterScreen(navController: NavController) {
 
 @Composable
 fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: NavController) {
+    val current = LocalContext.current
     val email: String by viewModel.email.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
-    val numberPhone: String by viewModel.numberPhone.observeAsState(initial = "")
     val username: String by viewModel.username.observeAsState(initial = "")
     val registerEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
+    val registerState by viewModel.registerState.collectAsState()
 
     val focusRequesterPassword = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
@@ -83,14 +90,25 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
     if(isLoading){
         Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            LaunchedEffect(Unit) {
-                delay(1500)
-                navController.navigate(Screen.Home.route){
-                    popUpTo(Screen.Register.route){
-                        inclusive = true
+            LaunchedEffect(registerState) {
+                when (registerState) {
+                    is Resource.Success -> {
+                        delay(1200)
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Login.route) {
+                                inclusive = true
+                            }
+                        }
+                        viewModel.resetRegisterState()
+                    }
+                    is Resource.Error -> {
+                        Log.e("Error", "deberia aparecer el toast")
+                        Toast.makeText(current, "Usuario o contraseña invalidos", Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Loading -> {
+                        // Opcional: manejar un estado de carga adicional
                     }
                 }
-                viewModel.resetLoading()
             }
         }
     } else {
@@ -122,29 +140,27 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
             )
 
             FieldInput(stringResource(id = R.string.username), username, Icons.Default.Person, {
-                viewModel.onRegisterChanged(email, password, numberPhone, it)
-            }, focusRequesterPassword)
-
-            FieldInput(stringResource(id = R.string.phone_number), numberPhone, Icons.Default.Phone, {
-                viewModel.onRegisterChanged(email, password, it, username)
+                viewModel.onRegisterChanged(email, password, it)
             }, focusRequesterPassword)
 
             FieldInput(stringResource(id = R.string.email), email, Icons.Default.MailOutline, {
-                viewModel.onRegisterChanged(it, password, numberPhone, username)
+                viewModel.onRegisterChanged(it, password, username)
             }, focusRequesterPassword)
 
-            FieldPassword(password, {
-                viewModel.onRegisterChanged(email, it, numberPhone, username)
-                                    }, focusRequesterPassword, focusManager, registerEnable)
-            {
-                viewModel.onLoginSelected()
+            FieldPassword(
+                password,
+                { viewModel.onRegisterChanged(email, it, username) },
+                focusRequesterPassword,
+                focusManager,
+                registerEnable
+            ) {
             }
 
             TextLogin(modifier = Modifier.align(Alignment.Start), navController)
 
             Spacer(modifier = Modifier.weight(0.4F))
             ButtonRegister(registerEnable) {
-                viewModel.onLoginSelected()
+                viewModel.onLoginSelected(email, password, username)
             }
             Spacer(modifier = Modifier.weight(2.6F))
         }

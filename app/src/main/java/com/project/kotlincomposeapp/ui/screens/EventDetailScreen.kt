@@ -37,7 +37,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun EventDetailScreen(eventId: Number, navController: NavHostController) {
-    BackBar(modifier = Modifier, navController, stringResource(R.string.event)){ paddingValues ->
+    BackBar(
+        modifier = Modifier,
+        navController,
+        stringResource(R.string.event),
+        "home"
+    ){ paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

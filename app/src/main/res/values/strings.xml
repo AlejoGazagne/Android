@@ -16,9 +16,13 @@
     <string name="preferences">Preferencias</string>
     <string name="search_preferences">Selecciona opciones:</string>
     <string name="select_options">Selecciona opciones</string>
-    <string name="preference_message">Customize your search options.</string>
+    <string name="preference_message">Personaliza tus opciones de búsqueda.</string>
+    <string name="notifications_granted">Notificaciones concedidas</string>
+    <string name="notifications_denied">Notificaciones denegadas</string>
+    <string name="revoke_notifications_manually">Desactiva los permisos de notificación manualmente.</string>
     <string name="permits_granted">Permiso de ubicación concedido</string>
     <string name="permits_denied">Permiso de ubicación denegado</string>
+    <string name="revoke_permits_manually">Desactiva los permisos de ubicación manualmente.</string>
     <string name="acces_ubication">Acceso a la ubicación</string>
     <string name="ubication_message">Permitir el acceso a tu ubicación para mejorar recomendaciones.</string>
     <string name="language">Lenguaje</string>

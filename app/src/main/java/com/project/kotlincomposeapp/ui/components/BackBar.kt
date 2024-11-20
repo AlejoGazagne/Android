@@ -19,14 +19,24 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BackBar(modifier: Modifier, navController: NavController, title: String, content: @Composable (PaddingValues) -> Unit){
+fun BackBar(
+    modifier: Modifier,
+    navController: NavController,
+    title: String,
+    navigateTo: String,
+    content: @Composable (PaddingValues) -> Unit,
+){
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = title) },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.popBackStack()
+                        navController.navigate(navigateTo) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                inclusive = true
+                            }
+                        }
                     },
                         modifier = Modifier
                             .width(50.dp)

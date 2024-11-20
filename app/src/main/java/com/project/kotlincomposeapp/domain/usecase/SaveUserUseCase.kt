@@ -7,14 +7,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class InsertUserUseCase @Inject constructor(private val repository: LocalStorageRepository){
-    operator fun invoke(user: UserModel) : Flow<Resource<Unit>> = flow {
+class SaveUserUseCase @Inject constructor (private val repository: LocalStorageRepository) {
+    operator fun invoke(user: UserModel): Flow<Resource<UserModel>> = flow {
         try {
             emit(Resource.Loading())
-            repository.insertUser(user)
             emit(
                 Resource.Success(
-                    data = Unit
+                    data = repository.saveUser(user)
                 )
             )
         } catch (e: Exception) {
