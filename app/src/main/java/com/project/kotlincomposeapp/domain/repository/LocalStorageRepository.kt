@@ -26,11 +26,15 @@ interface LocalStorageRepository {
 
         suspend fun deleteNotification(notification: NotificationModel)
 
-        suspend fun getUser(email: String): UserModel
+        suspend fun login(email: String, password: String): UserModel
+
+        suspend fun getUser(): UserModel
 
         suspend fun updateUser(user: UserModel)
 
         suspend fun deleteAllUsers()
 
-        suspend fun insertUser(user: UserModel)
+        suspend fun registerUser(user: UserModel): UserModel
+
+        suspend fun saveUser(user: UserModel): UserModel
 }

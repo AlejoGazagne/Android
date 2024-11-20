@@ -73,7 +73,8 @@ fun EventDetailScreen(eventTitle: String, navController: NavHostController) {
         BackBar(
             modifier = Modifier,
             navController,
-            stringResource(R.string.event)
+            stringResource(R.string.event),
+            "home"
         ) {
             Box(
                 modifier = Modifier

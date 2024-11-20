@@ -35,6 +35,8 @@ import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.ui.components.BackBar
 import android.Manifest
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.LaunchedEffect
@@ -63,8 +65,10 @@ fun SettingsScreen(navController: NavController) {
     }
 
     BackBar(
-        modifier = Modifier, navController,
+        modifier = Modifier,
+        navController,
         title = stringResource(id = R.string.settings),
+        "profile"
     ){ paddingValues ->
         Settings(modifier = Modifier, navController, viewModel, context, paddingValues)
     }

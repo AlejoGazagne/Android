@@ -10,10 +10,9 @@ class DeleteAllUsersUseCase @Inject constructor(private val repository: LocalSto
     operator fun invoke() : Flow<Resource<Unit>> = flow {
         try {
             emit(Resource.Loading())
-            repository.deleteAllUsers()
             emit(
                 Resource.Success(
-                    data = Unit
+                    data = repository.deleteAllUsers()
                 )
             )
         } catch (e: Exception) {

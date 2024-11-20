@@ -73,8 +73,8 @@ dependencies {
 
     implementation ("androidx.hilt:hilt-work:1.0.0")
 
-    implementation("androidx.compose.material3:material3:1.2.0") // O la versión más reciente
-    implementation("androidx.compose.material3:material3-window-size-class-android:1.2.0") // Si es necesario
+    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.compose.material3:material3-window-size-class-android:1.2.0")
 
     kapt ("androidx.hilt:hilt-compiler:1.0.0")
 
@@ -84,6 +84,7 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
     implementation(libs.androidx.material.icons.extended)
+    implementation("com.google.android.material:material:1.12.0")
     implementation(libs.accompanist.swiperefresh)
 
 

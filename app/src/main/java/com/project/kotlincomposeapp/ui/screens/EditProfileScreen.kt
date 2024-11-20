@@ -1,5 +1,6 @@
 package com.project.kotlincomposeapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +32,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,6 +60,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
+import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.components.BackBar
 import com.project.kotlincomposeapp.ui.viewsModels.EditProfileViewModel
 
@@ -69,7 +73,11 @@ fun PreviewEditProfileScreen() {
 @Composable
 fun EditProfileScreen(navController: NavController) {
     val viewModel: EditProfileViewModel = hiltViewModel()
-    BackBar(modifier = Modifier, navController, title = stringResource(id = R.string.edit_profile)){ paddingValues ->
+    BackBar(modifier = Modifier,
+        navController,
+        title = stringResource(id = R.string.edit_profile),
+        "profile"
+    ){ paddingValues ->
         Column (
             modifier = Modifier
                 .fillMaxSize()
@@ -84,9 +92,10 @@ fun EditProfileScreen(navController: NavController) {
 @Composable
 fun EditProfile(modifier: Modifier, navController: NavController, viewModel: EditProfileViewModel){
     val context = LocalContext.current
-    var emailState by remember { mutableStateOf("user@gmail.com") }
-    var usernameState by remember { mutableStateOf("username") }
-    var passwordState by remember { mutableStateOf("pass123") }
+    val email by viewModel.email.collectAsState()
+    val username by viewModel.username.collectAsState()
+    val password by viewModel.password.collectAsState()
+    val buttonSaveChange: Boolean by viewModel.saveChanges.observeAsState(initial = false)
 
     Box(
         modifier = Modifier
@@ -99,14 +108,28 @@ fun EditProfile(modifier: Modifier, navController: NavController, viewModel: Edi
     Column(
         modifier = Modifier
     ) {
-        EditParameter(modifier = modifier, emailState, stringResource(id = R.string.email), Icons.Default.Email) { newEmail ->
-            emailState = newEmail
+        EditParameter(modifier = modifier, email, stringResource(id = R.string.email), Icons.Default.Email) {
+            viewModel.onSaveChanges(
+                it,
+                password,
+                username
+            )
         }
-        EditParameter(modifier = modifier, usernameState, stringResource(id = R.string.username), Icons.Default.Person) { newUsername ->
-            usernameState = newUsername
+
+        EditParameter(modifier = modifier, username, stringResource(id = R.string.username), Icons.Default.Person) {
+            viewModel.onSaveChanges(
+                email,
+                password,
+                it
+            )
         }
-        EditParameter(modifier = modifier, passwordState, stringResource(id = R.string.password), Icons.Default.VisibilityOff) { newPassword ->
-            passwordState = newPassword
+
+        EditParameter(modifier = modifier, password, stringResource(id = R.string.password), Icons.Default.VisibilityOff) {
+            viewModel.onSaveChanges(
+                email,
+                it,
+                username
+            )
         }
 
         Box (
@@ -133,7 +156,10 @@ fun EditProfile(modifier: Modifier, navController: NavController, viewModel: Edi
                     Text(text = stringResource(id = R.string.cancel))
                 }
                 Button(
-                    onClick = { /* Acción del primer botón */ },
+                    onClick = {
+                        Log.e("EditProfileScreen", "Save Changes: $email, $password, $username")
+                        viewModel.saveChanges(email, password, username, navController) },
+                    enabled = buttonSaveChange,
                     modifier = Modifier
                         .width(130.dp)
                         .height(47.dp)
@@ -145,7 +171,9 @@ fun EditProfile(modifier: Modifier, navController: NavController, viewModel: Edi
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary,
-                        contentColor = MaterialTheme.colorScheme.primary
+                        contentColor = MaterialTheme.colorScheme.primary,
+                        disabledContainerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f),
+                        disabledContentColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                     )
                 ) {
                     Text(text = stringResource(id = R.string.save), color = MaterialTheme.colorScheme.background)
@@ -161,14 +189,15 @@ fun EditParameter(
     input: String,
     label: String,
     icon: ImageVector,
-    onInputChange: (String) -> Unit
+    onTextFieldChanged: (String) -> Unit,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
     val passwordLabel = stringResource(id = R.string.password)
 
     TextField(
         value = input,
-        onValueChange = onInputChange,
+        onValueChange = onTextFieldChanged,
+        enabled = label != stringResource(id = R.string.email),
         label = { Text(label) },
         singleLine = true,
         modifier = Modifier
@@ -204,126 +233,22 @@ fun EditParameter(
             fontWeight = FontWeight.Bold
         ),
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surface, // Color de fondo cuando está enfocado
-            unfocusedContainerColor = MaterialTheme.colorScheme.background, // Color de fondo cuando no está enfocado
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+            disabledTextColor = Color.Gray, // Color del texto cuando está deshabilitado
+            disabledContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.8f), // Color de fondo cuando está deshabilitado
+            disabledLabelColor = Color.DarkGray, // Color de la etiqueta cuando está deshabilitado
+            disabledTrailingIconColor = Color.Gray // Color del icono cuando está deshabilitado
         ),
     )
 }
-
-/*@Composable
-fun EditEmail(modifier: Modifier, email: String, onEmailChange: (String) -> Unit) {
-    TextField(
-        value = email,
-        onValueChange = onEmailChange,
-        label = { Text("Email", modifier = Modifier.padding(0.dp)) },
-        singleLine = true,
-        modifier = Modifier
-            .padding(7.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(15.dp)),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Done
-        ),
-        trailingIcon  = {
-            Icon(
-                imageVector = Icons.Default.Email,
-                contentDescription = "Email Icon"
-            )
-        },
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        ),
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-            focusedContainerColor = MaterialTheme.colorScheme.surface, // Color de fondo cuando está enfocado
-            unfocusedContainerColor = MaterialTheme.colorScheme.background, // Color de fondo cuando no está enfocado
-        ),
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EditUsername(modifier: Modifier, email: String, onEmailChange: (String) -> Unit) {
-    TextField(
-        value = email,
-        onValueChange = onEmailChange,
-        label = { Text("Username", modifier = Modifier.padding(0.dp)) },
-        singleLine = true,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Done
-        ),
-        trailingIcon  = {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Email Icon"
-            )
-        },
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        ),
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
-        ),
-
-        )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EditPassword(modifier: Modifier, email: String, onEmailChange: (String) -> Unit) {
-    var passwordVisible by remember { mutableStateOf(false) }
-
-    TextField(
-        value = email,
-        onValueChange = onEmailChange,
-        label = { Text("Username", modifier = Modifier.padding(0.dp)) },
-        singleLine = true,
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
-        ),
-        trailingIcon  = {
-            val image = if (passwordVisible) {
-                Icons.Default.Visibility
-            } else {
-                Icons.Default.VisibilityOff
-            }
-
-            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                Icon(imageVector = image, contentDescription = "Toggle Password Visibility")
-            }
-        },
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        ),
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
-        ),
-
-        )
-}*/
 
 @Composable
 fun EditProfileImage(modifier: Modifier) {
     Box(
         modifier = modifier
-            //.shadow(4.dp)
             .size(150.dp)
         ,
-        //.border(2.dp, Color.Gray, CircleShape),
         contentAlignment = Alignment.BottomEnd,
     ){
         Image(painter = painterResource(id = R.drawable.perfil),
@@ -331,7 +256,6 @@ fun EditProfileImage(modifier: Modifier) {
             modifier = modifier
                 .size(150.dp)
                 .clip(shape = CircleShape)
-            //.border(2.dp, Color.Gray, CircleShape),
         )
         Icon(
             imageVector = Icons.Default.Edit,

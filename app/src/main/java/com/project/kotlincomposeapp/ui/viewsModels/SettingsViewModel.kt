@@ -20,6 +20,7 @@ import java.util.Locale
 import javax.inject.Inject
 import android.Manifest
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 
 @HiltViewModel
@@ -41,10 +42,10 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
 
     fun handleNotificationPermissionResult(isGranted: Boolean, context: Context) {
         if (isGranted) {
-            Toast.makeText(context, R.string.permits_granted, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.notifications_granted, Toast.LENGTH_SHORT).show()
             notificationsEnabled = true
         } else {
-            Toast.makeText(context, R.string.permits_denied, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.notifications_denied, Toast.LENGTH_SHORT).show()
             notificationsEnabled = false
         }
         savePreferences(context)
@@ -60,8 +61,8 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
                 savePreferences(context)
             }
         } else {
-            notificationsEnabled = false
-            Toast.makeText(context, R.string.permits_denied, Toast.LENGTH_SHORT).show()
+            notificationsEnabled = true
+            Toast.makeText(context, R.string.revoke_notifications_manually, Toast.LENGTH_SHORT).show()
             savePreferences(context)
         }
     }
@@ -104,8 +105,8 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
 
     fun loadPreferences(context: Context) {
         val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-        isLocationEnabled = sharedPreferences.getBoolean("isLocationEnabled", checkLocationPermission(context))
-        notificationsEnabled = sharedPreferences.getBoolean("notificationsEnabled", checkNotificationPermission(context))
+        isLocationEnabled = checkLocationPermission(context)
+        notificationsEnabled = checkNotificationPermission(context)
         selectedTime.value = sharedPreferences.getString("selectedTime", optionsNotifications[3]) ?: optionsNotifications[3]
         selectedPreferences.clear()
         selectedPreferences.addAll(sharedPreferences.getStringSet("selectedPreferences", emptySet()) ?: emptySet())
@@ -116,8 +117,8 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     private fun savePreferences(context: Context) {
         val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
-            putBoolean("isLocationEnabled", isLocationEnabled)
-            putBoolean("notificationsEnabled", notificationsEnabled)
+            putBoolean("notificationsEnabled", checkNotificationPermission(context))
+            putBoolean("isLocationEnabled", checkLocationPermission(context))
             putString("selectedTime", selectedTime.value)
             putStringSet("selectedPreferences", selectedPreferences.toSet())
             apply()
@@ -147,8 +148,8 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
                 savePreferences(context)
             }
         } else {
-            isLocationEnabled = false
-            Toast.makeText(context, R.string.permits_denied, Toast.LENGTH_SHORT).show()
+            isLocationEnabled = true
+            Toast.makeText(context, R.string.revoke_permits_manually, Toast.LENGTH_SHORT).show()
             savePreferences(context)
         }
     }

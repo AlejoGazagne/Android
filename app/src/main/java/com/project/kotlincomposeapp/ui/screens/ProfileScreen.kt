@@ -1,5 +1,6 @@
 package com.project.kotlincomposeapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +30,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -47,11 +50,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
+import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.navigation.Screen
+import com.project.kotlincomposeapp.ui.viewsModels.EditProfileViewModel
 
 @Preview(showBackground = true)
 @Composable
@@ -61,21 +67,22 @@ fun PreviewProfileScreen() {
 
 @Composable
 fun ProfileScreen(navController: NavController) {
+    val viewModel: EditProfileViewModel = hiltViewModel()
+
     MainScaffold(navController = navController) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding),
-            //.padding(15.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Profile(modifier = Modifier, navController)
+            Profile(modifier = Modifier, navController, viewModel)
         }
     }
 }
 
 @Composable
-fun Profile(modifier: Modifier, navController: NavController) {
+fun Profile(modifier: Modifier, navController: NavController, viewModel: EditProfileViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,7 +90,7 @@ fun Profile(modifier: Modifier, navController: NavController) {
         ProfileImage(modifier = Modifier)
         Spacer(modifier = Modifier.height(80.dp))
         // Nombre del usuario y correo
-        UsernameAndEmail(modifier = modifier)
+        UsernameAndEmail(modifier = modifier, viewModel)
         Spacer(modifier = Modifier.height(20.dp))
         // Menú de opciones
         Menu(modifier = modifier, navController)
@@ -108,7 +115,9 @@ fun Menu(modifier: Modifier, navController: NavController){
                 icon = Icons.Default.Edit,
                 text = stringResource(id = R.string.edit_profile),
                 onClick = {
-                    navController.navigate(Screen.EditProfile.route)
+                    navController.navigate(Screen.EditProfile.route) {
+                        popUpTo(Screen.Profile.route) { inclusive = true }
+                    }
                 }
             )
             HorizontalDivider(thickness = 0.5.dp)
@@ -116,7 +125,9 @@ fun Menu(modifier: Modifier, navController: NavController){
                 icon = Icons.Default.Settings,
                 text = stringResource(id = R.string.settings),
                 onClick = {
-                    navController.navigate(Screen.Settings.route)
+                    navController.navigate(Screen.Settings.route) {
+                        popUpTo(Screen.Profile.route) { inclusive = true }
+                    }
                 }
             )
             HorizontalDivider(thickness = 0.5.dp)
@@ -213,9 +224,11 @@ fun ProfileImage(modifier: Modifier) {
 }
 
 @Composable
-fun UsernameAndEmail(modifier: Modifier) {
-    val email: String by remember { mutableStateOf("user@gmail.com") }
-    val username: String by remember { mutableStateOf("Username") }
+fun UsernameAndEmail(modifier: Modifier, viewModel: EditProfileViewModel) {
+    val email by viewModel.email.collectAsState()
+    val username by viewModel.username.collectAsState()
+
+    Log.d("UsernameAndEmail", "Recompose: Username=$username, Email=$email")
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
