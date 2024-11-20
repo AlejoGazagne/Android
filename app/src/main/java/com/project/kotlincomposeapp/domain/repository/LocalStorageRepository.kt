@@ -8,7 +8,7 @@ interface LocalStorageRepository {
 
         suspend fun getEvents(): MutableList<EventModel>
 
-        suspend fun getEventByTitle(title: String): MutableList<EventModel>
+        suspend fun getEventByTitle(title: String): EventModel
 
         suspend fun getEventsByLocation(location: String): MutableList<EventModel>
 
