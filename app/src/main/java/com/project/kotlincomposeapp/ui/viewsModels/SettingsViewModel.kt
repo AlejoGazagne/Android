@@ -160,23 +160,23 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     val languages = listOf(Locale("en"), Locale("es"))
     var selectedLanguage: Locale by mutableStateOf(Locale.getDefault())
 
-    fun setLanguage(locale: Locale, context: Context) {
-        selectedLanguage = locale
-        updateAppLocale(context, locale)
-        saveLanguagePreference(context, locale)
+    fun setLanguage(language: Locale, context: Context) {
+        selectedLanguage = language
+        updateAppLocale(context, language)
+        saveLanguagePreference(context, language)
         languageChanged = !languageChanged
     }
 
-    private fun updateAppLocale(context: Context, locale: Locale) {
+    private fun updateAppLocale(context: Context, language: Locale) {
         val config = Configuration(context.resources.configuration)
-        config.setLocale(locale)
+        config.setLocale(language)
         context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 
-    private fun saveLanguagePreference(context: Context, locale: Locale) {
+    private fun saveLanguagePreference(context: Context, language: Locale) {
         val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
-            putString("selectedLanguage", locale.language)
+            putString("selectedLanguage", language.language)
             apply()
         }
     }
@@ -186,5 +186,8 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
         val language = sharedPreferences.getString("selectedLanguage", Locale.getDefault().language)
         val locale = languages.find { it.language == language } ?: Locale.getDefault()
         setLanguage(locale, context)
+        val config = context.resources.configuration
+        config.setLocale(locale)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 }

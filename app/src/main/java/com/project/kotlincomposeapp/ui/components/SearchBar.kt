@@ -33,10 +33,10 @@ fun SearchBar(searchQuery: TextFieldValue, onSearchQueryChanged: (TextFieldValue
     ) {
         // Imagen fuera de la barra de búsqueda, a la izquierda
         Image(
-            painter = painterResource(id = R.drawable.logo), // Reemplaza con tu recurso de imagen
+            painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
             modifier = Modifier
-                .size(50.dp) // Ajusta el tamaño de la imagen según sea necesario
+                .size(50.dp)
                 .padding(end = 8.dp)
         )
 

@@ -51,7 +51,6 @@ class LoginViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Success -> {
                         _loginState.value = Resource.Success(Unit)
-                        Log.e("Resource", "Success")
                     }
 
                     is Resource.Error -> {

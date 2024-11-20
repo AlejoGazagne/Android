@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.project.kotlincomposeapp.data.local.entity.EventEntity
 import com.project.kotlincomposeapp.domain.model.EventModel
 import com.project.kotlincomposeapp.domain.model.Resource
@@ -22,6 +23,19 @@ class EventDetailViewModel @Inject constructor(
 ): ViewModel() {
     private val _eventByTitleState = MutableStateFlow<Resource<EventModel>>(Resource.Loading())
     val eventByTitleState: StateFlow<Resource<EventModel>> get() = _eventByTitleState
+
+    fun isScreenInBackStack(navController: NavController, route: String): Boolean {
+        return try {
+            navController.getBackStackEntry(route)
+            true
+        } catch (e: IllegalArgumentException) {
+            false
+        }
+    }
+
+    fun isScreenFavoriteOrHome(boolean: Boolean): String {
+        return if (boolean) "favorites" else "home"
+    }
 
     fun getEventByTitle(title: String) {
         viewModelScope.launch {

@@ -16,7 +16,7 @@ sealed class BottomNavItem(
     val title: Int
 ) {
     object Home : BottomNavItem("home", Icons.Default.Home, R.string.home)
-    object Favorites : BottomNavItem("favorites", Icons.Default.FavoriteBorder,R.string.favorites)
+    object Favorites : BottomNavItem("favorites", Icons.Default.FavoriteBorder, R.string.favorites)
     object Notifications : BottomNavItem("notifications", Icons.Default.Notifications, R.string.notifications)
     object Profile : BottomNavItem("profile", Icons.Default.AccountCircle, R.string.profile)
 }
