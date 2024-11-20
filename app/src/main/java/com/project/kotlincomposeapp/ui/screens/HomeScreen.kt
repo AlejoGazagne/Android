@@ -76,11 +76,20 @@ fun Home(modifier: Modifier, homeViewModel: HomeViewModel, navController: NavCon
         is Resource.Success -> {
             val events = (eventsState as Resource.Success<MutableList<EventModel>>).data
 
+            val filteredEvents = events?.filter { event ->
+                event.title.contains(searchQuery.text, ignoreCase = true)
+            }
+
+            // Obtener eventos faltantes
+            val remainingEvents = events?.filterNot { event ->
+                event.title.contains(searchQuery.text, ignoreCase = true)
+            }
+
             LazyColumn(modifier = modifier) {
                 item {
                     SearchBar(searchQuery) { query ->
                         searchQuery = query
-                        navController.navigate(Screen.Search.route.replace("{title}", query.text))
+                        //navController.navigate(Screen.Search.route.replace("{title}", query.text))
                     }
                 }
                 item {
@@ -92,7 +101,7 @@ fun Home(modifier: Modifier, homeViewModel: HomeViewModel, navController: NavCon
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-                events?.let {
+                filteredEvents?.let {
                     items(it.toList()) { event ->
                         EventItem(
                             event = event,
@@ -108,6 +117,45 @@ fun Home(modifier: Modifier, homeViewModel: HomeViewModel, navController: NavCon
                                 )
                             }
                         )
+                    }
+                }
+                // Mostrar eventos faltantes
+                remainingEvents?.let {
+                    items(it) { event ->
+                        EventItem(
+                            event = event,
+                            onFavoriteClick = {
+                                homeViewModel.toggleFavoriteEvent(event)
+                            },
+                            onClick = {
+                                navController.navigate(
+                                    Screen.EventDetail.route.replace(
+                                        "{eventTitle}",
+                                        event.title
+                                    )
+                                )
+                            }
+                        )
+                    }
+                }
+                if (filteredEvents != null) {
+                    if (filteredEvents.isEmpty()) {
+                        items(events.toList()) { event ->
+                            EventItem(
+                                event = event,
+                                onFavoriteClick = {
+                                    homeViewModel.toggleFavoriteEvent(event)
+                                },
+                                onClick = {
+                                    navController.navigate(
+                                        Screen.EventDetail.route.replace(
+                                            "{eventTitle}",
+                                            event.title
+                                        )
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }

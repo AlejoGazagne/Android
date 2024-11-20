@@ -1,5 +1,6 @@
 package com.project.kotlincomposeapp.ui.screens
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -76,8 +77,9 @@ fun EventDetailScreen(eventTitle: String, navController: NavHostController) {
             modifier = Modifier,
             navController,
             stringResource(R.string.event),
-            "home"
+            navigateTo = detailViewModel.isScreenFavoriteOrHome(detailViewModel.isScreenInBackStack(navController, "favorites")),
         ) {
+            Log.e("EventDetailScreen", detailViewModel.isScreenFavoriteOrHome(detailViewModel.isScreenInBackStack(navController, "favorite")))
             Box(
                 modifier = Modifier
                     .fillMaxSize()

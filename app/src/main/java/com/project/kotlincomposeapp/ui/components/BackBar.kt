@@ -48,6 +48,5 @@ fun BackBar(
             )
         },
         content = content
-
     )
 }

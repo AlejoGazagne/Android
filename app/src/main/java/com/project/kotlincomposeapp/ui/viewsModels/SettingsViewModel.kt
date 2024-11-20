@@ -186,5 +186,8 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
         val language = sharedPreferences.getString("selectedLanguage", Locale.getDefault().language)
         val locale = languages.find { it.language == language } ?: Locale.getDefault()
         setLanguage(locale, context)
+        val config = context.resources.configuration
+        config.setLocale(locale)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 }

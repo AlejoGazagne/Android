@@ -113,8 +113,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
                         viewModel.resetLoginState()
                     }
                     is Resource.Error -> {
-                        Log.e("Error", "deberia aparecer el toast")
-                        Toast.makeText(current, "Usuario o contraseña invalidos", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(current, R.string.user_or_password_invalid, Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading -> {
                         // Opcional: manejar un estado de carga adicional

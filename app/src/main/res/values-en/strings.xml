@@ -24,6 +24,7 @@
     <string name="permits_granted">Location permission granted</string>
     <string name="permits_denied">Location permission denied</string>
     <string name="revoke_permits_manually">Disable location permissions manually.</string>
+    <string name="user_or_password_invalid">Invalid username or password</string>
     <string name="acces_ubication">Access to location</string>
     <string name="ubication_message">Allow access to your location to improve recommendations.</string>
     <string name="search_results">Search results</string>

@@ -67,16 +67,5 @@ class MainActivity : ComponentActivity() {
         LaunchedEffect(Unit) {
             viewModel.loadPreferences(context)
         }
-
-        val sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
-        // Cargar el idioma guardado
-        val languageCode = sharedPreferences.getString("selectedLanguage", Locale.getDefault().language)
-            ?: Locale.getDefault().language
-        val locale = Locale(languageCode)
-        val config = context.resources.configuration
-        config.setLocale(locale)
-        context.resources.updateConfiguration(config, context.resources.displayMetrics)
-
-        // agregar más configuraciones para el inicio
     }
 }
