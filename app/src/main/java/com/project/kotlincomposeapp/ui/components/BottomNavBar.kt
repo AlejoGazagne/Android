@@ -18,10 +18,12 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.kotlincomposeapp.ui.navigation.BottomNavItem
 import com.project.kotlincomposeapp.ui.navigation.Screen
 import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
@@ -34,11 +36,15 @@ fun PreviewBottomNavBar() {
 
 @Composable
 fun MainScaffold(navController: NavController, content: @Composable (PaddingValues) -> Unit) {
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+
+    LaunchedEffect(Unit) {
+        notificationsViewModel.fetchUnreadNotifications()
+    }
+
     Scaffold(
         bottomBar = {
-            // TODO implementar el count de las unread notifications
-            //BottomNavBar(navController, NotificationsViewModel().unreadCount.value!! > 0)
-            BottomNavBar(navController, true)
+            BottomNavBar(navController, notificationsViewModel.unreadNotifications.value?.let { it > 0 } ?: false)
         },
         content = content
     )

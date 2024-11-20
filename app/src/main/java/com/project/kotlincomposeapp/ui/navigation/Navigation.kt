@@ -54,8 +54,9 @@ fun SetupNavigation (){
             EditProfileScreen(navController = navController)
         }
         composable(route = Screen.EventDetail.route) { backStackEntry ->
-            val eventId = backStackEntry.arguments?.getString("eventId")
-            EventDetailScreen(navController = navController, eventId = eventId!!.toInt())
+            val eventTitle = backStackEntry.arguments?.getString("eventTitle")
+            requireNotNull(eventTitle) { "eventTitle is required to navigate to EventDetail" }
+            EventDetailScreen(navController = navController, eventTitle = eventTitle)
         }
         composable(route = Screen.Search.route) { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title")

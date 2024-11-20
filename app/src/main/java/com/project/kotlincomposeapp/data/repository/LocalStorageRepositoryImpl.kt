@@ -13,6 +13,7 @@ import com.project.kotlincomposeapp.domain.model.NotificationModel
 import com.project.kotlincomposeapp.domain.model.UserModel
 import com.project.kotlincomposeapp.domain.repository.LocalStorageRepository
 import javax.inject.Inject
+import kotlin.math.log
 
 class LocalStorageRepositoryImpl @Inject constructor(
     private val EventDao: EventDao,
@@ -53,23 +54,17 @@ class LocalStorageRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getEventByTitle(title: String): MutableList<EventModel> {
-        val events = EventDao.getEventByTitle(title)
-        val eventModels = mutableListOf<EventModel>()
-        events.forEach {
-            eventModels.add(
-                EventModel(
-                    it.title,
-                    it.date,
-                    it.location,
-                    it.image,
-                    it.capacity,
-                    it.organizer,
-                    it.isFavorite
-                )
-            )
-        }
-        return eventModels
+    override suspend fun getEventByTitle(title: String): EventModel {
+        val event = EventDao.getEventByTitle(title)
+        return EventModel(
+            event.title,
+            event.date,
+            event.location,
+            event.image,
+            event.capacity,
+            event.organizer,
+            event.isFavorite
+        )
     }
 
     override suspend fun getEventsByLocation(location: String): MutableList<EventModel> {
@@ -114,11 +109,6 @@ class LocalStorageRepositoryImpl @Inject constructor(
         try {
             EventDao.saveFavoriteEvent(
                 event.title,
-                event.date,
-                event.location,
-                event.image,
-                event.capacity,
-                event.organizer,
                 !event.isFavorite
             )
         } catch (e: Exception) {
@@ -147,20 +137,26 @@ class LocalStorageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getNotifications(): MutableList<NotificationModel> {
-        val notifications = NotificationDao.getNotifications()
-        val notificationModels = mutableListOf<NotificationModel>()
-        notifications.forEach {
-            notificationModels.add(
-                NotificationModel(
-                    it.title,
-                    it.message,
-                    it.date,
-                    it.isRead,
-                    it.isDeleted
-                )
-            )
+        val apiNotifications = NotificationApi.getNotifications()
+        val dbNotifications = NotificationDao.getNotifications()
+
+
+        val notificationEntities = apiNotifications.map { apiNotification ->
+            apiNotification.copy(isRead = dbNotifications.find { it.title == apiNotification.title }?.isRead ?: false)
         }
-        return notificationModels
+
+        NotificationDao.saveNotifications(notificationEntities)
+
+        return NotificationDao.getNotifications().map { notificationEntity ->
+            NotificationModel(
+                notificationEntity.title,
+                notificationEntity.message,
+                notificationEntity.date,
+                notificationEntity.isRead,
+                notificationEntity.isDeleted
+            )
+        }.toMutableList()
+
     }
 
     override suspend fun markNotificationAsRead(notification: NotificationModel) {

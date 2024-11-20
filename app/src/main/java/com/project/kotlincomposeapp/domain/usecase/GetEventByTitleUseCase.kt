@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetEventByTitleUseCase @Inject constructor(private val repository: LocalStorageRepository) {
-    suspend operator fun invoke(title: String) : Flow<Resource<MutableList<EventModel>>> = flow{
+    suspend operator fun invoke(title: String) : Flow<Resource<EventModel>> = flow{
         try {
             emit(Resource.Loading())
             emit(

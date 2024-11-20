@@ -24,12 +24,8 @@ class HomeViewModel @Inject constructor(
     private val _eventsState = MutableStateFlow<Resource<MutableList<EventModel>>>(Resource.Loading())
     val eventsState: StateFlow<Resource<MutableList<EventModel>>> = _eventsState
 
-    init {
-        fetchEvents()
-    }
-
     // Función para obtener eventos desde el caso de uso
-    private fun fetchEvents() {
+    fun fetchEvents() {
         viewModelScope.launch {
             getEventsUseCase().collect { resource ->
                 _eventsState.value = resource
@@ -37,10 +33,20 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    // Función para actualizar el estado de favorito de un evento
     fun toggleFavoriteEvent(event: EventModel) {
         viewModelScope.launch {
-            toggleFavoriteEventUseCase.invoke(event)
+            toggleFavoriteEventUseCase.invoke(event).collect { result ->
+                if (result is Resource.Success) {
+                    val updatedList = (_eventsState.value as? Resource.Success<MutableList<EventModel>>)?.data?.map {
+                        if (it.title == event.title) {
+                            it.copy(isFavorite = !it.isFavorite)
+                        } else it
+                    }?.toMutableList()
+
+                    // Emite la nueva lista al estado
+                    _eventsState.value = Resource.Success(updatedList ?: mutableListOf())
+                }
+            }
         }
     }
 }
