@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.project.kotlincomposeapp.data.local.entity.NotificationEntity
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project.kotlincomposeapp.domain.model.NotificationModel
 import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.domain.usecase.GetNotificationsUseCase
@@ -29,90 +30,60 @@ class NotificationsViewModel @Inject constructor(
     private val markAllNotificationsAsReadUseCase: MarkAllNotificationsAsReadUseCase
 ) : ViewModel() {
 
-    // Cambiar MutableLiveData a MutableStateFlow
-    private val _notifications: MutableStateFlow<List<NotificationModel>> = MutableStateFlow(emptyList())
-    val notifications: StateFlow<List<NotificationModel>> get() = _notifications
+    private val _notifications = MutableStateFlow<Resource<MutableList<NotificationModel>>>(Resource.Loading())
+    val stateNotifications: StateFlow<Resource<MutableList<NotificationModel>>> = _notifications
 
-    // LiveData para el conteo de notificaciones no leídas
-    private val _unreadCount: MutableLiveData<Int> = MutableLiveData()
-    val unreadCount: LiveData<Int> get() = _unreadCount
-
-    // Estado de consulta
-    private val _notificationState = MutableStateFlow<Resource<MutableList<NotificationModel>>>(Resource.Loading())
-    val notificationState: StateFlow<Resource<MutableList<NotificationModel>>> get() = _notificationState
+    private val _unreadNotifications = MutableLiveData<Int>()
+    val unreadNotifications: LiveData<Int> = _unreadNotifications
 
     init {
-        loadNotifications()
-        updateUnreadCount()
+        fetchNotifications()
     }
 
-    private fun loadNotifications() {
+    private fun fetchNotifications(){
         viewModelScope.launch {
-            getNotificationsUseCase().onEach { result ->
-                _notificationState.value = result
-                when (result) {
-                    is Resource.Success -> {
-                        // Actualiza el MutableStateFlow con las notificaciones recibidas
-                        _notifications.value = result.data ?: emptyList()
-                    }
-                    is Resource.Error -> {
-                    // Maneja el error (por ejemplo, mostrando un mensaje)
-                    // Aquí podrías agregar un MutableStateFlow o LiveData para el manejo de errores
-                    }
-                    is Resource.Loading -> {
-                    // Maneja el estado de carga si es necesario
-                    }
-                }
-            }.launchIn(viewModelScope)
+            getNotificationsUseCase().collect { resource ->
+                Log.d("e", "Resource emitted: $resource")
+                _notifications.value = resource
+            }
         }
     }
 
-    fun markAsRead(notification: NotificationModel) {
-        markNotificationAsReadUseCase(notification)
-        //updateUnreadCount()
-        val updateList = _notifications.value.map {
-            if (it == notification) it.copy(isRead = true) else it
+    fun fetchUnreadNotifications(){
+        viewModelScope.launch {
+            unreadNotificationsUseCase().collect { unreadNotifications ->
+                _unreadNotifications.value = unreadNotifications.data?.size ?: 0
+            }
         }
-        _notifications.value = updateList
     }
 
-    fun markAllAsRead() {
-        markAllNotificationsAsReadUseCase()
-        updateUnreadCount()
-        loadNotifications()
-    }
-
-    // Eliminar una notificación
-    /*fun deleteNotification(notification: Notification) {
-        repository.deleteNotification(notification)
-        _notifications.value = repository.getAllNotifications()
-        updateUnreadCount()
-    }*/
-
-    // Agregar una nueva notificación
-    /*fun addNotification(notification: Notification) {
-        repository.addNotification(notification)
-        _notifications.value = repository.getAllNotifications()
-        updateUnreadCount()
-    }*/
-
-    // Actualizar el conteo de notificaciones no leídas
-    private fun updateUnreadCount() {
-        unreadNotificationsUseCase().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _unreadCount.value = result.data?.size ?: 0
-                }
-                is Resource.Error -> {
-                    // Maneja el error (por ejemplo, mostrando un mensaje)
-                    // Aquí podrías agregar un MutableStateFlow o LiveData para el manejo de errores
-                }
-                is Resource.Loading -> {
-                    // Maneja el estado de carga si es necesario
+    fun markNotificationAsRead(notification: NotificationModel){
+        viewModelScope.launch {
+            markNotificationAsReadUseCase(notification).collect { result ->
+                if(result is Resource.Success){
+                    val updatedList = (_notifications.value as? Resource.Success<MutableList<NotificationModel>>)?.data?.map {
+                        if(it.title == notification.title){
+                            it.copy(isRead = true)
+                        } else it
+                    }?.toMutableList()
+                    _notifications.value = Resource.Success(updatedList ?: mutableListOf())
+                    fetchUnreadNotifications()
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
-    fun reloadNotifications(){ loadNotifications() }
+    fun markAllNotificationsAsRead(){
+        viewModelScope.launch {
+            markAllNotificationsAsReadUseCase().collect { result ->
+                if(result is Resource.Success){
+                    val updatedList = (_notifications.value as? Resource.Success<MutableList<NotificationModel>>)?.data?.map {
+                        it.copy(isRead = true)
+                    }?.toMutableList()
+                    _notifications.value = Resource.Success(updatedList ?: mutableListOf())
+                    fetchUnreadNotifications()
+                }
+            }
+        }
+    }
 }

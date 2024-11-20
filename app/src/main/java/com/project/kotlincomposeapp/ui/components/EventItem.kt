@@ -75,7 +75,7 @@ fun EventItem(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                // Texto sobre la imagen difuminada
+
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -84,7 +84,7 @@ fun EventItem(
                 ) {
                     Text(
                         text = event.title,
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.titleMedium,
                         color = Color.White
                     )
                     Text(
@@ -93,24 +93,13 @@ fun EventItem(
                         color = Color.White
                     )
                     Text(
-                        text = "${stringResource(id = R.string.capacity)}: ${event.capacity}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White
-                    )
-                    Text(
                         text = event.location,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White
-                    )
-                    Text(
-                        text = "${stringResource(id = R.string.organizer)}: ${event.organizer}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White
                     )
                 }
             }
 
-            // Fondo negro difuminado detrás del ícono de favorito
             Box(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
