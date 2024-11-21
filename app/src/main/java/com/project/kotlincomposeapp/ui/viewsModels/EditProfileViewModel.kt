@@ -112,18 +112,4 @@ class EditProfileViewModel @Inject constructor(
     fun changeSaveUser(){
         _saveChanges.value = !_saveChanges.value!!
     }
-
-    fun sendNotification(context: Context){
-        val notificationManager = context.getSystemService(NotificationManager::class.java)
-
-        val notification = NotificationCompat.Builder(context, App.CHANNEL_ID)
-            .setContentTitle("Titulo de la notificación")
-            .setContentText("Cuerpo de la notificación")
-            .setSmallIcon(R.drawable.baseline_circle_notifications_24)
-            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.logo))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
-            .build()
-        notificationManager.notify(1, notification)
-    }
 }
