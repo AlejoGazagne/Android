@@ -75,11 +75,9 @@ fun Favorite(
 
             LazyColumn(modifier = modifier) {
                 item {
-                    Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(id = R.string.favorite),
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(vertical = 8.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }

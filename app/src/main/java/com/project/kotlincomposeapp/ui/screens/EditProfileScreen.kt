@@ -1,5 +1,6 @@
 package com.project.kotlincomposeapp.ui.screens
 
+import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -62,6 +63,7 @@ import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.components.BackBar
+import com.project.kotlincomposeapp.ui.navigation.Screen
 import com.project.kotlincomposeapp.ui.viewsModels.EditProfileViewModel
 
 @Preview(showBackground = true)
@@ -73,6 +75,7 @@ fun PreviewEditProfileScreen() {
 @Composable
 fun EditProfileScreen(navController: NavController) {
     val viewModel: EditProfileViewModel = hiltViewModel()
+    val context = LocalContext.current
     BackBar(modifier = Modifier,
         navController,
         title = stringResource(id = R.string.edit_profile),
@@ -142,7 +145,11 @@ fun EditProfile(modifier: Modifier, navController: NavController, viewModel: Edi
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
-                    onClick = { /*viewModel.sendNotification(context)*/ },
+                    onClick = {
+                        navController.navigate(Screen.Profile.route) {
+                            popUpTo(Screen.Profile.route) { inclusive = true }
+                        }
+                    },
                     modifier = Modifier
                         .width(130.dp)
                         .height(47.dp)
@@ -157,7 +164,6 @@ fun EditProfile(modifier: Modifier, navController: NavController, viewModel: Edi
                 }
                 Button(
                     onClick = {
-                        Log.e("EditProfileScreen", "Save Changes: $email, $password, $username")
                         viewModel.saveChanges(email, password, username, navController) },
                     enabled = buttonSaveChange,
                     modifier = Modifier

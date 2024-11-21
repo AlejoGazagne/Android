@@ -1,8 +1,6 @@
 package com.project.kotlincomposeapp.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -33,7 +31,7 @@ fun BackBar(
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.navigate(navigateTo) {
-                            popUpTo(navController.graph.startDestinationId) {
+                            popUpTo(navController.currentBackStackEntry?.destination?.route ?: "") {
                                 inclusive = true
                             }
                         }
@@ -50,6 +48,5 @@ fun BackBar(
             )
         },
         content = content
-
     )
 }

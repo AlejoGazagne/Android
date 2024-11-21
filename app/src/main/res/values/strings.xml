@@ -23,6 +23,7 @@
     <string name="permits_granted">Permiso de ubicación concedido</string>
     <string name="permits_denied">Permiso de ubicación denegado</string>
     <string name="revoke_permits_manually">Desactiva los permisos de ubicación manualmente.</string>
+    <string name="user_or_password_invalid">Usuario o contraseña invalidos</string>
     <string name="acces_ubication">Acceso a la ubicación</string>
     <string name="ubication_message">Permitir el acceso a tu ubicación para mejorar recomendaciones.</string>
     <string name="language">Lenguaje</string>
