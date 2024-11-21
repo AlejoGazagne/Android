@@ -2,6 +2,7 @@ package com.project.kotlincomposeapp.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,7 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.work.WorkManager
+import com.project.kotlincomposeapp.scheduler.EventNotificationScheduler
 import com.project.kotlincomposeapp.ui.navigation.SetupNavigation
 import com.project.kotlincomposeapp.ui.theme.MyAppTheme
 import com.project.kotlincomposeapp.ui.viewsModels.SettingsViewModel
@@ -57,6 +61,18 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        val eventNotificationScheduler = EventNotificationScheduler(this)
+        eventNotificationScheduler.scheduleNotifications()
+        eventNotificationScheduler.scheduleImmediateCheck()
+
+        WorkManager.getInstance(applicationContext)
+            .getWorkInfosByTagLiveData("EventNotificationWork")
+            .observe(this) { workInfos ->
+                for (workInfo in workInfos) {
+                    Log.d("EventNotificationWorker", "Estado del trabajo: ${workInfo.state}")
+                }
+            }
     }
 
     @Composable

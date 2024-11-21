@@ -1,6 +1,7 @@
 package com.project.kotlincomposeapp.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.project.kotlincomposeapp.data.local.AppDatabase
 import dagger.Module
@@ -23,6 +24,13 @@ class DatabaseModule {
             "app_database"
         ).fallbackToDestructiveMigration().build()
     }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+    }
+
 
     @Singleton
     @Provides
