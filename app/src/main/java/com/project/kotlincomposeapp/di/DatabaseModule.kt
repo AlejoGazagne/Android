@@ -25,13 +25,6 @@ class DatabaseModule {
         ).fallbackToDestructiveMigration().build()
     }
 
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-    }
-
-
     @Singleton
     @Provides
     fun provideEventDao(appDatabase: AppDatabase) = appDatabase.eventDao()

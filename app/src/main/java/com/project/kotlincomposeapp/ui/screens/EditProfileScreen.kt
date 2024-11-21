@@ -142,7 +142,7 @@ fun EditProfile(modifier: Modifier, navController: NavController, viewModel: Edi
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
-                    onClick = { viewModel.sendNotification(context) },
+                    onClick = { /*viewModel.sendNotification(context)*/ },
                     modifier = Modifier
                         .width(130.dp)
                         .height(47.dp)

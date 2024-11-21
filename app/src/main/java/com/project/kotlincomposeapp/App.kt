@@ -1,35 +1,20 @@
 package com.project.kotlincomposeapp
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
+import androidx.work.Configuration
+import com.project.kotlincomposeapp.di.EventNotificationFactory
 import dagger.hilt.android.HiltAndroidApp
+import jakarta.inject.Inject
 
 @HiltAndroidApp
-class App: Application() {
-    companion object {
-        const val CHANNEL_ID = "my_chanel"
-    }
+class App : Application(), Configuration.Provider {
 
-    override fun onCreate() {
-        super.onCreate()
-        createNotificationChannel()
-    }
+    @Inject
+    lateinit var workerFactory: EventNotificationFactory
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "event_channel"
-            val name = "Notificaciones de eventos"
-            val descriptionText = "Recordatorios para eventos próximos"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(channelId, name, importance).apply {
-                description = descriptionText
-            }
-
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
     }
 }

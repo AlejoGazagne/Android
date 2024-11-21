@@ -71,6 +71,13 @@ dependencies {
 
     implementation (libs.androidx.hilt.work.v100)
 
+    // Para WorkManager y Hilt
+    implementation (libs.androidx.hilt.work)
+    kapt (libs.androidx.hilt.compiler.v120)
+
+// Para WorkManager
+    implementation (libs.work.runtime.ktx.v281)
+
     implementation(libs.material3)
     implementation("androidx.compose.material3:material3-window-size-class-android:1.3.1")
 
