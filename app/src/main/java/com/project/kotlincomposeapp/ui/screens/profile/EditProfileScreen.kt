@@ -1,7 +1,5 @@
-package com.project.kotlincomposeapp.ui.screens
+package com.project.kotlincomposeapp.ui.screens.profile
 
-import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -57,11 +55,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
-import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.components.BackBar
 import com.project.kotlincomposeapp.ui.navigation.Screen
 import com.project.kotlincomposeapp.ui.viewsModels.EditProfileViewModel

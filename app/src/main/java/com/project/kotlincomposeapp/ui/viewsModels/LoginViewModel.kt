@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.usecase.LoginUseCase
+import com.project.kotlincomposeapp.domain.usecase.user.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,25 +1,20 @@
 package com.project.kotlincomposeapp.ui.viewsModels
 
-import android.app.Notification
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.project.kotlincomposeapp.data.local.entity.NotificationEntity
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project.kotlincomposeapp.domain.model.NotificationModel
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.usecase.GetNotificationsUseCase
-import com.project.kotlincomposeapp.domain.usecase.GetUnreadNotificationsUseCase
-import com.project.kotlincomposeapp.domain.usecase.MarkAllNotificationsAsReadUseCase
-import com.project.kotlincomposeapp.domain.usecase.MarkNotificationAsReadUseCase
+import com.project.kotlincomposeapp.domain.usecase.notifications.GetNotificationsUseCase
+import com.project.kotlincomposeapp.domain.usecase.notifications.GetUnreadNotificationsUseCase
+import com.project.kotlincomposeapp.domain.usecase.notifications.MarkAllNotificationsAsReadUseCase
+import com.project.kotlincomposeapp.domain.usecase.notifications.MarkNotificationAsReadUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @HiltViewModel

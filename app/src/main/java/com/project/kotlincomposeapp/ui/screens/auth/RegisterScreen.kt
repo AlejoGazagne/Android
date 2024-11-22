@@ -1,7 +1,5 @@
 package com.project.kotlincomposeapp.ui.screens.auth
 
-import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,7 +16,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon

@@ -1,19 +1,19 @@
-package com.project.kotlincomposeapp.domain.usecase
+package com.project.kotlincomposeapp.domain.usecase.events
 
+import com.project.kotlincomposeapp.domain.model.EventModel
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.model.UserModel
-import com.project.kotlincomposeapp.domain.repository.LocalStorageRepository
+import com.project.kotlincomposeapp.domain.repository.EventLocalStorageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class RegisterUserUseCase @Inject constructor(private val repository: LocalStorageRepository){
-    operator fun invoke(user: UserModel) : Flow<Resource<UserModel>> = flow {
+class GetEventsUseCase @Inject constructor(private val repository: EventLocalStorageRepository) {
+    operator fun invoke(): Flow<Resource<MutableList<EventModel>>> = flow {
         try {
             emit(Resource.Loading())
             emit(
                 Resource.Success(
-                    data = repository.registerUser(user)
+                    data = repository.getEvents()
                 )
             )
         } catch (e: Exception) {

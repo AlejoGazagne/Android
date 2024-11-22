@@ -1,6 +1,5 @@
-package com.project.kotlincomposeapp.ui.screens
+package com.project.kotlincomposeapp.ui.screens.profile
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,17 +29,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -54,7 +47,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
-import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.navigation.Screen
 import com.project.kotlincomposeapp.ui.viewsModels.EditProfileViewModel
@@ -227,8 +219,6 @@ fun ProfileImage(modifier: Modifier) {
 fun UsernameAndEmail(modifier: Modifier, viewModel: EditProfileViewModel) {
     val email by viewModel.email.collectAsState()
     val username by viewModel.username.collectAsState()
-
-    Log.d("UsernameAndEmail", "Recompose: Username=$username, Email=$email")
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

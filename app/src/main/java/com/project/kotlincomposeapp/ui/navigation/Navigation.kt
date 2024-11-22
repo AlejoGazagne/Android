@@ -10,15 +10,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.ui.screens.auth.LoginScreen
-import com.project.kotlincomposeapp.ui.screens.EditProfileScreen
+import com.project.kotlincomposeapp.ui.screens.profile.EditProfileScreen
 import com.project.kotlincomposeapp.ui.screens.EventDetailScreen
 import com.project.kotlincomposeapp.ui.screens.FavoriteScreen
 import com.project.kotlincomposeapp.ui.screens.HomeScreen
 import com.project.kotlincomposeapp.ui.screens.NotificationScreen
-import com.project.kotlincomposeapp.ui.screens.ProfileScreen
+import com.project.kotlincomposeapp.ui.screens.profile.ProfileScreen
 import com.project.kotlincomposeapp.ui.screens.auth.RegisterScreen
-import com.project.kotlincomposeapp.ui.screens.SearchScreen
-import com.project.kotlincomposeapp.ui.screens.SettingsScreen
+import com.project.kotlincomposeapp.ui.screens.profile.SettingsScreen
 import com.project.kotlincomposeapp.ui.screens.auth.SplashScreen
 
 @Composable
@@ -37,6 +36,9 @@ fun SetupNavigation (){
         }
         composable(route = Screen.Home.route) {
             HomeScreen(navController = navController)
+        }
+        composable(route = Screen.Notifications.route) {
+            NotificationScreen(navController = navController)
         }
         composable(
             route = Screen.EditProfile.route,
@@ -60,8 +62,7 @@ fun SetupNavigation (){
         }
         composable(route = Screen.Search.route) { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title")
-            SearchScreen(navController = navController, title = title!!)
-
+            //SearchScreen(navController = navController, title = title!!)
         }
         composable(route = Screen.Favorites.route) {
             FavoriteScreen(navController = navController)
@@ -95,21 +96,6 @@ fun SetupNavigation (){
             },
         ){
             RegisterScreen(navController = navController)
-        }
-
-        composable(route = Screen.Notifications.route,
-            //enterTransition = {
-            //slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth },
-                //animationSpec = tween(700)
-            //) + fadeIn(animationSpec = tween(700))
-        //},
-            //exitTransition = {
-                //slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth },
-                    //animationSpec = tween(700)
-                //) + fadeOut(animationSpec = tween(700))
-            //},
-        ) {
-            NotificationScreen(navController = navController)
         }
     }
 }
