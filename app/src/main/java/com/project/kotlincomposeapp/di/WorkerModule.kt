@@ -1,6 +1,7 @@
 package com.project.kotlincomposeapp.di
 
 import com.project.kotlincomposeapp.data.local.dao.EventDao
+import com.project.kotlincomposeapp.data.local.dao.NotificationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +16,8 @@ object WorkerModule {
     @Singleton
     fun provideCheckFavoritesWorkerFactory(
         eventDao: EventDao,
+        notificationDao: NotificationDao
     ): EventNotificationFactory {
-        return EventNotificationFactory(eventDao)
+        return EventNotificationFactory(eventDao, notificationDao)
     }
 }

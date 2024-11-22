@@ -1,11 +1,13 @@
 package com.project.kotlincomposeapp.utils
 
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 object Utils {
     fun convertNotificationTimeToMillis(notificationTime: String): Long {
+        Log.d("EventNotificationWorker", "convertNotificationTimeToMillis: $notificationTime")
         return when (notificationTime.lowercase()) {
             "1 día antes" -> TimeUnit.DAYS.toMillis(1)
             "3 dias antes" -> TimeUnit.DAYS.toMillis(3)
@@ -21,10 +23,10 @@ object Utils {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return try {
             val date = dateFormat.parse(eventDate)
-            date?.time ?: 0L // Devuelve 0 si no puede parsear la fecha
+            date?.time ?: 0L
         } catch (e: Exception) {
             e.printStackTrace()
-            0L // Devuelve 0 en caso de error
+            0L
         }
     }
 

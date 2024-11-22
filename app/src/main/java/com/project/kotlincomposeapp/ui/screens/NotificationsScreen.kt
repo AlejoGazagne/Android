@@ -37,6 +37,7 @@ import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.ui.components.MainScaffold
 import com.project.kotlincomposeapp.ui.components.Spacer
 import com.project.kotlincomposeapp.ui.viewsModels.NotificationsViewModel
+import kotlin.random.Random
 
 @Composable
 fun NotificationScreen(navController: NavController) {
@@ -98,7 +99,7 @@ fun NotificationsList(notificationsViewModel: NotificationsViewModel) {
 
             notifications?.let {
                 LazyColumn {
-                    items(notifications, key = { it.title }) { notification ->
+                    items(notifications, key = { it.title + Random(0) }) { notification ->
 
                         NotificationItem(
                             notification = notification,

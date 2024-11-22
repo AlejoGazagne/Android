@@ -4,6 +4,7 @@ import android.util.Log
 import com.project.kotlincomposeapp.data.local.dao.EventDao
 import com.project.kotlincomposeapp.data.local.dao.NotificationDao
 import com.project.kotlincomposeapp.data.local.dao.UserDao
+import com.project.kotlincomposeapp.data.local.entity.NotificationEntity
 import com.project.kotlincomposeapp.data.local.entity.UserEntity
 import com.project.kotlincomposeapp.data.remote.EventApiService
 import com.project.kotlincomposeapp.data.remote.NotificationsApiService
@@ -176,11 +177,14 @@ class LocalStorageRepositoryImpl @Inject constructor(
     override suspend fun saveNotification(notification: NotificationModel) {
         try {
             NotificationDao.saveNotification(
-                notification.title,
-                notification.message,
-                notification.date,
-                notification.isRead,
-                notification.isDeleted
+                NotificationEntity(
+                    0,
+                    notification.title,
+                    notification.message,
+                    notification.date,
+                    notification.isRead,
+                    notification.isDeleted
+                )
             )
         } catch (e: Exception) {
             throw e
