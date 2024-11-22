@@ -15,8 +15,8 @@ interface NotificationDao {
     @Query("SELECT * FROM notifications WHERE isDeleted = 0")
     suspend fun getNotifications(): MutableList<NotificationEntity>
 
-    @Query("INSERT INTO notifications (title, message, date, isRead, isDeleted) VALUES (:title, :message, :date, :isRead, :isDeleted)")
-    suspend fun saveNotification(title: String, message: String, date: String, isRead: Boolean, isDeleted: Boolean)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveNotification(notificationEntity: NotificationEntity)
 
     @Query("UPDATE notifications SET isDeleted = :isDeleted WHERE title = :title AND message = :message AND date = :date AND isRead = :isRead")
     suspend fun deleteNotification(title: String, message: String, date: String, isRead: Boolean, isDeleted: Boolean)

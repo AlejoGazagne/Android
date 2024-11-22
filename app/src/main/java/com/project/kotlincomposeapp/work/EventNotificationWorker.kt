@@ -14,32 +14,41 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.project.kotlincomposeapp.R
-import com.project.kotlincomposeapp.data.local.AppDatabase
 import com.project.kotlincomposeapp.data.local.dao.EventDao
+import com.project.kotlincomposeapp.data.local.dao.NotificationDao
 import com.project.kotlincomposeapp.data.local.entity.EventEntity
+import com.project.kotlincomposeapp.data.local.entity.NotificationEntity
 import com.project.kotlincomposeapp.utils.Utils
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @HiltWorker
 class EventNotificationWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters,
-    private val eventDao: EventDao
+    private val eventDao: EventDao,
+    private val notificationDao: NotificationDao
 ) : CoroutineWorker(context, workerParams) {
 
     companion object {
         const val CHANNEL_ID = "event_channel"
+        const val CHANNEL_NAME = "Eventos"
+        const val CHANNEL_DESCRIPTION = "Notificaciones para eventos próximos"
     }
 
     override suspend fun doWork(): Result {
+        Log.d("EventNotificationWorker", "Ejecutando Worker")
         createNotificationChannel()
 
-        val sharedPreferences = applicationContext.getSharedPreferences("notification", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            applicationContext.getSharedPreferences("settings", Context.MODE_PRIVATE)
         val notificationManager = NotificationManagerCompat.from(applicationContext)
-        val notificationTimeBefore = sharedPreferences.getString("selectedTime", "0")
+        val notificationTimeBefore = sharedPreferences.getString("selectedTime", "1 Semana antes")
             ?.let { Utils.convertNotificationTimeToMillis(it) }
 
         return withContext(Dispatchers.IO) {
@@ -49,9 +58,17 @@ class EventNotificationWorker @AssistedInject constructor(
 
                 events.forEach { event ->
                     val eventTime = Utils.convertEventDateToMillis(event.date)
-
+                    Log.d(
+                        "EventNotificationWorker",
+                        "Evento: ${event.title}, Tiempo Actual: $currentTime, Tiempo de notificacion: $notificationTimeBefore Tiempo Evento: $eventTime"
+                    )
                     if (notificationTimeBefore != null && notificationTimeBefore != 0L &&
-                        (eventTime - notificationTimeBefore <= currentTime && eventTime > currentTime)) {
+                        (eventTime - notificationTimeBefore <= currentTime && eventTime > currentTime)
+                    ) {
+                        Log.d(
+                            "EventNotificationWorker",
+                            "Enviando notificación para evento: ${event.title}"
+                        )
                         sendNotification(event, notificationManager)
                     }
                 }
@@ -63,8 +80,12 @@ class EventNotificationWorker @AssistedInject constructor(
         }
     }
 
-    private fun sendNotification(event: EventEntity, notificationManager: NotificationManagerCompat) {
-        val channelId = "event_channel"
+
+    private suspend fun sendNotification(
+        event: EventEntity,
+        notificationManager: NotificationManagerCompat
+    ) {
+        val channelId = CHANNEL_ID
 
         val notification = NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(R.drawable.logo)
@@ -81,6 +102,19 @@ class EventNotificationWorker @AssistedInject constructor(
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             notificationManager.notify(event.id, notification)
+
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val currentDate = dateFormat.format(Date())
+
+            val notificationEntity = NotificationEntity(
+                id = 0, // El ID se autogenera
+                title = "Evento próximo: ${event.title}",
+                message = "${event.title} se llevará a cabo el ${Utils.formatEventDate(event.date)}",
+                date = currentDate,
+                isRead = false,
+                isDeleted = false
+            )
+            notificationDao.saveNotification(notificationEntity)
         } else {
             Log.e("EventNotificationWorker", "Permiso para notificaciones no otorgado.")
         }
@@ -89,15 +123,16 @@ class EventNotificationWorker @AssistedInject constructor(
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = CHANNEL_ID
-            val name = "Eventos"
-            val description = "Notificaciones para eventos próximos"
+            val name = CHANNEL_NAME
+            val description = CHANNEL_DESCRIPTION
             val importance = NotificationManager.IMPORTANCE_HIGH
 
             val channel = NotificationChannel(channelId, name, importance).apply {
                 this.description = description
             }
-
-            val notificationManager = applicationContext.getSystemService(NotificationManager::class.java)
+            Log.d("EventNotificationWorker", "Creando canal de notificaciones")
+            val notificationManager =
+                applicationContext.getSystemService(NotificationManager::class.java)
             notificationManager?.createNotificationChannel(channel)
         }
     }

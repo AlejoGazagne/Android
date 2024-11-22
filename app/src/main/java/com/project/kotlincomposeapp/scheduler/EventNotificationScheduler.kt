@@ -40,7 +40,7 @@ class EventNotificationScheduler  @Inject constructor(
 
     fun scheduleImmediateCheck() {
         val workRequest = OneTimeWorkRequestBuilder<EventNotificationWorker>()
-            .setInitialDelay(10, TimeUnit.SECONDS)
+            .setInitialDelay(20, TimeUnit.SECONDS)
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -48,6 +48,7 @@ class EventNotificationScheduler  @Inject constructor(
                     .build()
             )
             .build()
+        Log.d("EventNotificationWorker", "Encolando trabajo inmediato")
         WorkManager.getInstance(context).enqueueUniqueWork(
             "UniqueEventNotificationWork",
             ExistingWorkPolicy.KEEP,

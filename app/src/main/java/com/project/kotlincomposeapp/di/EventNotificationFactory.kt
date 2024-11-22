@@ -7,6 +7,7 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.project.kotlincomposeapp.data.local.AppDatabase
 import com.project.kotlincomposeapp.data.local.dao.EventDao
+import com.project.kotlincomposeapp.data.local.dao.NotificationDao
 import com.project.kotlincomposeapp.work.EventNotificationWorker
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
@@ -14,6 +15,7 @@ import jakarta.inject.Singleton
 @Singleton
 class EventNotificationFactory @Inject constructor(
     private val eventDAO: EventDao,
+    private val notificationDao: NotificationDao
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -27,7 +29,8 @@ class EventNotificationFactory @Inject constructor(
                 EventNotificationWorker(
                     appContext,
                     workerParameters,
-                    eventDAO
+                    eventDAO,
+                    notificationDao
                 )
             }
 
