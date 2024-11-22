@@ -1,19 +1,18 @@
-package com.project.kotlincomposeapp.domain.usecase
+package com.project.kotlincomposeapp.domain.usecase.user
 
-import com.project.kotlincomposeapp.domain.model.EventModel
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.repository.LocalStorageRepository
+import com.project.kotlincomposeapp.domain.repository.UserLocalStorageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetFavoriteEventsUseCase @Inject constructor(private val repository: LocalStorageRepository) {
-    operator fun invoke() : Flow<Resource<MutableList<EventModel>>> = flow {
+class DeleteAllUsersUseCase @Inject constructor(private val repository: UserLocalStorageRepository) {
+    operator fun invoke() : Flow<Resource<Unit>> = flow {
         try {
             emit(Resource.Loading())
             emit(
                 Resource.Success(
-                    data = repository.getFavoriteEvents()
+                    data = repository.deleteAllUsers()
                 )
             )
         } catch (e: Exception) {

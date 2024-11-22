@@ -1,13 +1,11 @@
 package com.project.kotlincomposeapp.ui.viewsModels
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.kotlincomposeapp.data.local.entity.EventEntity
 import com.project.kotlincomposeapp.domain.model.EventModel
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.usecase.GetEventsUseCase
-import com.project.kotlincomposeapp.domain.usecase.ToggleFavoriteEventUseCase
+import com.project.kotlincomposeapp.domain.usecase.events.GetEventsUseCase
+import com.project.kotlincomposeapp.domain.usecase.favorite.ToggleFavoriteEventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

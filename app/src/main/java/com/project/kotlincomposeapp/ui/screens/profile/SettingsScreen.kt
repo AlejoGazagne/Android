@@ -1,4 +1,4 @@
-package com.project.kotlincomposeapp.ui.screens
+package com.project.kotlincomposeapp.ui.screens.profile
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,14 +35,11 @@ import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.ui.components.BackBar
 import android.Manifest
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.ui.viewsModels.SettingsViewModel
 

@@ -1,7 +1,6 @@
 package com.project.kotlincomposeapp.ui.screens.auth
 
 import android.content.Context
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.compose.foundation.Image

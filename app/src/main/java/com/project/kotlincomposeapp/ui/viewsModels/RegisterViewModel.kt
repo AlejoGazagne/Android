@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.domain.model.UserModel
-import com.project.kotlincomposeapp.domain.usecase.RegisterUserUseCase
+import com.project.kotlincomposeapp.domain.usecase.user.RegisterUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,9 +79,5 @@ class RegisterViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun resetLoading() {
-        _isLoading.value = false
     }
 }

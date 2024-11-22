@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.project.kotlincomposeapp.data.local.AppDatabase
 import com.project.kotlincomposeapp.data.local.dao.EventDao
 import com.project.kotlincomposeapp.data.local.dao.NotificationDao
 import com.project.kotlincomposeapp.work.EventNotificationWorker

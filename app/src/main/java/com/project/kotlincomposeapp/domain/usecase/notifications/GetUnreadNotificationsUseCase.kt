@@ -1,20 +1,19 @@
-package com.project.kotlincomposeapp.domain.usecase
+package com.project.kotlincomposeapp.domain.usecase.notifications
 
 import com.project.kotlincomposeapp.domain.model.NotificationModel
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.repository.LocalStorageRepository
+import com.project.kotlincomposeapp.domain.repository.NotificationLocalStorageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class MarkNotificationAsReadUseCase @Inject constructor(private val repository: LocalStorageRepository) {
-    operator fun invoke(notification : NotificationModel) : Flow<Resource<Unit>> = flow {
+class GetUnreadNotificationsUseCase @Inject constructor(private val repository: NotificationLocalStorageRepository) {
+    operator fun invoke() : Flow<Resource<MutableList<NotificationModel>>> = flow {
         try {
             emit(Resource.Loading())
-            repository.markNotificationAsRead(notification)
             emit(
                 Resource.Success(
-                    data = Unit
+                    data = repository.getUnreadNotifications()
                 )
             )
         } catch (e: Exception) {

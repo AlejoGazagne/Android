@@ -1,22 +1,16 @@
 package com.project.kotlincomposeapp.ui.viewsModels
 
-import android.app.NotificationManager
-import android.content.Context
-import android.graphics.BitmapFactory
 import android.util.Log
 import android.util.Patterns
-import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.project.kotlincomposeapp.App
-import com.project.kotlincomposeapp.R
 import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.domain.model.UserModel
-import com.project.kotlincomposeapp.domain.usecase.GetUserUseCase
-import com.project.kotlincomposeapp.domain.usecase.SaveUserUseCase
+import com.project.kotlincomposeapp.domain.usecase.user.GetUserUseCase
+import com.project.kotlincomposeapp.domain.usecase.user.SaveUserUseCase
 import com.project.kotlincomposeapp.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,7 +44,6 @@ class EditProfileViewModel @Inject constructor(
                         _username.value = resource.data?.name.orEmpty()
                         _email.value = resource.data?.email.orEmpty()
                         _password.value = resource.data?.password.orEmpty()
-                        Log.e("EditProfileViewModel", "Success: ${resource.data}")
                     }
 
                     is Resource.Error -> {

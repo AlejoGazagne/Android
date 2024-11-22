@@ -1,21 +1,19 @@
-package com.project.kotlincomposeapp.domain.usecase
+package com.project.kotlincomposeapp.domain.usecase.favorite
 
 import com.project.kotlincomposeapp.domain.model.EventModel
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.repository.LocalStorageRepository
+import com.project.kotlincomposeapp.domain.repository.FavoriteEventLocalStorageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetEventsUseCase @Inject constructor(
-    private val repository: LocalStorageRepository
-) {
-    operator fun invoke(): Flow<Resource<MutableList<EventModel>>> = flow {
+class GetFavoriteEventsUseCase @Inject constructor(private val repository: FavoriteEventLocalStorageRepository) {
+    operator fun invoke() : Flow<Resource<MutableList<EventModel>>> = flow {
         try {
             emit(Resource.Loading())
             emit(
                 Resource.Success(
-                    data = repository.getEvents()
+                    data = repository.getFavoriteEvents()
                 )
             )
         } catch (e: Exception) {

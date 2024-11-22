@@ -1,17 +1,17 @@
-package com.project.kotlincomposeapp.domain.usecase
+package com.project.kotlincomposeapp.domain.usecase.notifications
 
 import com.project.kotlincomposeapp.domain.model.NotificationModel
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.repository.LocalStorageRepository
+import com.project.kotlincomposeapp.domain.repository.NotificationLocalStorageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class DeleteNotificationUseCase @Inject constructor(private val repository: LocalStorageRepository) {
-    operator fun invoke(notification: NotificationModel) : Flow<Resource<Unit>> = flow {
+class MarkNotificationAsReadUseCase @Inject constructor(private val repository: NotificationLocalStorageRepository) {
+    operator fun invoke(notification : NotificationModel) : Flow<Resource<Unit>> = flow {
         try {
             emit(Resource.Loading())
-            repository.deleteNotification(notification)
+            repository.markNotificationAsRead(notification)
             emit(
                 Resource.Success(
                     data = Unit

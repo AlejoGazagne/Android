@@ -1,12 +1,12 @@
-package com.project.kotlincomposeapp.domain.usecase
+package com.project.kotlincomposeapp.domain.usecase.notifications
 
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.repository.LocalStorageRepository
+import com.project.kotlincomposeapp.domain.repository.NotificationLocalStorageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class MarkAllNotificationsAsReadUseCase @Inject constructor(private val repository: LocalStorageRepository) {
+class MarkAllNotificationsAsReadUseCase @Inject constructor(private val repository: NotificationLocalStorageRepository) {
     operator fun invoke() : Flow<Resource<Unit>> = flow {
         try {
             emit(Resource.Loading())

@@ -35,7 +35,6 @@ import com.project.kotlincomposeapp.ui.components.Spacer
 import com.project.kotlincomposeapp.ui.navigation.Screen
 import com.project.kotlincomposeapp.ui.viewsModels.HomeViewModel
 
-
 @Composable
 fun HomeScreen(navController: NavController) {
     val homeViewModel: HomeViewModel = hiltViewModel()

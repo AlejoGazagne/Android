@@ -1,15 +1,12 @@
 package com.project.kotlincomposeapp.ui.viewsModels
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.project.kotlincomposeapp.data.local.entity.EventEntity
 import com.project.kotlincomposeapp.domain.model.EventModel
 import com.project.kotlincomposeapp.domain.model.Resource
-import com.project.kotlincomposeapp.domain.usecase.GetEventByTitleUseCase
-import com.project.kotlincomposeapp.domain.usecase.ToggleFavoriteEventUseCase
+import com.project.kotlincomposeapp.domain.usecase.events.GetEventByTitleUseCase
+import com.project.kotlincomposeapp.domain.usecase.favorite.ToggleFavoriteEventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
-    private val GetEventByTitleUseCase: GetEventByTitleUseCase,
+    private val getEventByTitleUseCase: GetEventByTitleUseCase,
     private val toggleFavoriteEventUseCase: ToggleFavoriteEventUseCase
 ): ViewModel() {
     private val _eventByTitleState = MutableStateFlow<Resource<EventModel>>(Resource.Loading())
@@ -39,7 +36,7 @@ class EventDetailViewModel @Inject constructor(
 
     fun getEventByTitle(title: String) {
         viewModelScope.launch {
-            GetEventByTitleUseCase(title).collect { result ->
+            getEventByTitleUseCase(title).collect { result ->
                 _eventByTitleState.value = result
             }
         }
