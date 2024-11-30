@@ -2,6 +2,7 @@ package com.project.kotlincomposeapp.ui.viewsModels
 
 import android.util.Log
 import android.util.Patterns
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.project.kotlincomposeapp.domain.model.Resource
 import com.project.kotlincomposeapp.domain.model.UserModel
+import com.project.kotlincomposeapp.domain.usecase.user.DeleteAllUsersUseCase
 import com.project.kotlincomposeapp.domain.usecase.user.GetUserUseCase
 import com.project.kotlincomposeapp.domain.usecase.user.SaveUserUseCase
 import com.project.kotlincomposeapp.ui.navigation.Screen
@@ -21,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
-    private val saveUserUseCase: SaveUserUseCase
+    private val saveUserUseCase: SaveUserUseCase,
+    private val deleteUserUseCase: DeleteAllUsersUseCase
 ): ViewModel() {
 
     private val _email = MutableStateFlow("")
@@ -84,10 +87,32 @@ class EditProfileViewModel @Inject constructor(
                         _email.value = resource.data?.email.orEmpty()
                         _password.value = resource.data?.password.orEmpty()
                         _user.value = resource
-                        Log.e("EditProfileViewModel", "Success?: ${resource.data}")
-                        Log.e("EditProfileViewModel", "Success: ${_username.value}, ${_email.value}, ${_password.value}")
+                        Log.d("EditProfileViewModel", "Success?: ${resource.data}")
+                        Log.d("EditProfileViewModel", "Success: ${_username.value}, ${_email.value}, ${_password.value}")
                         navController.navigate(Screen.Profile.route) {
                             popUpTo(Screen.Profile.route) { inclusive = true }
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        Log.e("EditProfileViewModel", "Error: ${resource.message}")
+                    }
+                    is Resource.Loading -> {
+                        Log.d("EditProfileViewModel", "Loading")
+                    }
+                }
+            }
+        }
+    }
+
+    fun logout(navController: NavController){
+        viewModelScope.launch {
+            deleteUserUseCase().collect { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        Log.d("EditProfileViewModel", "Success")
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0) { inclusive = true }
                         }
                     }
 
