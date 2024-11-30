@@ -1,6 +1,5 @@
 package com.project.kotlincomposeapp.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +33,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,7 +53,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun EventDetailScreen(eventTitle: String, navController: NavHostController) {
     val detailViewModel: EventDetailViewModel = hiltViewModel()
-    val context = LocalContext.current
 
     MainScaffold(navController = navController) { innerPadding ->
         BackBar(
@@ -64,7 +61,6 @@ fun EventDetailScreen(eventTitle: String, navController: NavHostController) {
             stringResource(R.string.event),
             navigateTo = detailViewModel.isScreenFavoriteOrHome(detailViewModel.isScreenInBackStack(navController, "favorites")),
         ) {
-            Log.e("EventDetailScreen", detailViewModel.isScreenFavoriteOrHome(detailViewModel.isScreenInBackStack(navController, "favorite")))
             Box(
                 modifier = Modifier
                     .fillMaxSize()

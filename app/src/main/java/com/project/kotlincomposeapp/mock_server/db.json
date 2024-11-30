@@ -11,6 +11,12 @@
       "name": "Alejo Gazagne",
       "email": "alejo@mail.com",
       "password": "alejo123"
+    },
+    {
+      "id": "-970832750",
+      "name": "fanin",
+      "email": "fanin@mail.com",
+      "password": "fanin123"
     }
   ],
   "events": [

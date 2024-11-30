@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.kotlincomposeapp.domain.model.Resource
+import com.project.kotlincomposeapp.domain.usecase.user.GetUserUseCase
 import com.project.kotlincomposeapp.domain.usecase.user.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import kotlinx.coroutines.delay
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val getUserUseCase: GetUserUseCase
 ): ViewModel() {
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email
@@ -67,6 +69,48 @@ class LoginViewModel @Inject constructor(
                     }
                 }
 
+            }
+        }
+    }
+
+    fun earlyLogin() {
+        viewModelScope.launch {
+            getUserUseCase().collect { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            loginUseCase(it.email, it.password).collect { rsc ->
+                                when (rsc) {
+                                    is Resource.Success -> {
+                                        Log.d("Resource", "login automatico exitoso")
+                                        _loginState.value = Resource.Success(Unit)
+                                    }
+
+                                    is Resource.Error -> {
+                                        Log.d("Resource", "login automatico fallido")
+                                        _loginState.value = Resource.Error(rsc.message ?: "Error desconocido")
+                                        Log.e("Resource", rsc.message.toString())
+                                    }
+
+                                    is Resource.Loading -> {
+                                        _loginState.value = Resource.Loading()
+                                        Log.e("Resource", "Loading")
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        _loginState.value = Resource.Error(resource.message ?: "Error desconocido")
+                        Log.e("Resource", resource.message.toString())
+                    }
+
+                    is Resource.Loading -> {
+                        _loginState.value = Resource.Loading()
+                        Log.e("Resource", "Loading")
+                    }
+                }
             }
         }
     }

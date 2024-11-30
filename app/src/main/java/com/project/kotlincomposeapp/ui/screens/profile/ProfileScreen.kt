@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.kotlincomposeapp.R
@@ -85,12 +86,12 @@ fun Profile(modifier: Modifier, navController: NavController, viewModel: EditPro
         UsernameAndEmail(modifier = modifier, viewModel)
         Spacer(modifier = Modifier.height(20.dp))
         // Menú de opciones
-        Menu(modifier = modifier, navController)
+        Menu(modifier = modifier, navController, viewModel)
     }
 }
 
 @Composable
-fun Menu(modifier: Modifier, navController: NavController){
+fun Menu(modifier: Modifier, navController: NavController, viewModel: EditProfileViewModel){
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(8.dp),
@@ -129,9 +130,7 @@ fun Menu(modifier: Modifier, navController: NavController){
                 textColor = Color.Red,
                 iconColor = Color.Red,
                 onClick = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(0) { inclusive = true }
-                    }
+                    viewModel.logout(navController)
                 },
                 showArrow = false
             )
